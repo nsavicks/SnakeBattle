@@ -29,7 +29,7 @@ int main() {
 	zm2.telo[0] = zm2.glava;
 	zm2.ziva = 1;
 	mapa[10][10] = 2;
-	int brzina = 1000;
+	int brzina = 600;
 
 	play(zm1, zm2, zm3, zm4, mapa, n, brzina, window, rend);
 
