@@ -22,7 +22,6 @@ typedef struct zm {
 
 zmija kill(zmija z, int mapa[][100]);
 zmija nextMove(zmija z, int mapa[][100], int n);
-void pokreniSve(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n);
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window* window, SDL_Renderer* renderer);
 
 

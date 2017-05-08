@@ -73,14 +73,6 @@ zmija nextMove(zmija z,int mapa[][100],int n) {
 
 	return z;
 }
-void pokreniSve(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4,int mapa[][100],int n) {
-
-	if (zm1->ziva) *zm1 = nextMove(*zm1, mapa, n);
-	if (zm2->ziva) *zm2 = nextMove(*zm2, mapa, n);
-	if (zm3->ziva) *zm3 = nextMove(*zm3, mapa, n);
-	if (zm4->ziva) *zm4 = nextMove(*zm4, mapa, n);
-	
-}
 
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4,int mapa[][100],int n,int brzina, SDL_Window *window, SDL_Renderer *renderer) {
 	
