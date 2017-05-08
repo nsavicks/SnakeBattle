@@ -32,7 +32,7 @@ int main() {
 	int brzina = 600;
 
 	play(zm1, zm2, zm3, zm4, mapa, n, brzina, window, rend);
-
+	//
 
 	return 0;
 }

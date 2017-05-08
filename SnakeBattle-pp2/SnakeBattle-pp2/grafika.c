@@ -167,7 +167,7 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 		SDL_RenderPresent(renderer);
 		SDL_RenderClear(renderer);
 }
-
+//
 void drawmenu(SDL_Window *window, SDL_Renderer *renderer) {
 	int SIRINA = 200, x, y, VISINA = 100, menu_option;
 	SDL_Texture *image;
