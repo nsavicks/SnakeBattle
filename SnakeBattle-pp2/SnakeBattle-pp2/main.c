@@ -1,4 +1,5 @@
-#include <SDL.h>
+#include "grafika.h"
+#include "gameplay.h"
 
 int main(int **argc, char* args[]) {
 	
