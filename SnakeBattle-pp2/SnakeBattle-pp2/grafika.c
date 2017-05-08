@@ -41,29 +41,29 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 					switch (z1.smer) {
 					case DOLE:
 						image = loadTexture("img/z1_down.png", renderer);
-						renderTexture(image, renderer, i * VEL, j * VEL, VEL, VEL);
+						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case GORE:
 						image = loadTexture("img/z1_up.png", renderer);
-						renderTexture(image, renderer, i * VEL, j * VEL, VEL, VEL);
+						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case DESNO:
 						image = loadTexture("img/z1_right.png", renderer);
-						renderTexture(image, renderer, i * VEL, j * VEL, VEL, VEL);
+						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case LEVO:
 						image = loadTexture("img/z1_left.png", renderer);
-						renderTexture(image, renderer, i * VEL, j * VEL, VEL, VEL);
+						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					}
 				}
 				else {
 					image = loadTexture("img/z1_body.png", renderer);
-					renderTexture(image, renderer, i * VEL, j *VEL, VEL, VEL);
+					renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 					SDL_DestroyTexture(image);
 				}
 				break;
@@ -72,29 +72,29 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 					switch (z2.smer) {
 					case DOLE:
 						image = loadTexture("img/z2_down.png", renderer);
-						renderTexture(image, renderer, i * VEL, j * VEL, VEL, VEL);
+						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case GORE:
 						image = loadTexture("img/z2_up.png", renderer);
-						renderTexture(image, renderer, i * VEL, j * VEL, VEL, VEL);
+						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case DESNO:
 						image = loadTexture("img/z2_right.png", renderer);
-						renderTexture(image, renderer, i * VEL, j * VEL, VEL, VEL);
+						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case LEVO:
 						image = loadTexture("img/z2_left.png", renderer);
-						renderTexture(image, renderer, i * VEL, j * VEL, VEL, VEL);
+						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					}
 				}
 				else {
 					image = loadTexture("img/z2_body.png", renderer);
-					renderTexture(image, renderer, i * VEL, j *VEL, VEL, VEL);
+					renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 					SDL_DestroyTexture(image);
 				}
 				break;
@@ -103,12 +103,12 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 					switch (z3.smer) {
 					case DOLE:
 						image = loadTexture("img/z3_down.png", renderer);
-						renderTexture(image, renderer, i * VEL, j * VEL, VEL, VEL);
+						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case GORE:
 						image = loadTexture("img/z3_up.png", renderer);
-						renderTexture(image, renderer, i * VEL, j * VEL, VEL, VEL);
+						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case DESNO:
@@ -168,22 +168,3 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 		SDL_RenderClear(renderer);
 }
 
-int promeni(zmija z) {
-	SDL_Event e;
-	while (SDL_PollEvent(&e))
-		switch (e.type) {
-		case SDL_KEYDOWN:
-			switch (e.key.keysym.sym) {
-			case SDLK_UP:
-				return GORE;
-			case SDLK_DOWN:
-				return DOLE;
-			case SDLK_LEFT:
-				return LEVO;
-			case SDLK_RIGHT:
-				return DESNO;
-			default:
-				return z.smer;
-			}
-		}
-}
