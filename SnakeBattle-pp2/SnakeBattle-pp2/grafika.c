@@ -168,3 +168,59 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 		SDL_RenderClear(renderer);
 }
 
+void drawmenu(SDL_Window *window, SDL_Renderer *renderer) {
+	int SIRINA = 200, x, y, VISINA = 100, menu_option;
+	SDL_Texture *image;
+	image = loadTexture("img/menu/background.png", renderer);
+	renderTexture(image, renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	x = 200, y = 40;
+	SDL_DestroyTexture(image);
+	image = loadTexture("img/menu/logo.png", renderer);
+	renderTexture(image, renderer, x, y, SIRINA, VISINA);
+	SDL_DestroyTexture(image);
+
+	x = x + VISINA + 40;
+	VISINA = 50;
+	image = loadTexture("img/menu/novaigra.png", renderer);
+	renderTexture(image, renderer, x, y, SIRINA, VISINA);
+	SDL_DestroyTexture(image);
+	
+	x = x + VISINA + 10;
+	VISINA = 50;
+	image = loadTexture("img/menu/opcije.png", renderer);
+	renderTexture(image, renderer, x, y, SIRINA, VISINA);
+	SDL_DestroyTexture(image);
+	
+	x = x + VISINA + 10;
+	VISINA = 50;
+	image = loadTexture("img/menu/oigri.png", renderer);
+	renderTexture(image, renderer, x, y, SIRINA, VISINA);
+	SDL_DestroyTexture(image);
+
+	x = x + VISINA + 10;
+	VISINA = 50;
+	image = loadTexture("img/menu/highscore.png", renderer);
+	renderTexture(image, renderer, x, y, SIRINA, VISINA);
+	SDL_DestroyTexture(image);
+
+	x = x + VISINA + 10;
+	VISINA = 50;
+	image = loadTexture("img/menu/autori.png", renderer);
+	renderTexture(image, renderer, x, y, SIRINA, VISINA);
+	SDL_DestroyTexture(image);
+
+	x = x + VISINA + 10;
+	VISINA = 50;
+	image = loadTexture("img/menu/izlazak.png", renderer);
+	renderTexture(image, renderer, x, y, SIRINA, VISINA);
+	SDL_DestroyTexture(image);
+
+	x = 180 + (menu_option * (60));
+	SIRINA = VISINA = 50;
+	image = loadTexture("img/menu/strelica.png", renderer);
+	renderTexture(image, renderer, x, y, SIRINA, VISINA);
+	SDL_DestroyTexture(image);
+
+	SDL_RenderPresent(renderer);
+	SDL_RenderClear(renderer);
+}

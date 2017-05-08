@@ -27,6 +27,6 @@ SDL_Texture *loadTexture(char destination[], SDL_Renderer *ren);
 
 void izlaz(SDL_Window *window, SDL_Renderer *renderer);
 
-
+void drawmenu(SDL_Window *window, SDL_Renderer *renderer);
 
 #endif // !grafika
