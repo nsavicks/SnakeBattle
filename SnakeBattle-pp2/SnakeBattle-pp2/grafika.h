@@ -9,6 +9,8 @@
 
 // PROMENLJIVE
 
+int SCREEN_WIDTH, SCREEN_HEIGHT, SNAKE_SIZE;
+
 // DEFINICIJA FUNKCIJA //Crazy_snake.c za telo funkcija
 
 void logSDLerror(char typeerror[]);
