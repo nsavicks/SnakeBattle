@@ -1,6 +1,12 @@
+#include "gameplay.h"
 #include "grafika.h"
 
-// TELA FUNKCIJA
+
+int fja(zmija z) {
+
+	return 0;
+}
+
 
 void logSDLerror(char typeerror[]) {
 	printf("%s Sdl error: %s\n", typeerror, SDL_GetError());

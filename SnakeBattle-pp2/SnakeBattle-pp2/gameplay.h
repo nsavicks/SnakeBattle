@@ -10,8 +10,14 @@
 #include <stdlib.h>
 #include "grafika.h"
 
-typedef struct ko koord;
-typedef struct zm zmija;
+typedef struct ko {
+	int i, j;
+}koord;
+typedef struct zm {
+	koord rep, glava, telo[100];
+	int duzina;
+	short smer, mrtva, igrac, tezina, redni;
+}zmija;
 
 
 

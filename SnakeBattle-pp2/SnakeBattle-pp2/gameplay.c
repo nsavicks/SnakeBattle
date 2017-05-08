@@ -1,15 +1,6 @@
 #include "gameplay.h"
 
 
-struct ko {
-	int i, j;
-};
-struct zm {
-	koord rep, glava, telo[100];
-	int duzina;
-	short smer, mrtva, igrac, tezina,redni;
-};
-
 
 zmija kill(zmija z, int mapa[][100]) {
 
