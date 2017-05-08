@@ -21,9 +21,15 @@
     <ClCompile Include="grafika.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gameplay.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="grafika.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
