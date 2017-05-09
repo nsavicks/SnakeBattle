@@ -289,6 +289,13 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 					SDL_RenderPresent(renderer);
 				}
 				break;
+			case SDL_MOUSEBUTTONDOWN:
+				i = e.motion.x; j = e.motion.y;
+				//printf("%d %d\n", i, j);
+				if (i >= 200 && i <= 400 && j >= 200 && j <= 250) {
+					printf("Igra");
+				}
+				break;
 			default:	break;
 			}
 		}
