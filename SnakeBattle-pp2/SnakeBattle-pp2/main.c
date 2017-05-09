@@ -8,9 +8,8 @@ int main() {
 	SDL_Renderer *rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	SCREEN_WIDTH = 600;
 	SCREEN_HEIGHT = 600;
-	while (1) {
-		drawmenu(window, rend, &menu_option);
-	}
+
+	drawmenu(window, rend, &menu_option);
 	zmija zm1,zm2,zm3,zm4;
 	zm3.ziva = zm4.ziva = 0;
 	VEL = 40;
