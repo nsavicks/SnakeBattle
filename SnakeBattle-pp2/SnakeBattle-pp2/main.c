@@ -4,15 +4,14 @@
 
 
 int main() {
-
-	
+	int menu_option = 1;
 	SDL_Window *window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 600, SDL_WINDOW_SHOWN);
 	SDL_Renderer *rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	SCREEN_WIDTH = 600;
 	SCREEN_HEIGHT = 600;
-	drawmenu(window, rend);
-	SDL_Delay(5000);
-
+	while (1) {
+		drawmenu(window, rend, &menu_option);
+	}
 	zmija zm1,zm2,zm3,zm4;
 	zm3.ziva = zm4.ziva = 0;
 	VEL = 40;
@@ -33,14 +32,13 @@ int main() {
 	zm2.telo[0] = zm2.glava;
 	zm2.ziva = 1;
 	mapa[10][10] = 2;
-	int brzina = 300;
+	int brzina = 300;	
 
 	SDL_DestroyWindow(window);
-	window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 800, SDL_WINDOW_SHOWN);
 	SDL_DestroyRenderer(rend);
 	rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	play(zm1, zm2, zm3, zm4, mapa, n, brzina, window, rend);
-	//
 
 	return 0;
 }

@@ -168,8 +168,8 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 		SDL_RenderClear(renderer);
 }
 //
-void drawmenu(SDL_Window *window, SDL_Renderer *renderer) {
-	int SIRINA = 200, x, y, VISINA = 100, menu_option=1;
+void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
+	int SIRINA = 200, x, y, VISINA = 100;
 	SDL_Texture *image;
 	image = loadTexture("img/menu/background.jpg", renderer);
 	renderTexture(image, renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -215,12 +215,34 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer) {
 	renderTexture(image, renderer, 200, 480, SIRINA, VISINA);
 	SDL_DestroyTexture(image);
 
-	x = 180 + (menu_option * (60));
+	*(menu) = handle_key(menu);
 	SIRINA = VISINA = 50;
 	image = loadTexture("img/menu/strelica.png", renderer);
-	renderTexture(image, renderer, 200, 190, 30, 30);
+	renderTexture(image, renderer, 200, 190 + (*menu - 1) * 60, 30, 30);
 	SDL_DestroyTexture(image);
 
 	SDL_RenderPresent(renderer);
 	SDL_RenderClear(renderer);
+}
+
+int handle_key(int *menu) {
+	SDL_Event e;
+	int x = *menu;
+	SDL_WaitEvent(&e);
+		switch (e.type) {
+		case SDL_KEYDOWN:
+			switch (e.key.keysym.sym) {
+			case SDLK_DOWN:
+				if (x == 6)
+					return 1;
+				else
+					return x + 1;
+			case SDLK_UP:
+				if (x == 1)
+					return 6;
+				else
+					return x - 1;
+			}
+		default: return x;
+		}
 }
