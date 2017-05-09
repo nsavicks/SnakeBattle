@@ -1,12 +1,12 @@
 #pragma once
 #ifndef grafika
 #define grafika
-
-#include "gameplay.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL.h>
 #include <SDL_image.h>
+#include "gameplay.h"
+
 
 
 typedef struct zm zmija;
@@ -28,6 +28,4 @@ SDL_Texture *loadTexture(char destination[], SDL_Renderer *ren);
 void izlaz(SDL_Window *window, SDL_Renderer *renderer);
 
 void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu);
-
-int handle_key(int *menu);
 #endif // !grafika/

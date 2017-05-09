@@ -167,82 +167,85 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 		SDL_RenderPresent(renderer);
 		SDL_RenderClear(renderer);
 }
-//
+
+
+int handle(int *menu) {
+	
+}
 void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 	int SIRINA = 200, x, y, VISINA = 100;
+	int i, j;
+	SDL_Event e;
 	SDL_Texture *image;
+
 	image = loadTexture("img/menu/background.jpg", renderer);
 	renderTexture(image, renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	x = 200, y = 40;
 	SDL_DestroyTexture(image);
 	/*image = loadTexture("img/menu/logo.png", renderer);
 	renderTexture(image, renderer, x, y, SIRINA, VISINA);
 	SDL_DestroyTexture(image);*/
 
-	x = x + VISINA + 40;
 	VISINA = 50;
 	image = loadTexture("img/menu/novaigra.png", renderer);
-	renderTexture(image, renderer, 200, 180 , SIRINA, VISINA);
+	renderTexture(image, renderer, 200, 180, SIRINA, VISINA);
 	SDL_DestroyTexture(image);
-	
-	x = x + VISINA + 10;
+
 	VISINA = 50;
 	image = loadTexture("img/menu/opcije.png", renderer);
 	renderTexture(image, renderer, 200, 240, SIRINA, VISINA);
 	SDL_DestroyTexture(image);
-	
-	x = x + VISINA + 10;
+
 	VISINA = 50;
 	image = loadTexture("img/menu/oigri.png", renderer);
 	renderTexture(image, renderer, 200, 300, SIRINA, VISINA);
 	SDL_DestroyTexture(image);
 
-	x = x + VISINA + 10;
 	VISINA = 50;
 	image = loadTexture("img/menu/highscore.png", renderer);
 	renderTexture(image, renderer, 200, 360, SIRINA, VISINA);
 	SDL_DestroyTexture(image);
 
-	x = x + VISINA + 10;
 	VISINA = 50;
 	image = loadTexture("img/menu/autori.png", renderer);
 	renderTexture(image, renderer, 200, 420, SIRINA, VISINA);
 	SDL_DestroyTexture(image);
 
-	x = x + VISINA + 10;
 	VISINA = 50;
 	image = loadTexture("img/menu/izlazak.png", renderer);
 	renderTexture(image, renderer, 200, 480, SIRINA, VISINA);
 	SDL_DestroyTexture(image);
 
-	*(menu) = handle_key(menu);
+	while (SDL_PollEvent(&e)) {
+		switch (e.type) {
+		case SDL_MOUSEMOTION:
+			i = e.motion.x; j = e.motion.y;
+			printf("%d %d\n", i, j);
+			if (i > 200 && i < 400 && j > 180 && j < 230) {
+				*menu = 1;
+			}
+			if (i > 200 && i < 400 && j > 240 && j < 290) {
+				*menu = 2;
+			}
+			if (i > 200 && i < 400 && j > 300 && j < 350) {
+				*menu = 3;
+			}
+			if (i > 200 && i < 400 && j > 360 && j < 410) {
+				*menu = 4;
+			}
+			if (i > 200 && i < 400 && j > 420 && j < 470) {
+				*menu = 5;
+			}
+			if (i > 200 && i < 400 && j > 480 && j < 530) {
+				*menu = 6;
+			}
+			break;
+		default:	break;
+		}
+	}
 	SIRINA = VISINA = 50;
 	image = loadTexture("img/menu/strelica.png", renderer);
 	renderTexture(image, renderer, 200, 190 + (*menu - 1) * 60, 30, 30);
 	SDL_DestroyTexture(image);
-
 	SDL_RenderPresent(renderer);
 	SDL_RenderClear(renderer);
-}
-
-int handle_key(int *menu) {
-	SDL_Event e;
-	int x = *menu;
-	SDL_WaitEvent(&e);
-		switch (e.type) {
-		case SDL_KEYDOWN:
-			switch (e.key.keysym.sym) {
-			case SDLK_DOWN:
-				if (x == 6)
-					return 1;
-				else
-					return x + 1;
-			case SDLK_UP:
-				if (x == 1)
-					return 6;
-				else
-					return x - 1;
-			}
-		default: return x;
-		}
 }

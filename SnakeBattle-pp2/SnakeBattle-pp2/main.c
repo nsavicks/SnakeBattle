@@ -2,10 +2,9 @@
 #include "grafika.h"
 #include "gameplay.h"
 
-
 int main() {
 	int menu_option = 1;
-	SDL_Window *window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 600, SDL_WINDOW_SHOWN);
+	SDL_Window *window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
 	SDL_Renderer *rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	SCREEN_WIDTH = 600;
 	SCREEN_HEIGHT = 600;
