@@ -36,7 +36,7 @@ int main() {
 	int brzina = 300;
 
 	SDL_DestroyWindow(window);
-	window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 800, SDL_WINDOW_SHOWN);
 	SDL_DestroyRenderer(rend);
 	rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	play(zm1, zm2, zm3, zm4, mapa, n, brzina, window, rend);
