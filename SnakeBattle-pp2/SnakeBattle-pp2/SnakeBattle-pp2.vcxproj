@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Nebojsa\Documents\Visual Studio 2017\Projects\SnakeBattle\SDL2_image-2.0.1\include;C:\Users\Nebojsa\Documents\Visual Studio 2017\Projects\SnakeBattle\SDL2-2.0.5\include;C:\Users\Filip Tanic\Downloads\SDL2_image-devel-2.0.1-VC %281%29\SDL2_image-2.0.1\include;C:\Users\Filip Tanic\Downloads\SDL2-devel-2.0.5-VC\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Nebojsa\Documents\Visual Studio 2017\Projects\SnakeBattle\SDL2_image-2.0.1\lib\x86;C:\Users\Nebojsa\Documents\Visual Studio 2017\Projects\SnakeBattle\SDL2-2.0.5\lib\x86;C:\Users\Filip Tanic\Downloads\SDL2-devel-2.0.5-VC\SDL2-2.0.5\lib\x86;C:\Users\Filip Tanic\Downloads\SDL2_image-devel-2.0.1-VC %281%29\SDL2_image-2.0.1\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Nebojsa\Documents\Visual Studio 2017\Projects\SnakeBattle\SnakeBattle-pp2\SDL2_image-2.0.1\include;C:\Users\Nebojsa\Documents\Visual Studio 2017\Projects\SnakeBattle\SnakeBattle-pp2\SDL2-2.0.5\include;C:\Users\Filip Tanic\Downloads\SDL2_image-devel-2.0.1-VC %281%29\SDL2_image-2.0.1\include;C:\Users\Filip Tanic\Downloads\SDL2-devel-2.0.5-VC\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Nebojsa\Documents\Visual Studio 2017\Projects\SnakeBattle\SnakeBattle-pp2\SDL2_image-2.0.1\lib\x86;C:\Users\Nebojsa\Documents\Visual Studio 2017\Projects\SnakeBattle\SnakeBattle-pp2\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Users\Filip Tanic\Downloads\SDL2_image-devel-2.0.1-VC %281%29\SDL2_image-2.0.1\include;C:\Users\Filip Tanic\Downloads\SDL2-devel-2.0.5-VC\SDL2-2.0.5\include;$(IncludePath)</IncludePath>
