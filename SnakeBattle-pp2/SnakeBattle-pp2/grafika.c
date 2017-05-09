@@ -173,79 +173,126 @@ int handle(int *menu) {
 	
 }
 void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
-	int SIRINA = 200, x, y, VISINA = 100;
-	int i, j;
+	int  x, y;
+	int i, j,p;
 	SDL_Event e;
 	SDL_Texture *image;
 
 	image = loadTexture("img/menu/background.jpg", renderer);
 	renderTexture(image, renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	SDL_DestroyTexture(image);
-	/*image = loadTexture("img/menu/logo.png", renderer);
-	renderTexture(image, renderer, x, y, SIRINA, VISINA);
-	SDL_DestroyTexture(image);*/
 
-	VISINA = 50;
+	image = loadTexture("img/menu/logo.png", renderer);
+	renderTexture(image, renderer, 200, 10, 200, 200);
+	SDL_DestroyTexture(image);
+
 	image = loadTexture("img/menu/novaigra.png", renderer);
-	renderTexture(image, renderer, 200, 180, SIRINA, VISINA);
+	renderTexture(image, renderer, 200, 200, 200, 50);
 	SDL_DestroyTexture(image);
 
-	VISINA = 50;
 	image = loadTexture("img/menu/opcije.png", renderer);
-	renderTexture(image, renderer, 200, 240, SIRINA, VISINA);
+	renderTexture(image, renderer, 200, 260, 200, 50);
 	SDL_DestroyTexture(image);
 
-	VISINA = 50;
 	image = loadTexture("img/menu/oigri.png", renderer);
-	renderTexture(image, renderer, 200, 300, SIRINA, VISINA);
+	renderTexture(image, renderer, 200, 320, 200, 50);
 	SDL_DestroyTexture(image);
 
-	VISINA = 50;
 	image = loadTexture("img/menu/highscore.png", renderer);
-	renderTexture(image, renderer, 200, 360, SIRINA, VISINA);
+	renderTexture(image, renderer, 200, 380, 200, 50);
 	SDL_DestroyTexture(image);
 
-	VISINA = 50;
 	image = loadTexture("img/menu/autori.png", renderer);
-	renderTexture(image, renderer, 200, 420, SIRINA, VISINA);
+	renderTexture(image, renderer, 200, 440, 200, 50);
 	SDL_DestroyTexture(image);
 
-	VISINA = 50;
 	image = loadTexture("img/menu/izlazak.png", renderer);
-	renderTexture(image, renderer, 200, 480, SIRINA, VISINA);
+	renderTexture(image, renderer, 200, 500, 200, 50);
 	SDL_DestroyTexture(image);
 
-	while (SDL_PollEvent(&e)) {
-		switch (e.type) {
-		case SDL_MOUSEMOTION:
-			i = e.motion.x; j = e.motion.y;
-			printf("%d %d\n", i, j);
-			if (i > 200 && i < 400 && j > 180 && j < 230) {
-				*menu = 1;
-			}
-			if (i > 200 && i < 400 && j > 240 && j < 290) {
-				*menu = 2;
-			}
-			if (i > 200 && i < 400 && j > 300 && j < 350) {
-				*menu = 3;
-			}
-			if (i > 200 && i < 400 && j > 360 && j < 410) {
-				*menu = 4;
-			}
-			if (i > 200 && i < 400 && j > 420 && j < 470) {
-				*menu = 5;
-			}
-			if (i > 200 && i < 400 && j > 480 && j < 530) {
-				*menu = 6;
-			}
-			break;
-		default:	break;
-		}
-	}
-	SIRINA = VISINA = 50;
-	image = loadTexture("img/menu/strelica.png", renderer);
-	renderTexture(image, renderer, 200, 190 + (*menu - 1) * 60, 30, 30);
-	SDL_DestroyTexture(image);
 	SDL_RenderPresent(renderer);
-	SDL_RenderClear(renderer);
+	
+	p = 1;
+	while (p) {
+		while (SDL_PollEvent(&e)) {
+			switch (e.type) {
+			case SDL_MOUSEMOTION:
+				i = e.motion.x; j = e.motion.y;
+				//printf("%d %d\n", i, j);
+				if (i >= 200 && i <= 400 && j >= 200 && j <= 250) {
+					*menu = 1;
+				}
+				else
+					if (i >= 200 && i <= 400 && j >= 260 && j <= 310) {
+						*menu = 2;
+					}
+					else
+						if (i >= 200 && i <= 400 && j >= 320 && j <= 370) {
+							*menu = 3;
+						}
+						else
+							if (i >= 200 && i <= 400 && j >= 380 && j <= 430) {
+								*menu = 4;
+							}
+							else
+								if (i >= 200 && i <= 400 && j >= 440 && j <= 490) {
+									*menu = 5;
+								}
+								else
+									if (i >= 200 && i <= 400 && j >= 500 && j <= 550) {
+										*menu = 6;
+									}
+									else
+									{
+										*menu = 0;
+									}
+				if (*menu > 0) {
+					image = loadTexture("img/menu/strelica.png", renderer);
+					renderTexture(image, renderer, 205, 210 + (*menu - 1) * 60, 30, 30);
+					SDL_DestroyTexture(image);
+					SDL_RenderPresent(renderer);
+
+				}
+				else {
+					image = loadTexture("img/menu/background.jpg", renderer);
+					renderTexture(image, renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+					SDL_DestroyTexture(image);
+
+					image = loadTexture("img/menu/logo.png", renderer);
+					renderTexture(image, renderer, 200, 10, 200, 200);
+					SDL_DestroyTexture(image);
+
+					image = loadTexture("img/menu/novaigra.png", renderer);
+					renderTexture(image, renderer, 200, 200, 200, 50);
+					SDL_DestroyTexture(image);
+
+					image = loadTexture("img/menu/opcije.png", renderer);
+					renderTexture(image, renderer, 200, 260, 200, 50);
+					SDL_DestroyTexture(image);
+
+					image = loadTexture("img/menu/oigri.png", renderer);
+					renderTexture(image, renderer, 200, 320, 200, 50);
+					SDL_DestroyTexture(image);
+
+					image = loadTexture("img/menu/highscore.png", renderer);
+					renderTexture(image, renderer, 200, 380, 200, 50);
+					SDL_DestroyTexture(image);
+
+					image = loadTexture("img/menu/autori.png", renderer);
+					renderTexture(image, renderer, 200, 440, 200, 50);
+					SDL_DestroyTexture(image);
+
+					image = loadTexture("img/menu/izlazak.png", renderer);
+					renderTexture(image, renderer, 200, 500, 200, 50);
+					SDL_DestroyTexture(image);
+
+					SDL_RenderPresent(renderer);
+				}
+				break;
+			default:	break;
+			}
+		}
+
+	}
+	
 }
