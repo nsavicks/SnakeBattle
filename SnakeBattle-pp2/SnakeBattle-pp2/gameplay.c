@@ -1,5 +1,7 @@
 #include "gameplay.h"
 #include "grafika.h"
+#include <stdlib.h>
+#include <time.h>
 
 zmija kill(zmija z, int mapa[][100]) {
 	int i;
@@ -69,8 +71,9 @@ zmija nextMove(zmija z, int mapa[][100], int n) {
 }
 
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
-	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
+	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j;
 	SDL_Event e;
+
 	while (zivih > 0) {
 		ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
 		SDL_Delay(brzina);
@@ -131,4 +134,8 @@ void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 	zm2->tezina = 1;
 	*n = MALA;
 	*brzina = SPORO;
+}
+
+void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n) {
+	srand(time(NULL));
 }

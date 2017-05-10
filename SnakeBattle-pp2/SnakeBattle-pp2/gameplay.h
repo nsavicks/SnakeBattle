@@ -21,9 +21,13 @@ typedef struct zm {
 
 
 zmija kill(zmija z, int mapa[][100]);
+
 zmija nextMove(zmija z, int mapa[][100], int n);
+
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window* window, SDL_Renderer* renderer);
 
 void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int *n, int *brzina);
+
+void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n);
 
 #endif 
