@@ -12,7 +12,7 @@
 #define BRZO 300
 #define MALA 40
 #define SREDNJA 60
-#define VELIKA 60
+#define VELIKA 80
 
 typedef struct zm zmija;
 
@@ -36,5 +36,4 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu);
 
 void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n,int *brzina, SDL_Window *window, SDL_Renderer *renderer);
 
-void players(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], SDL_Window *window, SDL_Renderer *renderer);
 #endif // !grafika/

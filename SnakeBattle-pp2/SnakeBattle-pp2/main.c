@@ -10,7 +10,7 @@ int main() {
 	SCREEN_HEIGHT = 600;
 	zmija zm1, zm2, zm3, zm4;
 	zm2.ziva = zm3.ziva = zm4.ziva = 0;
-	VEL = 40;
+	VEL = 10;
 	zm1.duzina = 1;
 	zm1.glava.i = zm1.glava.j = zm1.rep.i = zm1.rep.j = 5;
 	zm1.redni = 1;
@@ -20,7 +20,7 @@ int main() {
 	zm2.ziva = 1;
 	zm2.igrac = 0;
 	zm3.ziva = 0;
-	
+	n = MALA; brzina = SPORO;
 	mapa[5][5] = 1;
 	window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
 	rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);

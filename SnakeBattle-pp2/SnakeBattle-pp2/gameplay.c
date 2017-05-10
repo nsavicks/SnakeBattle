@@ -77,7 +77,7 @@ zmija nextMove(zmija z,int mapa[][100],int n) {
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4,int mapa[][100],int n,int brzina, SDL_Window *window, SDL_Renderer *renderer) {
 	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
 	SDL_Event e;
-		while (zivih>-1) {
+		while (zivih>0) {
 			ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
 			SDL_Delay(brzina);
 
