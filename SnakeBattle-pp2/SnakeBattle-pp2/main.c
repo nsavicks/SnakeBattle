@@ -3,18 +3,14 @@
 #include "gameplay.h"
 
 int main() {
-	int menu_option = 1;
-	SDL_Window *window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
-	SDL_Renderer *rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	SDL_Window *window = NULL;
+	SDL_Renderer *rend = NULL;
+	int menu_option = 1, n = 40, mapa[100][100] = { 0 }, brzina = SPORO;
 	SCREEN_WIDTH = 600;
 	SCREEN_HEIGHT = 600;
-
-	drawmenu(window, rend, &menu_option);
-	zmija zm1,zm2,zm3,zm4;
-	zm3.ziva = zm4.ziva = 0;
+	zmija zm1, zm2, zm3, zm4;
+	zm2.ziva = zm3.ziva = zm4.ziva = 0;
 	VEL = 40;
-	int n = 20;
-	int mapa[100][100] = { 0 };
 	zm1.duzina = 1;
 	zm1.glava.i = zm1.glava.j = zm1.rep.i = zm1.rep.j = 5;
 	zm1.redni = 1;
@@ -23,20 +19,23 @@ int main() {
 	zm1.ziva = 1;
 	mapa[5][5] = 1;
 
-	zm2.duzina = 1;
-	zm2.glava.i = zm2.glava.j = zm2.rep.i = zm2.rep.j = 10;
-	zm2.redni = 2;
-	zm2.smer = LEVO;
-	zm2.telo[0] = zm2.glava;
-	zm2.ziva = 1;
-	mapa[10][10] = 2;
-	int brzina = 300;	
+	while (1) {
+		drawmenu(window, rend, &menu_option);
+		if (menu_option == 1) {
+			SDL_DestroyWindow(window);
+			SDL_DestroyRenderer(rend);
 
-	SDL_DestroyWindow(window);
-	window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 800, SDL_WINDOW_SHOWN);
-	SDL_DestroyRenderer(rend);
-	rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	play(zm1, zm2, zm3, zm4, mapa, n, brzina, window, rend);
+			window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 800, SDL_WINDOW_SHOWN);
+			rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+			play(zm1, zm2, zm3, zm4, mapa, n, brzina, window, rend);
+
+			SDL_DestroyWindow(window);
+			SDL_DestroyRenderer(rend);
+		}
+		else if (menu_option == 2) {
+			opcije(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina, window, rend);
+		}
+	}
 	return 0;
 }

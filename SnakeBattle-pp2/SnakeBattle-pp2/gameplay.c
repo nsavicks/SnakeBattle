@@ -75,58 +75,53 @@ zmija nextMove(zmija z,int mapa[][100],int n) {
 }
 
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4,int mapa[][100],int n,int brzina, SDL_Window *window, SDL_Renderer *renderer) {
-	
-	
 	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
 	SDL_Event e;
-	
-		while (zivih>0) {
+		while (zivih>-1) {
 			ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
 			SDL_Delay(brzina);
-			printf("%d\n", zm1.smer);
+
 			while (SDL_PollEvent(&e))
 				switch (e.type) {
 				case SDL_KEYDOWN:
+					printf("DETECTED\n");
 					switch (e.key.keysym.sym) {
 					case SDLK_UP:
-						if (zm1.smer!=DOLE)
-						zm1.smer = GORE;
+						if (zm1.smer != DOLE)
+							zm1.smer = GORE;
 						break;
 					case SDLK_DOWN:
-						if (zm1.smer!=GORE)
-						zm1.smer = DOLE;
+						if (zm1.smer != GORE)
+							zm1.smer = DOLE;
 						break;
 					case SDLK_LEFT:
-						if (zm1.smer!=DESNO)
-						zm1.smer = LEVO;
+						if (zm1.smer != DESNO)
+							zm1.smer = LEVO;
 						break;
 					case SDLK_RIGHT:
-						if (zm1.smer!=LEVO)
-						zm1.smer = DESNO;
+						if (zm1.smer != LEVO)
+							zm1.smer = DESNO;
 						break;
 					case SDLK_w:
-						if (zm2.smer!=DOLE)
-						zm2.smer = GORE;
+						if (zm2.smer != DOLE)
+							zm2.smer = GORE;
 						break;
 					case SDLK_s:
-						if (zm2.smer!=GORE)
-						zm2.smer = DOLE;
+						if (zm2.smer != GORE)
+							zm2.smer = DOLE;
 						break;
 					case SDLK_a:
-						if (zm2.smer!=DESNO)
-						zm2.smer = LEVO;
+						if (zm2.smer != DESNO)
+							zm2.smer = LEVO;
 						break;
 					case SDLK_d:
-						if (zm2.smer!=LEVO)
-						zm2.smer = DESNO;
+						if (zm2.smer != LEVO)
+							zm2.smer = DESNO;
 						break;
 					default:
-
 						break;
 					}
-					break;
 				} // END FIRST SWITCH
-
 			if (zm1.ziva) zm1 = nextMove(zm1, mapa, n);
 			if (zm2.ziva) zm2 = nextMove(zm2, mapa, n);
 			if (zm3.ziva) zm3 = nextMove(zm3, mapa, n);
