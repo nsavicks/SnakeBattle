@@ -245,6 +245,7 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 					izlaz(window, renderer);
 					chosen = 1;
 				}
+				break;
 			case SDL_QUIT:
 				izlaz(window, renderer);
 			default:	
@@ -445,8 +446,6 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 		while (SDL_PollEvent(&e)) {
 			i = e.motion.x; j = e.motion.y;
 			switch (e.type) {
-			case SDL_QUIT:
-				izlaz(window, renderer);
 			case SDL_MOUSEMOTION:
 				if (i > 150 && i < 200 && j > 50 && j < 130) 
 					k = 1;
@@ -459,7 +458,6 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 				else
 					k = 0;
 				break;
-				SDL_RenderPresent(renderer);
 			case SDL_MOUSEBUTTONDOWN:
 				if (i > 0 && i < 50 && j > 0 && j < 50) {
 					nazad = 1;
@@ -585,6 +583,8 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 					}
 				}
 				break;
+			case SDL_QUIT:
+				izlaz(window, renderer);
 			default: break;
 			}
 		}
