@@ -18,10 +18,10 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="grafika.c">
+    <ClCompile Include="gameplay.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gameplay.c">
+    <ClCompile Include="grafika.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -17,9 +17,15 @@ int main() {
 	zm1.smer = GORE;
 	zm1.telo[0] = zm1.glava;
 	zm1.ziva = 1;
+	zm2.ziva = 1;
+	zm2.igrac = 0;
+	zm3.ziva = 0;
+	
 	mapa[5][5] = 1;
-
+	window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
+	rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	while (1) {
+
 		drawmenu(window, rend, &menu_option);
 		if (menu_option == 1) {
 			SDL_DestroyWindow(window);
