@@ -268,200 +268,146 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 	int nazad = 0, i, j;
 	SDL_Texture *image;
 	SDL_Event e;
-
 	while (!nazad) {
-		int chosen = 0;
-		image = loadTexture("img/menu/background.jpg", renderer);
-		renderTexture(image, renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-		SDL_DestroyTexture(image);
-
 		image = loadTexture("img/opcije/nazad.png", renderer);
 		renderTexture(image, renderer, 0, 0, 50, 50);
 		SDL_DestroyTexture(image);
 
-		if (SCREEN_WIDTH == 600 && SCREEN_HEIGHT == 600) {
-			image = loadTexture("img/opcije/600x600.png", renderer);
-			renderTexture(image, renderer, 200, 100, 200, 80);
-			SDL_DestroyTexture(image);
-		}
-		else if (SCREEN_WIDTH == 800 && SCREEN_HEIGHT == 800) {
-			image = loadTexture("img/opcije/800x800.png", renderer);
-			renderTexture(image, renderer, 200, 100, 200, 80);
-			SDL_DestroyTexture(image);
-		}
-		else if (SCREEN_WIDTH == 1000 && SCREEN_HEIGHT == 1000) {
-			image = loadTexture("img/opcije/600x600.png", renderer);
-			renderTexture(image, renderer, 200, 100, 200, 80);
-			SDL_DestroyTexture(image);
-		}
-
 		if (*n == MALA) {
-			image = loadTexture("img/opcije/malamapa.png", renderer);
-			renderTexture(image, renderer, 200, 200, 200, 80);
+			image = loadTexture("img/opcije/mala.png", renderer);
+			renderTexture(image, renderer, 50, 200, 300, 80);
 			SDL_DestroyTexture(image);
 		}
 		else if (*n == SREDNJA) {
-			image = loadTexture("img/opcije/srednjamapa.png", renderer);
-			renderTexture(image, renderer, 200, 200, 200, 80);
+			image = loadTexture("img/opcije/srednja.png", renderer);
+			renderTexture(image, renderer, 50, 200, 300, 80);
 			SDL_DestroyTexture(image);
 		}
 		else if (*n == VELIKA) {
-			image = loadTexture("img/opcije/velikamapa.png", renderer);
-			renderTexture(image, renderer, 200, 200, 200, 80);
+			image = loadTexture("img/opcije/velika.png", renderer);
+			renderTexture(image, renderer, 50, 200, 300, 80);
 			SDL_DestroyTexture(image);
 		}
 
 		if (*brzina == SPORO) {
 			image = loadTexture("img/opcije/sporo.png", renderer);
-			renderTexture(image, renderer, 200, 300, 200, 80);
+			renderTexture(image, renderer, 150, 200, 300, 80);
 			SDL_DestroyTexture(image);
 		}
 		else if (*brzina == SREDNJE) {
 			image = loadTexture("img/opcije/srednje.png", renderer);
-			renderTexture(image, renderer, 200, 300, 200, 80);
+			renderTexture(image, renderer, 150, 200, 300, 80);
 			SDL_DestroyTexture(image);
 		}
 		else if (*brzina == BRZO) {
 			image = loadTexture("img/opcije/brzo.png", renderer);
-			renderTexture(image, renderer, 200, 300, 200, 80);
+			renderTexture(image, renderer, 150, 200, 300, 80);
 			SDL_DestroyTexture(image);
 		}
 
-		SDL_RenderPresent(renderer);
-
-		image = loadTexture("img/opcije/igraci.png", renderer);
-		renderTexture(image, renderer, 200, 400, 200, 80);
+		image = loadTexture("img/opcije/p1.png", renderer);
+		renderTexture(image, renderer, 0, 300, 50, 50);
 		SDL_DestroyTexture(image);
-		SDL_RenderPresent(renderer);
-
-		while (SDL_PollEvent(&e)) {
-			switch (e.type) {
-			case SDL_MOUSEMOTION:
-				if (i > 0 && i < 50 && j > 0 && j < 30) {
-					image = loadTexture("img/menu/strelica.png", renderer);
-					renderTexture(image, renderer, 0, 25, 20, 20);
-					SDL_DestroyTexture(image);
-					chosen = 0;
-				}
-				if (i > 200 && i < 250 && j > 100 && j < 180) {
-					image = loadTexture("img/opcije/svetli_left", renderer);
-					renderTexture(image, renderer, 200, 100, 50, 80);
-					SDL_DestroyTexture(image);
-				}
-				if (i > 350 && i < 400 && j > 100 && j < 180) {
-					//rezolucija vise
-					image = loadTexture("img/opcije/svetli_right", renderer);
-					renderTexture(image, renderer, 350, 100, 50, 80);
-					SDL_DestroyTexture(image);
-				}
-				if (i > 200 && i < 250 && j > 200 && j < 280) {
-					// mapa manje
-					image = loadTexture("img/opcije/svetli_left", renderer);
-					renderTexture(image, renderer, 200, 200, 50, 80);
-					SDL_DestroyTexture(image);
-				}
-				if (i > 350 && i < 400 && j > 200 && j < 280) {
-					//mapa vise
-					image = loadTexture("img/opcije/svetli_right", renderer);
-					renderTexture(image, renderer, 350, 200, 50, 80);
-					SDL_DestroyTexture(image);
-				}
-				if (i > 200 && i < 250 && j > 300 && j < 380) {
-					//brzina manje
-					image = loadTexture("img/opcije/svetli_left", renderer);
-					renderTexture(image, renderer, 200, 300, 50, 80);
-					SDL_DestroyTexture(image);
-				}
-				if (i > 350 && i < 400 && j > 300 && j < 380) {
-					//brzina vise
-					image = loadTexture("img/opcije/svetli_right", renderer);
-					renderTexture(image, renderer, 350, 300, 50, 80);
-					SDL_DestroyTexture(image);
-				}
-				if (i > 200 && i < 400 && j > 400 && j < 480) {
-					//  opcije igraca
-					image = loadTexture("img/menu/strelica.png", renderer);
-					renderTexture(image, renderer, 200, 420, 40, 40);
-					SDL_DestroyTexture(image);
-					chosen = 0; 
-				}
-				break;
-			default: break;
+		if (zm1->ziva == 1) {
+			if (zm1->igrac == 0) {
+				image = loadTexture("img/opcije/ai.png", renderer);
+				renderTexture(image, renderer, 50, 300, 100, 50);
+				SDL_DestroyTexture(image);
 			}
-		} // mousemotion
-
-		SDL_RenderPresent(renderer);
-
-		while (SDL_PollEvent(&e)) {
-			i = e.motion.x; j = e.motion.y;
-			switch (e.type) {
-			case SDL_MOUSEBUTTONDOWN:
-				if (i > 0 && i < 50 && j > 0 && j < 30) {
-					nazad = 1;
-				}
-				else if (i > 200 && i < 250 && j > 100 && j < 180) {
-					if (SCREEN_WIDTH == 600)
-						SCREEN_WIDTH = SCREEN_HEIGHT = 1000;
-					else if (SCREEN_WIDTH == 800)
-						SCREEN_WIDTH = SCREEN_HEIGHT = 600;
-					else if (SCREEN_WIDTH == 1000)
-						SCREEN_WIDTH = SCREEN_HEIGHT = 800;
-				}
-				else if (i > 350 && i < 400 && j > 100 && j < 180) {
-					//rezolucija vise
-					if (SCREEN_WIDTH == 600)
-						SCREEN_WIDTH = SCREEN_HEIGHT = 800;
-					else if (SCREEN_WIDTH == 800)
-						SCREEN_WIDTH = SCREEN_HEIGHT = 1000;
-					else if (SCREEN_WIDTH == 1000)
-						SCREEN_WIDTH = SCREEN_HEIGHT = 600;
-				}
-				else if (i > 200 && i < 250 && j > 200 && j < 280) {
-					//mapa manje
-					if (*n == MALA)
-						*n = VELIKA;
-					else if (*n == SREDNJA)
-						*n = MALA;
-					else if (*n == VELIKA)
-						*n = SREDNJA;
-				}
-				else if (i > 350 && i < 400 && j > 200 && j < 280) {
-					//mapa vise
-					if (*n == MALA)
-						*n = SREDNJA;
-					else if (*n == SREDNJA)
-						*n = VELIKA;
-					else if (*n == VELIKA)
-						*n = MALA;
-				}
-				else if (i > 200 && i < 250 && j > 300 && j < 380) {
-					//tezina manje
-					if (*brzina == SPORO)
-						*brzina = BRZO;
-					else if (*brzina == SREDNJE)
-						*brzina = SPORO;
-					else if (*brzina == BRZO)
-						*brzina = SREDNJE;
-				}
-				else if (i > 350 && i < 400 && j > 300 && j < 380) {
-					//tezina vise
-					if (*brzina == SPORO)
-						*brzina = SREDNJE;
-					else if (*brzina == SREDNJE)
-						*brzina = BRZO;
-					else if (*brzina == BRZO)
-						*brzina = SPORO;
-				}
-				else if (i > 200 && i < 400 && j > 400 && j < 480) {
-					// opcije igraca
-					players(zm1, zm2, zm3, zm4, mapa, window, renderer);
-				}
-				break;
-			default: break;
+			else {
+				image = loadTexture("img/opcije/cpu1.png", renderer);
+				renderTexture(image, renderer, 50, 300, 100, 50);
+				SDL_DestroyTexture(image);
 			}
-		} // mouse button down
+		}
+		else {
+			image = loadTexture("img/opcije/mrtva.png", renderer);
+			renderTexture(image, renderer, 50, 300, 100, 50);
+			SDL_DestroyTexture(image);
+		}
+		if (zm1->ziva) {
+			if (zm1->igrac == 0) {
+				if (zm1->tezina == 1) {
+					image = loadTexture("img/opcije/lak.png", renderer);
+					renderTexture(image, renderer, 170, 300, 100, 50);
+					SDL_DestroyTexture(image);
+				}
+				else {
+					image = loadTexture("img/opcije/tezak.png", renderer);
+					renderTexture(image, renderer, 170, 300, 100, 50);
+					SDL_DestroyTexture(image);
+				}
+			}
+		}
+		image = loadTexture("img/opcije/boja1.png", renderer);
+		renderTexture(image, renderer, 300, 300, 70, 50);
 
-		SDL_RenderClear(renderer);
+
+		image = loadTexture("img/opcije/p2.png", renderer);
+		renderTexture(image, renderer, 0, 375, 50, 50);
+		SDL_DestroyTexture(image);
+		if (zm2->ziva == 1) {
+			if (zm2->igrac == 0) {
+				image = loadTexture("img/opcije/ai.png", renderer);
+				renderTexture(image, renderer, 50, 375, 100, 50);
+				SDL_DestroyTexture(image);
+			}
+			else {
+				image = loadTexture("img/opcije/cpu2.png", renderer);
+				renderTexture(image, renderer, 50, 375, 100, 50);
+				SDL_DestroyTexture(image);
+			}
+		}
+		else {
+			image = loadTexture("img/opcije/mrtva.png", renderer);
+			renderTexture(image, renderer, 50, 375, 100, 50);
+			SDL_DestroyTexture(image);
+		}
+		if (zm2->ziva) {
+			if (zm2->igrac == 0) {
+				if (zm2->tezina == 1) {
+					image = loadTexture("img/opcije/lak.png", renderer);
+					renderTexture(image, renderer, 170, 300, 100, 50);
+					SDL_DestroyTexture(image);
+				}
+				else {
+					image = loadTexture("img/opcije/tezak.png", renderer);
+					renderTexture(image, renderer, 170, 375, 100, 50);
+					SDL_DestroyTexture(image);
+				}
+			}
+		}
+		image = loadTexture("img/opcije/boja2.png", renderer);
+		renderTexture(image, renderer, 300, 375, 70, 50);
+
+
+		image = loadTexture("img/opcije/p3.png", renderer);
+		renderTexture(image, renderer, 0, 450, 50, 50);
+		SDL_DestroyTexture(image);
+		if (zm3->ziva == 1) {
+			image = loadTexture("img/opcije/ai.png", renderer);
+			renderTexture(image, renderer, 50, 450, 100, 50);
+			SDL_DestroyTexture(image);
+		}
+		else {
+			image = loadTexture("img/opcije/mrtva.png", renderer);
+			renderTexture(image, renderer, 50, 450, 100, 50);
+			SDL_DestroyTexture(image);
+		}
+		if (zm3->ziva) {
+			if (zm3->tezina == 1) {
+				image = loadTexture("img/opcije/lak.png", renderer);
+				renderTexture(image, renderer, 170, 450, 100, 50);
+				SDL_DestroyTexture(image);
+			}
+			else {
+				image = loadTexture("img/opcije/tezak.png", renderer);
+				renderTexture(image, renderer, 170, 450, 100, 50);
+				SDL_DestroyTexture(image);
+			}
+		}
+		image = loadTexture("img/opcije/boja3.png", renderer);
+		renderTexture(image, renderer, 300, 450, 70, 50);
 	}
 }
 
