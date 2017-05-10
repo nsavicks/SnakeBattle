@@ -26,7 +26,6 @@ void izlaz(SDL_Window *window, SDL_Renderer *renderer) {
 	exit(1);
 }
 
-
 void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija z3, zmija z4, int mapa[][100], int n) {
 	SDL_Texture *image = NULL;
 	int i, j;
@@ -168,7 +167,6 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 		SDL_RenderClear(renderer);
 }
 
-
 void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 
 	int chosen = 0;
@@ -179,7 +177,7 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 		SDL_Texture *image;
 
 		image = loadTexture("img/menu/background.jpg", renderer);
-		renderTexture(image, renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		renderTexture(image, renderer, 0, 0, 600, 600);
 		SDL_DestroyTexture(image);
 
 		image = loadTexture("img/menu/logo.png", renderer);
@@ -214,7 +212,6 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 			switch (e.type) {
 			case SDL_MOUSEMOTION:
 				i = e.motion.x; j = e.motion.y;
-
 				if (i >= 200 && i <= 400 && j >= 200 && j <= 250)
 					*menu = 1;
 				else if (i >= 200 && i <= 400 && j >= 260 && j <= 310)
@@ -232,7 +229,6 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				i = e.motion.x; j = e.motion.y;
-
 				if (i >= 200 && i <= 400 && j >= 200 && j <= 250) {
 					chosen = 1;
 					*menu = 1;
@@ -260,7 +256,6 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 		}
 
 		SDL_RenderPresent(renderer);
-		SDL_RenderClear(renderer);
 	}
 }
 

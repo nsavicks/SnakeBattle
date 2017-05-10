@@ -5,42 +5,36 @@
 int main() {
 	SDL_Window *window = NULL;
 	SDL_Renderer *rend = NULL;
-	int menu_option = 1, n = 40, mapa[100][100] = { 0 }, brzina = SPORO;
-	SCREEN_WIDTH = 600;
-	SCREEN_HEIGHT = 600;
+	int menu_option = 1, n = 40, mapa[100][100] = { 0 }, brzina;
 	zmija zm1, zm2, zm3, zm4;
-	zm2.ziva = zm3.ziva = zm4.ziva = 0;
-	VEL = 10;
-	zm1.duzina = 1;
-	zm1.glava.i = zm1.glava.j = zm1.rep.i = zm1.rep.j = 5;
-	zm1.redni = 1;
-	zm1.smer = GORE;
-	zm1.telo[0] = zm1.glava;
-	zm1.ziva = 1;
-	zm2.ziva = 1;
-	zm2.igrac = 0;
-	zm3.ziva = 0;
-	n = MALA; brzina = SPORO;
-	mapa[5][5] = 1;
+
 	window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
 	rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	
+	setdefault(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina);
+
 	while (1) {
 
 		drawmenu(window, rend, &menu_option);
-		if (menu_option == 1) {
-			SDL_DestroyWindow(window);
-			SDL_DestroyRenderer(rend);
 
-			window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 800, SDL_WINDOW_SHOWN);
-			rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
+		switch (menu_option) {
+		case 1:
 			play(zm1, zm2, zm3, zm4, mapa, n, brzina, window, rend);
-
-			SDL_DestroyWindow(window);
-			SDL_DestroyRenderer(rend);
-		}
-		else if (menu_option == 2) {
+			break;
+		case 2:
 			opcije(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina, window, rend);
+			break;
+		case 3:
+			// o igri
+			break;
+		case 4:
+			//highscore
+			break;
+		case 5:
+			//autori
+			break;
+		case 6:
+			izlaz(window, rend);
 		}
 	}
 	return 0;
