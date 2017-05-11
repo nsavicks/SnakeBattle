@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <SDL.h>
 #include <SDL_image.h>
-#include <SDL_ttf.h>
 #include "gameplay.h"
 
 #define SPORO 600

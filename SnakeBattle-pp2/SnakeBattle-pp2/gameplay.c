@@ -160,6 +160,11 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 				} // END FIRST SWITCH
 			clock_t razlika = clock() - start;
 			x = razlika * 1000 / CLOCKS_PER_SEC;
+
+			clock_t difference = clock() - before;
+			int msec = difference * 1000 / CLOCKS_PER_SEC;
+			int sec = msec / 1000;
+			printf("%d.%d\n", sec, msec % 100);
 		}
 		if (zm1.ziva) zm1 = nextMove(zm1, mapa, n);
 		if (zm2.ziva) zm2 = nextMove(zm2, mapa, n);

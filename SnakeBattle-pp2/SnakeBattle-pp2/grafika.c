@@ -458,6 +458,8 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 			case SDL_MOUSEBUTTONDOWN:
 				if (i > 0 && i < 50 && j > 0 && j < 50) {
 					nazad = 1;
+					SDL_DestroyRenderer(renderer);
+					SDL_DestroyWindow(window);
 					continue;
 				}
 				if (i > 150 && i < 200 && j > 50 && j < 130) {
