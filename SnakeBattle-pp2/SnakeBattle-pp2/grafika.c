@@ -164,7 +164,8 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 			}
 		}
 		SDL_RenderPresent(renderer);
-		SDL_RenderClear(renderer);
+		//SDL_RenderClear(renderer);
+		
 }
 
 void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
@@ -257,6 +258,7 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 
 		SDL_RenderPresent(renderer);
 	}
+	
 }
 
 void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n, int *brzina, SDL_Window *window, SDL_Renderer *renderer) {

@@ -10,9 +10,9 @@
 #define SPORO 900
 #define SREDNJE 600
 #define BRZO 300
-#define MALA 40
-#define SREDNJA 60
-#define VELIKA 80
+#define MALA 20
+#define SREDNJA 30
+#define VELIKA 40
 
 typedef struct zm zmija;
 
