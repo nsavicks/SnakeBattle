@@ -29,8 +29,11 @@ void izlaz(SDL_Window *window, SDL_Renderer *renderer) {
 void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija z3, zmija z4, int mapa[][100], int n) {
 	SDL_Texture *image = NULL;
 	int i, j;
-	image = loadTexture("img/gp_background.png", renderer);
-	renderTexture(image, renderer, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	image = loadTexture("img/gp_background.jpg", renderer);
+	renderTexture(image, renderer, 0, 0, 600, 600);
+	SDL_DestroyTexture(image);
+	image = loadTexture("img/gp_side.jpg", renderer);
+	renderTexture(image, renderer, 600, 0, 200, 600);
 	SDL_DestroyTexture(image);
 	for (i = 0; i < n; i++)
 		for (j = 0; j < n; j++) {
