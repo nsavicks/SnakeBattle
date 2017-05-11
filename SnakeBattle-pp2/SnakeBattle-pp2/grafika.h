@@ -9,7 +9,7 @@
 
 #define SPORO 900
 #define SREDNJE 600
-#define BRZO 300
+#define BRZO 100
 #define MALA 20
 #define SREDNJA 30
 #define VELIKA 40
