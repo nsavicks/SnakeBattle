@@ -8,8 +8,8 @@
 #include <SDL_ttf.h>
 #include "gameplay.h"
 
-#define SPORO 900
-#define SREDNJE 600
+#define SPORO 600
+#define SREDNJE 300
 #define BRZO 100
 #define MALA 20
 #define SREDNJA 30

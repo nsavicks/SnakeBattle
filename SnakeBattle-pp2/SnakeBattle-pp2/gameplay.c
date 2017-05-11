@@ -104,52 +104,63 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	clock_t before = clock();
 	SDL_RenderClear(renderer);
 	while (zivih > 1) {
-
+		int first = 1, x = 0, second = 1;
 		ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
 		SDL_RenderClear(renderer);
-		SDL_Delay(brzina);
-
-		while (SDL_PollEvent(&e))
-			switch (e.type) {
-			case SDL_KEYDOWN:
-				printf("DETECTED\n");
-				switch (e.key.keysym.sym) {
-				case SDLK_UP:
-					if (zm1.smer != DOLE)
-						zm1.smer = GORE;
-					break;
-				case SDLK_DOWN:
-					if (zm1.smer != GORE)
-						zm1.smer = DOLE;
-					break;
-				case SDLK_LEFT:
-					if (zm1.smer != DESNO)
-						zm1.smer = LEVO;
-					break;
-				case SDLK_RIGHT:
-					if (zm1.smer != LEVO)
-						zm1.smer = DESNO;
-					break;
-				case SDLK_w:
-					if (zm2.smer != DOLE)
-						zm2.smer = GORE;
-					break;
-				case SDLK_s:
-					if (zm2.smer != GORE)
-						zm2.smer = DOLE;
-					break;
-				case SDLK_a:
-					if (zm2.smer != DESNO)
-						zm2.smer = LEVO;
-					break;
-				case SDLK_d:
-					if (zm2.smer != LEVO)
-						zm2.smer = DESNO;
-					break;
-				default:
-					break;
-				}
-			} // END FIRST SWITCH
+		clock_t start = clock();
+		while (x < brzina) {
+			while (SDL_PollEvent(&e))
+				switch (e.type) {
+				case SDL_KEYDOWN:
+					printf("DETECTED\n");
+					switch (e.key.keysym.sym) {
+					case SDLK_UP:
+						if (zm1.smer != DOLE && first)
+							zm1.smer = GORE;
+						first = 0;
+						break;
+					case SDLK_DOWN:
+						if (zm1.smer != GORE && first)
+							zm1.smer = DOLE;
+						first = 0;
+						break;
+					case SDLK_LEFT:
+						if (zm1.smer != DESNO && first)
+							zm1.smer = LEVO;
+						first = 0;
+						break;
+					case SDLK_RIGHT:
+						if (zm1.smer != LEVO)
+							zm1.smer = DESNO;
+						first = 0;
+						break;
+					case SDLK_w:
+						if (zm2.smer != DOLE && second)
+							zm2.smer = GORE;
+						second = 0;
+						break;
+					case SDLK_s:
+						if (zm2.smer != GORE && second)
+							zm2.smer = DOLE;
+						second = 0;
+						break;
+					case SDLK_a:
+						if (zm2.smer != DESNO && second)
+							zm2.smer = LEVO;
+						second = 0;
+						break;
+					case SDLK_d:
+						if (zm2.smer != LEVO && second)
+							zm2.smer = DESNO;
+						second = 0;
+						break;
+					default:
+						break;
+					}
+				} // END FIRST SWITCH
+			clock_t razlika = clock() - start;
+			x = razlika * 1000 / CLOCKS_PER_SEC;
+		}
 		if (zm1.ziva) zm1 = nextMove(zm1, mapa, n);
 		if (zm2.ziva) zm2 = nextMove(zm2, mapa, n);
 		if (zm3.ziva) zm3 = nextMove(zm3, mapa, n);
