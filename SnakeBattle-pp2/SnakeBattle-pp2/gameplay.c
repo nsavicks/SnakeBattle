@@ -2,6 +2,8 @@
 #include "grafika.h"
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
+#include <ctype.h>
 
 zmija kill(zmija z, int mapa[][100]) {
 	int i;
@@ -99,15 +101,13 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	SDL_DestroyTexture(image);
 	SDL_RenderPresent(renderer);
 	SDL_Delay(1500);
-
+	clock_t before = clock();
 	SDL_RenderClear(renderer);
-
 	while (zivih > 1) {
-		
+
 		ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
 		SDL_RenderClear(renderer);
 		SDL_Delay(brzina);
-		
 
 		while (SDL_PollEvent(&e))
 			switch (e.type) {
@@ -160,6 +160,10 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
 	zm4 = kill(zm4, mapa);
+	clock_t difference = clock() - before;
+	int msec = difference * 1000 / CLOCKS_PER_SEC;
+	int sec = msec / 1000;
+	printf("%d.%d", sec, msec % 100);
 	SDL_RenderClear(renderer);
 }
 
