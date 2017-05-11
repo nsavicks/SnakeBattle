@@ -72,6 +72,27 @@ zmija nextMove(zmija z, int mapa[][100], int n) {
 	return z;
 }
 
+
+void showtime(time_t before, SDL_Window *window, SDL_Renderer *renderer) {
+	clock_t raz = clock() - before;
+	SDL_Texture *image;	
+	image = loadTexture("img/gp_side.jpg", renderer);
+	renderTexture(image, renderer, 600, 0, 200, 600);
+	SDL_DestroyTexture(image);
+	int msec = raz * 1000 / CLOCKS_PER_SEC;
+	int sec = msec / 1000;
+	msec %= 10;
+	char timer[10], s[10];
+	_itoa_s(sec, timer, 10, 10); strcat_s(timer, 10, "."); _itoa_s(msec, s, 10, 10); strcat_s(timer, 10, s);
+	TTF_Font *font = TTF_OpenFont("fonts/timer.ttf", 20);
+	SDL_Color color = { 0 };
+	SDL_Surface *surface = TTF_RenderText_Solid(font, timer, color);
+	image = SDL_CreateTextureFromSurface(renderer, surface);
+	renderTexture(image, renderer, 664, 64, 100, 30);
+	SDL_RenderPresent(renderer);
+	SDL_DestroyTexture(image); SDL_FreeSurface(surface);
+}
+
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
 	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j;
 	SDL_Event e;
@@ -106,9 +127,13 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	while (zivih > 1) {
 		int first = 1, x = 0, second = 1;
 		ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
-		SDL_RenderClear(renderer);
 		clock_t start = clock();
 		while (x < brzina) {
+			clock_t raz = clock() - before;
+			int msec = raz * 1000 / CLOCKS_PER_SEC;
+			int sec = msec / 1000;
+			msec %= 100;
+			showtime(before, window, renderer);
 			while (SDL_PollEvent(&e))
 				switch (e.type) {
 				case SDL_KEYDOWN:
@@ -160,11 +185,6 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 				} // END FIRST SWITCH
 			clock_t razlika = clock() - start;
 			x = razlika * 1000 / CLOCKS_PER_SEC;
-
-			clock_t difference = clock() - before;
-			int msec = difference * 1000 / CLOCKS_PER_SEC;
-			int sec = msec / 1000;
-			printf("%d.%d\n", sec, msec % 100);
 		}
 		if (zm1.ziva) zm1 = nextMove(zm1, mapa, n);
 		if (zm2.ziva) zm2 = nextMove(zm2, mapa, n);
@@ -176,11 +196,9 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
 	zm4 = kill(zm4, mapa);
-	clock_t difference = clock() - before;
-	int msec = difference * 1000 / CLOCKS_PER_SEC;
-	int sec = msec / 1000;
-	printf("%d.%d", sec, msec % 100);
+	showtime(before, window, renderer);
 	SDL_RenderClear(renderer);
+	clock_t end = clock() - before;
 }
 
 void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int *n, int *brzina) {

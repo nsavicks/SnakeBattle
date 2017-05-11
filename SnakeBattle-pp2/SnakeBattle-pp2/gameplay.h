@@ -8,6 +8,7 @@
 #define LEVO 3
 #include <stdio.h>
 #include <stdlib.h>
+#include <SDL_ttf.h>
 #include "grafika.h"
 
 typedef struct ko {
@@ -30,4 +31,5 @@ void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 
 void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n);
 
+void showtime(time_t before, SDL_Window *window, SDL_Renderer *renderer);
 #endif 

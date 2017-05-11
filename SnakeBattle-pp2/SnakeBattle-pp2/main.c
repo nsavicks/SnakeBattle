@@ -8,6 +8,7 @@ int main() {
 	int menu_option = 1, n, brzina, i, j, mapa[100][100] = { 0 };
 	zmija zm1, zm2, zm3, zm4;
 
+	TTF_Init();
 	
 	setdefault(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina);
 	VEL = 30;
