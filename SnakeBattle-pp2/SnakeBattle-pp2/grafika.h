@@ -36,4 +36,6 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu);
 
 void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n,int *brzina, SDL_Window *window, SDL_Renderer *renderer);
 
+void update_screen(zmija zm, int mapa[][100], int n, SDL_Window *window, SDL_Renderer *renderer);
+
 #endif // !grafika/

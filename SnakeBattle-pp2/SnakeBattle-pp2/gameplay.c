@@ -15,19 +15,18 @@ zmija kill(zmija z, int mapa[][100]) {
 	return z;
 }
 
-zmija nextMove(zmija z, int mapa[][100], int n) {
+zmija nextMove(zmija z, int mapa[][100], int n, int *killed, SDL_Window *window, SDL_Renderer *renderer) {
 
 	int komanda = z.smer;
-
 	switch (komanda) {
 	case GORE:
 		if ((z.glava.i == 0) || (mapa[z.glava.i - 1][z.glava.j])) {
 			z = kill(z, mapa);
+			*killed = 1;
 		}
 		else {
 			mapa[z.glava.i - 1][z.glava.j] = z.redni;
 			z.duzina++;
-
 			z.glava.i--;
 			z.telo[z.duzina - 1] = z.glava;
 		}
@@ -35,6 +34,7 @@ zmija nextMove(zmija z, int mapa[][100], int n) {
 	case DESNO:
 		if ((z.glava.j == n - 1) || (mapa[z.glava.i][z.glava.j + 1])) {
 			z = kill(z, mapa);
+			*killed = 1;
 		}
 		else {
 			mapa[z.glava.i][z.glava.j + 1] = z.redni;
@@ -47,11 +47,11 @@ zmija nextMove(zmija z, int mapa[][100], int n) {
 	case DOLE:
 		if ((z.glava.i == n - 1) || (mapa[z.glava.i + 1][z.glava.j])) {
 			z = kill(z, mapa);
+			*killed = 1;
 		}
 		else {
 			mapa[z.glava.i + 1][z.glava.j] = z.redni;
 			z.duzina++;
-
 			z.glava.i++;
 			z.telo[z.duzina - 1] = z.glava;
 		}
@@ -59,6 +59,7 @@ zmija nextMove(zmija z, int mapa[][100], int n) {
 	case LEVO:
 		if ((z.glava.j == 0) || (mapa[z.glava.i][z.glava.j - 1])) {
 			z = kill(z, mapa);
+			*killed = 1;
 		}
 		else {
 			mapa[z.glava.i][z.glava.j - 1] = z.redni;
@@ -69,16 +70,16 @@ zmija nextMove(zmija z, int mapa[][100], int n) {
 		break;
 	default: break;
 	}
+	if (!(*killed))
+		update_screen(z, mapa, n, window, renderer);
 	return z;
 }
 
-
-
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
-	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j;
+	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, killed = 0, first = 1, x = 0, second = 1;
 	SDL_Event e;
-
 	SDL_Texture *image;
+	clock_t end, before, startFrame, endFrame;
 
 	image = loadTexture("img/gp_background.png", renderer);
 	renderTexture(image, renderer, 0, 0, 600, 600);
@@ -116,13 +117,15 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	SDL_DestroyTexture(image);
 	SDL_RenderPresent(renderer);
 	SDL_Delay(1500);
-	clock_t before = clock();
-	SDL_RenderClear(renderer);
+
+	ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
+	before = clock();
 	while (zivih > 1) {
-		int first = 1, x = 0, second = 1;
-		ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
-		SDL_Delay(brzina);
-			while (SDL_PollEvent(&e))
+		startFrame = clock();
+		first = second = 1;
+		x = 0;
+		while (x < brzina) {
+			while (SDL_PollEvent(&e)) {
 				switch (e.type) {
 				case SDL_KEYDOWN:
 					switch (e.key.keysym.sym) {
@@ -170,19 +173,44 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 						break;
 					}
 				} // END FIRST SWITCH
-		
-		if (zm1.ziva) zm1 = nextMove(zm1, mapa, n);
-		if (zm2.ziva) zm2 = nextMove(zm2, mapa, n);
-		if (zm3.ziva) zm3 = nextMove(zm3, mapa, n);
-		if (zm4.ziva) zm4 = nextMove(zm4, mapa, n);
+				SDL_Delay(10);
+			}
+			endFrame = clock() - startFrame;
+			x = endFrame * 1000 / CLOCKS_PER_SEC;
+		}
+		if (zm1.ziva) {
+			killed = 0;
+			zm1 = nextMove(zm1, mapa, n, &killed, window, renderer);
+			if (killed)
+				ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
+		}
+		if (zm2.ziva) {
+			killed = 0;
+			zm2 = nextMove(zm2, mapa, n, &killed, window, renderer);
+			if (killed)
+				ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
+		}
+		if (zm3.ziva) {
+			killed = 0;
+			zm3 = nextMove(zm3, mapa, n, &killed, window, renderer);
+			if (killed)
+				ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
+		}
+		if (zm4.ziva) {
+			killed = 0;
+			zm4 = nextMove(zm4, mapa, n, &killed, window, renderer);
+			if (killed)
+				ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
+		}
 		zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
+		SDL_RenderPresent(renderer);
 	}
+	end = clock() - before;
 	zm1 = kill(zm1, mapa);
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
 	zm4 = kill(zm4, mapa);
 	SDL_RenderClear(renderer);
-	clock_t end = clock() - before;
 }
 
 void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int *n, int *brzina) {

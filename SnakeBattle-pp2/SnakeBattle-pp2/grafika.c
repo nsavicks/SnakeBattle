@@ -620,3 +620,129 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 		SDL_RenderClear(renderer);
 	}
 }
+
+void update_screen(zmija zm, int mapa[][100],int n, SDL_Window *window, SDL_Renderer *renderer) {
+	int i, j, i2, j2;
+	SDL_Texture *image;
+	if (zm.ziva) {
+		i = zm.telo[zm.duzina - 2].i;
+		j = zm.telo[zm.duzina - 2].j;
+		i2 = zm.telo[zm.duzina - 1].i;
+		j2 = zm.telo[zm.duzina - 1].j;
+		switch (zm.redni) {
+		case 1:
+			image = loadTexture("img/z1_body.png", renderer);
+			renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
+			SDL_DestroyTexture(image);
+
+			switch (zm.smer) {
+			case DOLE:
+				image = loadTexture("img/z1_down.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case GORE:
+				image = loadTexture("img/z1_up.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case LEVO:
+				image = loadTexture("img/z1_left.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case DESNO:
+				image = loadTexture("img/z1_right.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			}
+			break;
+		case 2:
+			image = loadTexture("img/z2_body.png", renderer);
+			renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
+			SDL_DestroyTexture(image);
+
+			switch (zm.smer) {
+			case DOLE:
+				image = loadTexture("img/z2_down.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case GORE:
+				image = loadTexture("img/z2_up.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case LEVO:
+				image = loadTexture("img/z2_left.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case DESNO:
+				image = loadTexture("img/z2_right.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			}
+			break;
+		case 3:
+			image = loadTexture("img/z3_body.png", renderer);
+			renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
+			SDL_DestroyTexture(image);
+
+			switch (zm.smer) {
+			case DOLE:
+				image = loadTexture("img/z3_down.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case GORE:
+				image = loadTexture("img/z3_up.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case LEVO:
+				image = loadTexture("img/z3_left.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case DESNO:
+				image = loadTexture("img/z3_right.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			}
+			break;
+		case 4:
+			image = loadTexture("img/z4_body.png", renderer);
+			renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
+			SDL_DestroyTexture(image);
+
+			switch (zm.smer) {
+			case DOLE:
+				image = loadTexture("img/z4_down.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case GORE:
+				image = loadTexture("img/z4_up.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case LEVO:
+				image = loadTexture("img/z4_left.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			case DESNO:
+				image = loadTexture("img/z4_right.png", renderer);
+				renderTexture(image, renderer, j2 * VEL, i2 * VEL, VEL, VEL);
+				SDL_DestroyTexture(image);
+				break;
+			}
+			break;
+		}
+		SDL_RenderPresent(renderer);
+	}
+}
