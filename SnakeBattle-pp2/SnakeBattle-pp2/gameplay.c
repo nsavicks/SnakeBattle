@@ -73,25 +73,6 @@ zmija nextMove(zmija z, int mapa[][100], int n) {
 }
 
 
-void showtime(time_t before, SDL_Window *window, SDL_Renderer *renderer) {
-	clock_t raz = clock() - before;
-	SDL_Texture *image;	
-	image = loadTexture("img/gp_side.jpg", renderer);
-	renderTexture(image, renderer, 600, 0, 200, 600);
-	SDL_DestroyTexture(image);
-	int msec = raz * 1000 / CLOCKS_PER_SEC;
-	int sec = msec / 1000;
-	msec %= 10;
-	char timer[10], s[10];
-	_itoa_s(sec, timer, 10, 10); strcat_s(timer, 10, "."); _itoa_s(msec, s, 10, 10); strcat_s(timer, 10, s);
-	TTF_Font *font = TTF_OpenFont("fonts/timer.ttf", 20);
-	SDL_Color color = { 0 };
-	SDL_Surface *surface = TTF_RenderText_Solid(font, timer, color);
-	image = SDL_CreateTextureFromSurface(renderer, surface);
-	renderTexture(image, renderer, 664, 64, 100, 30);
-	SDL_RenderPresent(renderer);
-	SDL_DestroyTexture(image); SDL_FreeSurface(surface);
-}
 
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
 	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j;
@@ -105,20 +86,33 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 
 	ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
 	
-	image = loadTexture("img/z1_body.png", renderer);
-	renderTexture(image, renderer, 40, 40, 30, 30);
+	image = loadTexture("img/tri.png", renderer);
+	renderTexture(image, renderer, 100, 100, 400, 400);
 	SDL_DestroyTexture(image);
 	SDL_RenderPresent(renderer);
 	SDL_Delay(1500);
 
-	image = loadTexture("img/z2_body.png", renderer);
-	renderTexture(image, renderer, 40, 40, 30, 30);
+	image = loadTexture("img/gp_background.png", renderer);
+	renderTexture(image, renderer, 0, 0, 600, 600);
+	SDL_DestroyTexture(image);
+
+	ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
+
+	image = loadTexture("img/dva.png", renderer);
+	renderTexture(image, renderer, 100, 100, 400, 400);
 	SDL_DestroyTexture(image);
 	SDL_RenderPresent(renderer);
 	SDL_Delay(1500);
 
-	image = loadTexture("img/z2_up.png", renderer);
-	renderTexture(image, renderer, 40, 40, 30, 30);
+	image = loadTexture("img/gp_background.png", renderer);
+	renderTexture(image, renderer, 0, 0, 600, 600);
+	SDL_DestroyTexture(image);
+
+	ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
+
+
+	image = loadTexture("img/jedan.png", renderer);
+	renderTexture(image, renderer, 100, 100, 400, 400);
 	SDL_DestroyTexture(image);
 	SDL_RenderPresent(renderer);
 	SDL_Delay(1500);
@@ -129,15 +123,10 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
 		clock_t start = clock();
 		while (x < brzina) {
-			clock_t raz = clock() - before;
-			int msec = raz * 1000 / CLOCKS_PER_SEC;
-			int sec = msec / 1000;
-			msec %= 100;
-			showtime(before, window, renderer);
+
 			while (SDL_PollEvent(&e))
 				switch (e.type) {
 				case SDL_KEYDOWN:
-					printf("DETECTED\n");
 					switch (e.key.keysym.sym) {
 					case SDLK_UP:
 						if (zm1.smer != DOLE && first)
@@ -183,8 +172,9 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 						break;
 					}
 				} // END FIRST SWITCH
-			clock_t razlika = clock() - start;
-			x = razlika * 1000 / CLOCKS_PER_SEC;
+			clock_t razl = clock() - start;
+			int msec = razl * 1000 / CLOCKS_PER_SEC;
+			x = msec;
 		}
 		if (zm1.ziva) zm1 = nextMove(zm1, mapa, n);
 		if (zm2.ziva) zm2 = nextMove(zm2, mapa, n);
@@ -196,7 +186,6 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
 	zm4 = kill(zm4, mapa);
-	showtime(before, window, renderer);
 	SDL_RenderClear(renderer);
 	clock_t end = clock() - before;
 }

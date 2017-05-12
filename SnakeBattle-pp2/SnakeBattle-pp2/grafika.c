@@ -104,29 +104,29 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 				if (z3.glava.i == i && z3.glava.j == j) {
 					switch (z3.smer) {
 					case DOLE:
-						image = loadTexture("img/z2_down.png", renderer);
+						image = loadTexture("img/z3_down.png", renderer);
 						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case GORE:
-						image = loadTexture("img/z2_up.png", renderer);
+						image = loadTexture("img/z3_up.png", renderer);
 						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case DESNO:
-						image = loadTexture("img/z2_right.png", renderer);
+						image = loadTexture("img/z3_right.png", renderer);
 						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case LEVO:
-						image = loadTexture("img/z2_left.png", renderer);
+						image = loadTexture("img/z3_left.png", renderer);
 						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					}
 				}
 				else {
-					image = loadTexture("img/z2_body.png", renderer);
+					image = loadTexture("img/z3_body.png", renderer);
 					renderTexture(image, renderer, j * VEL, i *VEL, VEL, VEL);
 					SDL_DestroyTexture(image);
 				}
@@ -135,29 +135,29 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 				if (z4.glava.i == i && z4.glava.j == j) {
 					switch (z4.smer) {
 					case DOLE:
-						image = loadTexture("img/z2_down.png", renderer);
+						image = loadTexture("img/z4_down.png", renderer);
 						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case GORE:
-						image = loadTexture("img/z2_up.png", renderer);
+						image = loadTexture("img/z4_up.png", renderer);
 						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case DESNO:
-						image = loadTexture("img/z2_right.png", renderer);
+						image = loadTexture("img/z4_right.png", renderer);
 						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					case LEVO:
-						image = loadTexture("img/z2_left.png", renderer);
+						image = loadTexture("img/z4_left.png", renderer);
 						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
 						SDL_DestroyTexture(image);
 						break;
 					}
 				}
 				else {
-					image = loadTexture("img/z2_body.png", renderer);
+					image = loadTexture("img/z4_body.png", renderer);
 					renderTexture(image, renderer, j * VEL, i *VEL, VEL, VEL);
 					SDL_DestroyTexture(image);
 				}
@@ -261,7 +261,7 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 
 		SDL_RenderPresent(renderer);
 	}
-	
+	SDL_RenderClear(renderer);
 }
 
 void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n, int *brzina, SDL_Window *window, SDL_Renderer *renderer) {
