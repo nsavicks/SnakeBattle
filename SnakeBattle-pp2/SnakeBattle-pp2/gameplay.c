@@ -86,7 +86,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	SDL_DestroyTexture(image);
 
 	ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
-	
+
 	image = loadTexture("img/tri.png", renderer);
 	renderTexture(image, renderer, 100, 100, 400, 400);
 	SDL_DestroyTexture(image);
@@ -121,62 +121,57 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
 	before = clock();
 	while (zivih > 1) {
-		startFrame = clock();
 		first = second = 1;
-		x = 0;
-		while (x < brzina) {
-			while (SDL_PollEvent(&e)) {
-				switch (e.type) {
-				case SDL_KEYDOWN:
-					switch (e.key.keysym.sym) {
-					case SDLK_UP:
-						if (zm1.smer != DOLE && first)
-							zm1.smer = GORE;
-						first = 0;
-						break;
-					case SDLK_DOWN:
-						if (zm1.smer != GORE && first)
-							zm1.smer = DOLE;
-						first = 0;
-						break;
-					case SDLK_LEFT:
-						if (zm1.smer != DESNO && first)
-							zm1.smer = LEVO;
-						first = 0;
-						break;
-					case SDLK_RIGHT:
-						if (zm1.smer != LEVO)
-							zm1.smer = DESNO;
-						first = 0;
-						break;
-					case SDLK_w:
-						if (zm2.smer != DOLE && second)
-							zm2.smer = GORE;
-						second = 0;
-						break;
-					case SDLK_s:
-						if (zm2.smer != GORE && second)
-							zm2.smer = DOLE;
-						second = 0;
-						break;
-					case SDLK_a:
-						if (zm2.smer != DESNO && second)
-							zm2.smer = LEVO;
-						second = 0;
-						break;
-					case SDLK_d:
-						if (zm2.smer != LEVO && second)
-							zm2.smer = DESNO;
-						second = 0;
-						break;
-					default:
-						break;
-					}
-				} // END FIRST SWITCH
-				SDL_Delay(10);
-			}
-			endFrame = clock() - startFrame;
-			x = endFrame * 1000 / CLOCKS_PER_SEC;
+		SDL_Delay(brzina);
+		while (SDL_PollEvent(&e)) {
+			switch (e.type) {
+			case SDL_KEYDOWN:
+				switch (e.key.keysym.sym) {
+				case SDLK_UP:
+					if (zm1.smer != DOLE && first)
+						zm1.smer = GORE;
+					first = 0;
+					break;
+				case SDLK_DOWN:
+					if (zm1.smer != GORE && first)
+						zm1.smer = DOLE;
+					first = 0;
+					break;
+				case SDLK_LEFT:
+					if (zm1.smer != DESNO && first)
+						zm1.smer = LEVO;
+					first = 0;
+					break;
+				case SDLK_RIGHT:
+					if (zm1.smer != LEVO)
+						zm1.smer = DESNO;
+					first = 0;
+					break;
+				case SDLK_w:
+					if (zm2.smer != DOLE && second)
+						zm2.smer = GORE;
+					second = 0;
+					break;
+				case SDLK_s:
+					if (zm2.smer != GORE && second)
+						zm2.smer = DOLE;
+					second = 0;
+					break;
+				case SDLK_a:
+					if (zm2.smer != DESNO && second)
+						zm2.smer = LEVO;
+					second = 0;
+					break;
+				case SDLK_d:
+					if (zm2.smer != LEVO && second)
+						zm2.smer = DESNO;
+					second = 0;
+					break;
+				default:
+					break;
+				}
+			} // END FIRST SWITCH
+			SDL_Delay(10);
 		}
 		if (zm1.ziva) {
 			killed = 0;
