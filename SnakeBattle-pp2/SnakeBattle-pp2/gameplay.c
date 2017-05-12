@@ -121,9 +121,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	while (zivih > 1) {
 		int first = 1, x = 0, second = 1;
 		ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
-		clock_t start = clock();
-		while (x < brzina) {
-
+		SDL_Delay(brzina);
 			while (SDL_PollEvent(&e))
 				switch (e.type) {
 				case SDL_KEYDOWN:
@@ -172,10 +170,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 						break;
 					}
 				} // END FIRST SWITCH
-			clock_t razl = clock() - start;
-			int msec = razl * 1000 / CLOCKS_PER_SEC;
-			x = msec;
-		}
+		
 		if (zm1.ziva) zm1 = nextMove(zm1, mapa, n);
 		if (zm2.ziva) zm2 = nextMove(zm2, mapa, n);
 		if (zm3.ziva) zm3 = nextMove(zm3, mapa, n);

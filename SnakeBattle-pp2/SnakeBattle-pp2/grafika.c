@@ -212,7 +212,9 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 		renderTexture(image, renderer, 200, 500, 200, 50);
 		SDL_DestroyTexture(image);
 
-		while (SDL_PollEvent(&e)) {
+		
+
+		if (SDL_WaitEvent(&e)!=0){
 			switch (e.type) {
 			case SDL_MOUSEMOTION:
 				i = e.motion.x; j = e.motion.y;
@@ -230,7 +232,7 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 					*menu = 6;
 				else
 					*menu = 0;		
-				break;
+			break;
 			case SDL_MOUSEBUTTONDOWN:
 				i = e.motion.x; j = e.motion.y;
 				if (i >= 200 && i <= 400 && j >= 200 && j <= 250) {
@@ -257,7 +259,7 @@ void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
 			image = loadTexture("img/menu/strelica.png", renderer);
 			renderTexture(image, renderer, 205, 210 + (*menu - 1) * 60, 30, 30);
 			SDL_DestroyTexture(image);
-		}
+		} 
 
 		SDL_RenderPresent(renderer);
 	}
@@ -343,7 +345,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 				}
 			}
 		}
-		image = loadTexture("img/opcije/boja1.png", renderer);
+		image = loadTexture("img/z1_body.png", renderer);
 		renderTexture(image, renderer, 450, 300, 100, 50);
 		SDL_DestroyTexture(image);
 
@@ -381,7 +383,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 				}
 			}
 		}
-		image = loadTexture("img/opcije/boja2.png", renderer);
+		image = loadTexture("img/z2_body.png", renderer);
 		renderTexture(image, renderer, 450, 375, 100, 50);
 		SDL_DestroyTexture(image);
 
@@ -410,7 +412,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 				SDL_DestroyTexture(image);
 			}
 		}
-		image = loadTexture("img/opcije/boja3.png", renderer);
+		image = loadTexture("img/z3_body.png", renderer);
 		renderTexture(image, renderer, 450, 450, 100, 50);
 		SDL_DestroyTexture(image);
 
@@ -439,11 +441,11 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 				SDL_DestroyTexture(image);
 			}
 		}
-		image = loadTexture("img/opcije/boja4.png", renderer);
+		image = loadTexture("img/z4_body.png", renderer);
 		renderTexture(image, renderer, 450, 525, 100, 50);
 		SDL_DestroyTexture(image);
 
-		while (SDL_PollEvent(&e)) {
+		if (SDL_WaitEvent(&e)!=0) {
 			i = e.motion.x; j = e.motion.y;
 			switch (e.type) {
 			case SDL_MOUSEMOTION:
