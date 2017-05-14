@@ -15,8 +15,10 @@ int main() {
 
 	window = SDL_CreateWindow("SnakeBattle v1.0", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
 	rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
 	while (1) {
 
+	
 		opcija = prikaziMeni(window, rend);
 
 		switch (opcija) {

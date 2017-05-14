@@ -23,6 +23,10 @@ typedef struct zm {
 	int duzina;
 	short smer, ziva, igrac, tezina, redni;
 }zmija;
+typedef struct StOsoba {
+	char ime[50], prezime[50];
+	float rezultat;
+}osoba;
 
 
 zmija kill(zmija z, int mapa[][100]);
@@ -35,4 +39,6 @@ void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 
 void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n);
 
-#endif 
+void checkHighscore(float vreme);
+
+#endif

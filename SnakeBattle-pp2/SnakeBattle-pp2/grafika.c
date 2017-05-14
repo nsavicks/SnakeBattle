@@ -93,22 +93,22 @@ int prikaziMeni(SDL_Window *window, SDL_Renderer *renderer) {
 			}
 			switch (k) {
 			case 1:
-				renderTexture(strelica, renderer, 200, 173, 40, 50);
+				renderTexture(strelica, renderer, 200, 180,30,30);
 				break;
 			case 2:
-				renderTexture(strelica, renderer, 200, 243, 40, 50);
+				renderTexture(strelica, renderer, 200, 250, 30,30);
 				break;
 			case 3:
-				renderTexture(strelica, renderer, 200, 313, 40, 50);
+				renderTexture(strelica, renderer, 200, 320, 30,30);
 				break;
 			case 4:
-				renderTexture(strelica, renderer, 200, 383, 40, 50);
+				renderTexture(strelica, renderer, 200, 390, 30,30);
 				break;
 			case 5:
-				renderTexture(strelica, renderer, 200, 453, 40, 50);
+				renderTexture(strelica, renderer, 200, 460, 30,30);
 				break;
 			case 6:
-				renderTexture(strelica, renderer, 200, 523, 40, 50);
+				renderTexture(strelica, renderer, 200, 530, 30,30);
 				break;
 			}
 		}
@@ -259,7 +259,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 	image[20] = loadTexture("img/z3_body.png", renderer);
 	image[21] = loadTexture("img/z4_body.png", renderer);
 	image[22] = loadTexture("img/opcije/strelicaL.png", renderer);
-	image[23] = loadTexture("img/opcije/strelicaL.png", renderer);
+	image[23] = loadTexture("img/opcije/strelicaD.png", renderer);
 	SDL_Event e;
 	while (!nazad) {
 		renderTexture(image[0], renderer, 0, 0, 600, 600);
@@ -385,8 +385,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 			case SDL_MOUSEBUTTONDOWN:
 				if (i > 0 && i < 50 && j > 0 && j < 50) {
 					nazad = 1;
-					SDL_DestroyRenderer(renderer);
-					SDL_DestroyWindow(window);
+					
 					continue;
 				}
 				if (i > 150 && i < 200 && j > 50 && j < 130) {
