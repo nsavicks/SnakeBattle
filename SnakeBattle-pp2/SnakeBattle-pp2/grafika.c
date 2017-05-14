@@ -63,261 +63,121 @@ int prikaziMeni(SDL_Window *window, SDL_Renderer *renderer) {
 	
 }
 
-void ispis(SDL_Window *window, SDL_Renderer *renderer, int mapa[][100], int n) {
+void ispis(SDL_Window *window, SDL_Renderer *renderer, int mapa[][100], int n, zmija zm1, zmija zm2, zmija zm3, zmija zm4) {
 	int i, j;
-	SDL_Texture *image=NULL;
-	image = loadTexture("img/z1_body.png", renderer);
-	
+	SDL_RenderClear(renderer);
+	SDL_Texture *image[20] = { NULL };
+
+	image[0] = loadTexture("img/z1_body.png", renderer);
+	image[1] = loadTexture("img/z1_down.png", renderer);
+	image[2] = loadTexture("img/z1_up.png", renderer);
+	image[3] = loadTexture("img/z1_right.png", renderer);
+	image[4] = loadTexture("img/z1_left.png", renderer);
+
+	image[5] = loadTexture("img/z2_body.png", renderer);
+	image[6] = loadTexture("img/z2_down.png", renderer);
+	image[7] = loadTexture("img/z2_up.png", renderer);
+	image[8] = loadTexture("img/z2_right.png", renderer);
+	image[9] = loadTexture("img/z2_left.png", renderer);
+
+	image[10] = loadTexture("img/z3_body.png", renderer);
+	image[11] = loadTexture("img/z3_down.png", renderer);
+	image[12] = loadTexture("img/z3_up.png", renderer);
+	image[13] = loadTexture("img/z3_right.png", renderer);
+	image[14] = loadTexture("img/z3_left.png", renderer);
+
+	image[15] = loadTexture("img/z4_body.png", renderer);
+	image[16] = loadTexture("img/z4_down.png", renderer);
+	image[17] = loadTexture("img/z4_up.png", renderer);
+	image[18] = loadTexture("img/z4_right.png", renderer);
+	image[19] = loadTexture("img/z4_left.png", renderer);
+
 	for (i = 0; i < n; i++) {
 		for (j = 0; j < n; j++) {
-			if (mapa[i][j]) {
-				renderTexture(image, renderer, j * 20, i * 20, 20, 20);
+			switch (mapa[i][j]) {
+			case 1:
+				if (zm1.glava.i != i || zm1.glava.j != j)
+					renderTexture(image[0], renderer, j * VEL, i *VEL, VEL, VEL);
+				else
+					switch (zm1.smer) {
+					case DOLE:
+						renderTexture(image[1], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case GORE:
+						renderTexture(image[2], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case DESNO:
+						renderTexture(image[3], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case LEVO:
+						renderTexture(image[4], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					}
+				break;
+			case 2:
+				if (zm2.glava.i != i || zm2.glava.j != j)
+					renderTexture(image[5], renderer, j * VEL, i *VEL, VEL, VEL);
+				else
+					switch (zm2.smer) {
+					case DOLE:
+						renderTexture(image[6], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case GORE:
+						renderTexture(image[7], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case DESNO:
+						renderTexture(image[8], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case LEVO:
+						renderTexture(image[9], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					}
+				break;
+			case 3:
+				if (zm3.glava.i != i || zm3.glava.j != j)
+					renderTexture(image[10], renderer, j * VEL, i *VEL, VEL, VEL);
+				else
+					switch (zm3.smer) {
+					case DOLE:
+						renderTexture(image[11], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case GORE:
+						renderTexture(image[12], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case DESNO:
+						renderTexture(image[13], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case LEVO:
+						renderTexture(image[14], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					}
+				break;
+			case 4:
+				if (zm4.glava.i != i || zm4.glava.j != j)
+					renderTexture(image[15], renderer, j * VEL, i *VEL, VEL, VEL);
+				else
+					switch (zm4.smer) {
+					case DOLE:
+						renderTexture(image[16], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case GORE:
+						renderTexture(image[17], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case DESNO:
+						renderTexture(image[18], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					case LEVO:
+						renderTexture(image[19], renderer, j * VEL, i *VEL, VEL, VEL);
+						break;
+					}
+				break;
 			}
 		}
 	}
 	SDL_RenderPresent(renderer);
-	SDL_RenderClear(renderer);
+	for (int i = 0; i < 20; i++)
+		SDL_DestroyTexture(image[i]);
 }
-
-//void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija z3, zmija z4, int mapa[][100], int n) {
-//	SDL_Texture *image = NULL;
-//	int i, j;
-//	image = loadTexture("img/gp_background.jpg", renderer);
-//	renderTexture(image, renderer, 0, 0, 600, 600);
-//	SDL_DestroyTexture(image);
-//	image = loadTexture("img/gp_side.jpg", renderer);
-//	renderTexture(image, renderer, 600, 0, 200, 600);
-//	SDL_DestroyTexture(image);
-//	for (i = 0; i < n; i++)
-//		for (j = 0; j < n; j++) {
-//			switch (mapa[i][j]) {
-//			case 1:
-//				if (z1.glava.i == i && z1.glava.j == j) {
-//					switch (z1.smer) {
-//					case DOLE:
-//						image = loadTexture("img/z1_down.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case GORE:
-//						image = loadTexture("img/z1_up.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case DESNO:
-//						image = loadTexture("img/z1_right.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case LEVO:
-//						image = loadTexture("img/z1_left.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					}
-//				}
-//				else {
-//					image = loadTexture("img/z1_body.png", renderer);
-//					renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//					SDL_DestroyTexture(image);
-//				}
-//				break;
-//			case 2:
-//				if (z2.glava.i == i && z2.glava.j == j) {
-//					switch (z2.smer) {
-//					case DOLE:
-//						image = loadTexture("img/z2_down.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case GORE:
-//						image = loadTexture("img/z2_up.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case DESNO:
-//						image = loadTexture("img/z2_right.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case LEVO:
-//						image = loadTexture("img/z2_left.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					}
-//				}
-//				else {
-//					image = loadTexture("img/z2_body.png", renderer);
-//					renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//					SDL_DestroyTexture(image);
-//				}
-//				break;
-//			case 3:
-//				if (z3.glava.i == i && z3.glava.j == j) {
-//					switch (z3.smer) {
-//					case DOLE:
-//						image = loadTexture("img/z3_down.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case GORE:
-//						image = loadTexture("img/z3_up.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case DESNO:
-//						image = loadTexture("img/z3_right.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case LEVO:
-//						image = loadTexture("img/z3_left.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					}
-//				}
-//				else {
-//					image = loadTexture("img/z3_body.png", renderer);
-//					renderTexture(image, renderer, j * VEL, i *VEL, VEL, VEL);
-//					SDL_DestroyTexture(image);
-//				}
-//				break;
-//			case 4:
-//				if (z4.glava.i == i && z4.glava.j == j) {
-//					switch (z4.smer) {
-//					case DOLE:
-//						image = loadTexture("img/z4_down.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case GORE:
-//						image = loadTexture("img/z4_up.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case DESNO:
-//						image = loadTexture("img/z4_right.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					case LEVO:
-//						image = loadTexture("img/z4_left.png", renderer);
-//						renderTexture(image, renderer, j * VEL, i * VEL, VEL, VEL);
-//						SDL_DestroyTexture(image);
-//						break;
-//					}
-//				}
-//				else {
-//					image = loadTexture("img/z4_body.png", renderer);
-//					renderTexture(image, renderer, j * VEL, i *VEL, VEL, VEL);
-//					SDL_DestroyTexture(image);
-//				}
-//				break;
-//			case 0:
-//				break;
-//			}
-//		}
-//		SDL_RenderPresent(renderer);
-//		//SDL_RenderClear(renderer);
-//		
-//}
-
-//void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
-//
-//	int chosen = 0;
-//	while (!chosen) {
-//		int  x, y;
-//		int i, j, p;
-//		SDL_Event e;
-//		SDL_Texture *image;
-//
-//		image = loadTexture("img/menu/background.jpg", renderer);
-//		renderTexture(image, renderer, 0, 0, 600, 600);
-//		SDL_DestroyTexture(image);
-//
-//		image = loadTexture("img/menu/logo.png", renderer);
-//		renderTexture(image, renderer, 200, 10, 200, 200);
-//		SDL_DestroyTexture(image);
-//
-//		image = loadTexture("img/menu/novaigra.png", renderer);
-//		renderTexture(image, renderer, 200, 200, 200, 50);
-//		SDL_DestroyTexture(image);
-//
-//		image = loadTexture("img/menu/opcije.png", renderer);
-//		renderTexture(image, renderer, 200, 260, 200, 50);
-//		SDL_DestroyTexture(image);
-//
-//		image = loadTexture("img/menu/oigri.png", renderer);
-//		renderTexture(image, renderer, 200, 320, 200, 50);
-//		SDL_DestroyTexture(image);
-//
-//		image = loadTexture("img/menu/highscore.png", renderer);
-//		renderTexture(image, renderer, 200, 380, 200, 50);
-//		SDL_DestroyTexture(image);
-//
-//		image = loadTexture("img/menu/autori.png", renderer);
-//		renderTexture(image, renderer, 200, 440, 200, 50);
-//		SDL_DestroyTexture(image);
-//
-//		image = loadTexture("img/menu/izlazak.png", renderer);
-//		renderTexture(image, renderer, 200, 500, 200, 50);
-//		SDL_DestroyTexture(image);
-//
-//		
-//
-//		if (SDL_WaitEvent(&e)!=0){
-//			switch (e.type) {
-//			case SDL_MOUSEMOTION:
-//				i = e.motion.x; j = e.motion.y;
-//				if (i >= 200 && i <= 400 && j >= 200 && j <= 250)
-//					*menu = 1;
-//				else if (i >= 200 && i <= 400 && j >= 260 && j <= 310)
-//					*menu = 2;
-//				else if (i >= 200 && i <= 400 && j >= 320 && j <= 370)
-//					*menu = 3;
-//				else if (i >= 200 && i <= 400 && j >= 380 && j <= 430)
-//					*menu = 4;
-//				else if (i >= 200 && i <= 400 && j >= 440 && j <= 490)
-//					*menu = 5;
-//				else if (i >= 200 && i <= 400 && j >= 500 && j <= 550)
-//					*menu = 6;
-//				else
-//					*menu = 0;		
-//			break;
-//			case SDL_MOUSEBUTTONDOWN:
-//				i = e.motion.x; j = e.motion.y;
-//				if (i >= 200 && i <= 400 && j >= 200 && j <= 250) {
-//					chosen = 1;
-//					*menu = 1;
-//				}
-//				else if (i >= 200 && i <= 400 && j >= 260 && j <= 310) {
-//					*menu = 2;
-//					chosen = 1;
-//				}
-//				if (i >= 200 && i <= 400 && j >= 500 && j <= 550) {
-//					izlaz(window, renderer);
-//					chosen = 1;
-//				}
-//				break;
-//			case SDL_QUIT:
-//				izlaz(window, renderer);
-//			default:	
-//				break;
-//			}
-//		}
-//
-//		if (*menu > 0) {
-//			image = loadTexture("img/menu/strelica.png", renderer);
-//			renderTexture(image, renderer, 205, 210 + (*menu - 1) * 60, 30, 30);
-//			SDL_DestroyTexture(image);
-//		} 
-//
-//		SDL_RenderPresent(renderer);
-//	}
-//	SDL_RenderClear(renderer);
-//}
 
 void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n, int *brzina, SDL_Window *window, SDL_Renderer *renderer) {
 	int nazad = 0, i, j, k = 0;

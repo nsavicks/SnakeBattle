@@ -7,35 +7,40 @@ int main() {
 	SDL_Renderer *rend = NULL;
 	int opcija, n, brzina, i, j, mapa[100][100] = { 0 };
 	zmija zm1, zm2, zm3, zm4;
-
 	TTF_Init();
 
-	
-	
 	setdefault(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina);
-	
-	VEL = 30;
-	window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
-	rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	VEL = 600 / n;
 
 	while (1) {
+		window = SDL_CreateWindow("Play", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
+		rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 		opcija = prikaziMeni(window, rend);
 
+		SDL_DestroyWindow(window);
+		SDL_DestroyRenderer(rend);
+
 		switch (opcija) {
 		case 1:
-			n = 30;
-			podesimapu(&zm1, &zm2, &zm3, &zm4, mapa, n);
-			/*for (i = 0; i < n; i++, printf("\n"))
-				for (j = 0; j < n; j++, printf("%d ", mapa[i][j]));
-			SDL_Delay(10000);*/
-			SDL_DestroyWindow(window);
 			window = SDL_CreateWindow("Play", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
 			rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+			podesimapu(&zm1, &zm2, &zm3, &zm4, mapa, n);
+
 			play(zm1, zm2, zm3, zm4, mapa, n, 300, window, rend);
+			SDL_DestroyWindow(window);
+			SDL_DestroyRenderer(rend);
 			break;
 		case 2:
+			window = SDL_CreateWindow("Play", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
+			rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
 			opcije(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina, window, rend);
+			VEL = 600 / n;
+
+			SDL_DestroyWindow(window);
+			SDL_DestroyRenderer(rend);
 			break;
 		case 3:
 			break;
@@ -47,9 +52,6 @@ int main() {
 			izlaz(window, rend);
 			break;
 		}
-
-
-
 	}
 	return 0;
 }

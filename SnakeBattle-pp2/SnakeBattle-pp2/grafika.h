@@ -23,8 +23,6 @@ int SCREEN_WIDTH, SCREEN_HEIGHT, VEL;
 // DEFINICIJA FUNKCIJA //Crazy_snake.c za telo funkcija
 int prikaziMeni(SDL_Window *window, SDL_Renderer *renderer);
 
-void ispis(SDL_Window *window, SDL_Renderer *renderer, int mapa[][100], int n);
-
 void logSDLerror(char typeerror[]);
 
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y, int w, int h);
@@ -33,10 +31,9 @@ SDL_Texture *loadTexture(char destination[], SDL_Renderer *ren);
 
 void izlaz(SDL_Window *window, SDL_Renderer *renderer);
 
-void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu);
+void ispis(SDL_Window *window, SDL_Renderer *renderer, int mapa[][100], int n, zmija zm1, zmija zm2, zmija zm3, zmija zm4);
 
 void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n,int *brzina, SDL_Window *window, SDL_Renderer *renderer);
 
 void update_screen(zmija zm, int mapa[][100], int n, SDL_Window *window, SDL_Renderer *renderer);
-
 #endif // !grafika/

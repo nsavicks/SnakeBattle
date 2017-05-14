@@ -15,13 +15,14 @@ zmija kill(zmija z, int mapa[][100]) {
 	return z;
 }
 
-zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer *renderer) {
+zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer *renderer, int *killed) {
 
 	int komanda = z.smer;
 	switch (komanda) {
 	case GORE:
 		if ((z.glava.i == 0) || (mapa[z.glava.i - 1][z.glava.j])) {
 			z = kill(z, mapa);
+			*killed = 1;
 		}
 		else {
 			mapa[z.glava.i - 1][z.glava.j] = z.redni;
@@ -33,7 +34,7 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 	case DESNO:
 		if ((z.glava.j == n - 1) || (mapa[z.glava.i][z.glava.j + 1])) {
 			z = kill(z, mapa);
-
+			*killed = 1;
 		}
 		else {
 			mapa[z.glava.i][z.glava.j + 1] = z.redni;
@@ -45,7 +46,7 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 	case DOLE:
 		if ((z.glava.i == n - 1) || (mapa[z.glava.i + 1][z.glava.j])) {
 			z = kill(z, mapa);
-
+			*killed = 1;
 		}
 		else {
 			mapa[z.glava.i + 1][z.glava.j] = z.redni;
@@ -57,7 +58,7 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 	case LEVO:
 		if ((z.glava.j == 0) || (mapa[z.glava.i][z.glava.j - 1])) {
 			z = kill(z, mapa);
-
+			*killed = 1;
 		}
 		else {
 			mapa[z.glava.i][z.glava.j - 1] = z.redni;
@@ -68,25 +69,19 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 		break;
 	default: break;
 	}
-	
 	return z;
 }
 
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
-	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j,p=1;
+	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed;
 	SDL_Event e,l;
 	SDL_Texture *image;
 	clock_t end, before, startFrame, endFrame;
 
+	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+	SDL_Delay(3000);
 	before = clock();
 	while (zivih >= 1 && p) {
-		/*printf("###########################\n");
-		for (i = 0; i < n; i++, printf("\n"))
-		for (j = 0; j < n; j++)
-			printf("%d ", mapa[i][j]);*/
-		
-		ispis(window, renderer, mapa, n);
-	
 		while (SDL_PollEvent(&e)) {
 			switch (e.type) {
 			case SDL_KEYDOWN:
@@ -141,31 +136,46 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 
 		}
 		if (zm1.ziva) {
-			zm1 = nextMove(zm1, mapa, n, window, renderer);
+			killed = 0;
+			zm1 = nextMove(zm1, mapa, n, window, renderer, &killed);
+			if (killed) {
+				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+			}
+			else
+				update_screen(zm1, mapa, n, window, renderer);
 		}
-
 		if (zm2.ziva) {
-			zm2 = nextMove(zm2, mapa, n, window, renderer);
-			
+			killed = 0;
+			zm2 = nextMove(zm2, mapa, n, window, renderer, &killed);	
+			if (killed)
+				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+			else
+				update_screen(zm2, mapa, n, window, renderer);
 		}
 		if (zm3.ziva) {
-			zm3 = nextMove(zm3, mapa, n, window, renderer);
+			killed = 0;
+			zm3 = nextMove(zm3, mapa, n, window, renderer, &killed);
+			if (killed)
+				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+			else
+				update_screen(zm3, mapa, n, window, renderer);
 		}
 		if (zm4.ziva) {
-			zm4 = nextMove(zm4, mapa, n, window, renderer);
+			killed = 0;
+			zm4 = nextMove(zm4, mapa, n, window, renderer, &killed);
+			if (killed)
+				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+			else
+				update_screen(zm4, mapa, n, window, renderer);
 		}
-
 		zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
 		SDL_Delay(brzina);
-
 	}
-
 	end = clock() - before;
 	zm1 = kill(zm1, mapa);
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
 	zm4 = kill(zm4, mapa);
-	return 3;
 }
 
 void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int *n, int *brzina) {
@@ -179,6 +189,7 @@ void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 	zm2->redni = 2;
 	zm3->redni = 3;
 	zm4->redni = 4;
+	VEL = 600 / (*n);
 }
 
 void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n) {
