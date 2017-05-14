@@ -6,6 +6,10 @@
 #define DESNO 1
 #define DOLE 2
 #define LEVO 3
+#define SPORO 100
+#define SREDNJE 50
+#define BRZO 25
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL_ttf.h>

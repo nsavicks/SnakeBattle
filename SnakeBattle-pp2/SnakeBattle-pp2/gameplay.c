@@ -73,10 +73,10 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 }
 
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
-	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed;
-	SDL_Event e,l;
+	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed,sekunde,decimale;
+	SDL_Event e;
 	SDL_Texture *image;
-	clock_t end, before, startFrame, endFrame;
+	clock_t end, before;
 
 	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
 	SDL_Delay(3000);
@@ -172,6 +172,9 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		SDL_Delay(brzina);
 	}
 	end = clock() - before;
+	sekunde = end / 1000;
+	decimale = end % 1000;
+	printf("%d-%d", sekunde, decimale);
 	zm1 = kill(zm1, mapa);
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
