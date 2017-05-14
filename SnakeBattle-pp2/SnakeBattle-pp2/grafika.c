@@ -27,40 +27,94 @@ void izlaz(SDL_Window *window, SDL_Renderer *renderer) {
 }
 
 int prikaziMeni(SDL_Window *window, SDL_Renderer *renderer) {
-	SDL_Texture *image = NULL,*strelica=NULL;
+	SDL_Texture *image = NULL, *strelica=NULL;
 	SDL_Event e;
-	int i, j,mesto=0;
+	int i, j, k = 0;
 	image = loadTexture("img/menipozadina.jpg", renderer);
-	renderTexture(image, renderer, 0, 0, 600, 600);
-	SDL_RenderPresent(renderer);
+	strelica = loadTexture("img/menu/strelica.png", renderer);
 	while (1) {
-
-		SDL_WaitEvent(&e);
-
-		if (e.type == SDL_MOUSEBUTTONDOWN) {
+		renderTexture(image, renderer, 0, 0, 600, 600);
+		if (SDL_WaitEvent(&e)) {
 			i = e.motion.x; j = e.motion.y;
-			if (i >= 200 && i <= 400 && j >= 170 && j <= 220) {
-				return 1;
+			switch (e.type) {
+			case SDL_MOUSEMOTION:
+				if (i >= 200 && i <= 400 && j >= 170 && j <= 220) {
+					k = 1;
+				}
+				else if (i >= 200 && i <= 400 && j >= 240 && j <= 290) {
+					k = 2;
+				}
+				else if (i >= 200 && i <= 400 && j >= 310 && j <= 360) {
+					k = 3;
+				}
+				else if (i >= 200 && i <= 400 && j >= 380 && j <= 430) {
+					k = 4;
+				}
+				else if (i >= 200 && i <= 400 && j >= 450 && j <= 500) {
+					k = 5;
+				}
+				else if (i >= 200 && i <= 400 && j >= 520 && j <= 570) {
+					k = 6;
+				}
+				else
+					k = 0;
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				if (i >= 200 && i <= 400 && j >= 170 && j <= 220) {
+					SDL_DestroyTexture(strelica);
+					SDL_DestroyTexture(image);
+					return 1;
+				}
+				if (i >= 200 && i <= 400 && j >= 240 && j <= 290) {
+					SDL_DestroyTexture(strelica);
+					SDL_DestroyTexture(image);
+					return 2;
+				}
+				if (i >= 200 && i <= 400 && j >= 310 && j <= 360) {
+					SDL_DestroyTexture(strelica);
+					SDL_DestroyTexture(image);
+					return 3;
+				}
+				if (i >= 200 && i <= 400 && j >= 380 && j <= 430) {
+					SDL_DestroyTexture(strelica);
+					SDL_DestroyTexture(image);
+					return 4;
+				}
+				if (i >= 200 && i <= 400 && j >= 450 && j <= 500) {
+					SDL_DestroyTexture(strelica);
+					SDL_DestroyTexture(image);
+					return 5;
+				}
+				if (i >= 200 && i <= 400 && j >= 520 && j <= 570) {
+					SDL_DestroyTexture(strelica);
+					SDL_DestroyTexture(image);
+					return 6;
+				}
 			}
-			if (i >= 200 && i <= 400 && j >= 240 && j <= 290) {
-				return 2;
+			switch (k) {
+			case 1:
+				renderTexture(strelica, renderer, 200, 173, 40, 50);
+				break;
+			case 2:
+				renderTexture(strelica, renderer, 200, 243, 40, 50);
+				break;
+			case 3:
+				renderTexture(strelica, renderer, 200, 313, 40, 50);
+				break;
+			case 4:
+				renderTexture(strelica, renderer, 200, 383, 40, 50);
+				break;
+			case 5:
+				renderTexture(strelica, renderer, 200, 453, 40, 50);
+				break;
+			case 6:
+				renderTexture(strelica, renderer, 200, 523, 40, 50);
+				break;
 			}
-			if (i >= 200 && i <= 400 && j >= 310 && j <= 360) {
-				return 3;
-			}
-			if (i >= 200 && i <= 400 && j >= 380 && j <= 430) {
-				return 4;
-			}
-			if (i >= 200 && i <= 400 && j >= 450 && j <= 500) {
-				return 5;
-			}
-			if (i >= 200 && i <= 400 && j >= 520 && j <= 570) {
-				return 6;
-			}
-
 		}
+		SDL_RenderPresent(renderer);
+		SDL_RenderClear(renderer);
 	}
-	
 }
 
 void ispis(SDL_Window *window, SDL_Renderer *renderer, int mapa[][100], int n, zmija zm1, zmija zm2, zmija zm3, zmija zm4) {
