@@ -13,9 +13,9 @@ int main() {
 	setdefault(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina);
 	VEL = 600 / n;
 
+	window = SDL_CreateWindow("SnakeBattle v1.0", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
+	rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	while (1) {
-		window = SDL_CreateWindow("SnakeBattle v1.0", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
-		rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 		opcija = prikaziMeni(window, rend);
 
@@ -32,6 +32,9 @@ int main() {
 			play(zm1, zm2, zm3, zm4, mapa, n, brzina, window, rend);
 			SDL_DestroyWindow(window);
 			SDL_DestroyRenderer(rend);
+
+			window = SDL_CreateWindow("SnakeBattle v1.0", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
+			rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 			break;
 		case 2:
 			opcije(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina, window, rend);
