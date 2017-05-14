@@ -15,14 +15,14 @@ zmija kill(zmija z, int mapa[][100]) {
 	return z;
 }
 
-zmija nextMove(zmija z, int mapa[][100], int n, int *killed, SDL_Window *window, SDL_Renderer *renderer) {
+zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer *renderer) {
 
 	int komanda = z.smer;
 	switch (komanda) {
 	case GORE:
 		if ((z.glava.i == 0) || (mapa[z.glava.i - 1][z.glava.j])) {
 			z = kill(z, mapa);
-			*killed = 1;
+			printf("POZVANO\n");
 		}
 		else {
 			mapa[z.glava.i - 1][z.glava.j] = z.redni;
@@ -34,12 +34,12 @@ zmija nextMove(zmija z, int mapa[][100], int n, int *killed, SDL_Window *window,
 	case DESNO:
 		if ((z.glava.j == n - 1) || (mapa[z.glava.i][z.glava.j + 1])) {
 			z = kill(z, mapa);
-			*killed = 1;
+			printf("POZVANO\n");
+
 		}
 		else {
 			mapa[z.glava.i][z.glava.j + 1] = z.redni;
 			z.duzina++;
-
 			z.glava.j++;
 			z.telo[z.duzina - 1] = z.glava;
 		}
@@ -47,7 +47,8 @@ zmija nextMove(zmija z, int mapa[][100], int n, int *killed, SDL_Window *window,
 	case DOLE:
 		if ((z.glava.i == n - 1) || (mapa[z.glava.i + 1][z.glava.j])) {
 			z = kill(z, mapa);
-			*killed = 1;
+			printf("POZVANO\n");
+
 		}
 		else {
 			mapa[z.glava.i + 1][z.glava.j] = z.redni;
@@ -59,7 +60,8 @@ zmija nextMove(zmija z, int mapa[][100], int n, int *killed, SDL_Window *window,
 	case LEVO:
 		if ((z.glava.j == 0) || (mapa[z.glava.i][z.glava.j - 1])) {
 			z = kill(z, mapa);
-			*killed = 1;
+			printf("POZVANO\n");
+
 		}
 		else {
 			mapa[z.glava.i][z.glava.j - 1] = z.redni;
@@ -70,142 +72,100 @@ zmija nextMove(zmija z, int mapa[][100], int n, int *killed, SDL_Window *window,
 		break;
 	default: break;
 	}
-	if (!(*killed))
-		update_screen(z, mapa, n, window, renderer);
+	
 	return z;
 }
 
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
-	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, killed = 0, first = 1, x = 0, second = 1;
-	SDL_Event e;
+	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j,p=1;
+	SDL_Event e,l;
 	SDL_Texture *image;
 	clock_t end, before, startFrame, endFrame;
 
-	image = loadTexture("img/gp_background.png", renderer);
-	renderTexture(image, renderer, 0, 0, 600, 600);
-	SDL_DestroyTexture(image);
-
-	ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
-
-	image = loadTexture("img/tri.png", renderer);
-	renderTexture(image, renderer, 100, 100, 400, 400);
-	SDL_DestroyTexture(image);
-	SDL_RenderPresent(renderer);
-	SDL_Delay(1500);
-
-	image = loadTexture("img/gp_background.png", renderer);
-	renderTexture(image, renderer, 0, 0, 600, 600);
-	SDL_DestroyTexture(image);
-
-	ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
-
-	image = loadTexture("img/dva.png", renderer);
-	renderTexture(image, renderer, 100, 100, 400, 400);
-	SDL_DestroyTexture(image);
-	SDL_RenderPresent(renderer);
-	SDL_Delay(1500);
-
-	image = loadTexture("img/gp_background.png", renderer);
-	renderTexture(image, renderer, 0, 0, 600, 600);
-	SDL_DestroyTexture(image);
-
-	ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
-
-
-	image = loadTexture("img/jedan.png", renderer);
-	renderTexture(image, renderer, 100, 100, 400, 400);
-	SDL_DestroyTexture(image);
-	SDL_RenderPresent(renderer);
-	SDL_Delay(1500);
-
-	ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
 	before = clock();
-	while (zivih > 1) {
-		first = second = 1;
-		SDL_Delay(brzina);
+	while (zivih >= 1 && p) {
+		/*printf("###########################\n");
+		for (i = 0; i < n; i++, printf("\n"))
+		for (j = 0; j < n; j++)
+			printf("%d ", mapa[i][j]);*/
+		
+		ispis(window, renderer, mapa, n);
+	
 		while (SDL_PollEvent(&e)) {
 			switch (e.type) {
 			case SDL_KEYDOWN:
 				switch (e.key.keysym.sym) {
 				case SDLK_UP:
-					if (zm1.smer != DOLE && first)
+					if (zm1.smer != DOLE)
 						zm1.smer = GORE;
-					first = 0;
 					break;
 				case SDLK_DOWN:
-					if (zm1.smer != GORE && first)
+					if (zm1.smer != GORE)
 						zm1.smer = DOLE;
-					first = 0;
 					break;
 				case SDLK_LEFT:
-					if (zm1.smer != DESNO && first)
+					if (zm1.smer != DESNO)
 						zm1.smer = LEVO;
-					first = 0;
 					break;
 				case SDLK_RIGHT:
 					if (zm1.smer != LEVO)
 						zm1.smer = DESNO;
-					first = 0;
 					break;
 				case SDLK_w:
-					if (zm2.smer != DOLE && second)
+					if (zm2.smer != DOLE)
 						zm2.smer = GORE;
-					second = 0;
 					break;
 				case SDLK_s:
-					if (zm2.smer != GORE && second)
+					if (zm2.smer != GORE)
 						zm2.smer = DOLE;
-					second = 0;
 					break;
 				case SDLK_a:
-					if (zm2.smer != DESNO && second)
+					if (zm2.smer != DESNO)
 						zm2.smer = LEVO;
-					second = 0;
 					break;
 				case SDLK_d:
-					if (zm2.smer != LEVO && second)
+					if (zm2.smer != LEVO)
 						zm2.smer = DESNO;
-					second = 0;
+					break;
+				case SDLK_BACKSPACE:
+					p = 0;
+					break;
+				case SDLK_p:
+					while (1) {
+						SDL_WaitEvent(&l);
+						if (l.type == SDLK_p)break;
+					}
 					break;
 				default:
 					break;
 				}
 			} // END FIRST SWITCH
-			SDL_Delay(10);
+
 		}
 		if (zm1.ziva) {
-			killed = 0;
-			zm1 = nextMove(zm1, mapa, n, &killed, window, renderer);
-			if (killed)
-				ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
+			zm1 = nextMove(zm1, mapa, n, window, renderer);
 		}
 		if (zm2.ziva) {
-			killed = 0;
-			zm2 = nextMove(zm2, mapa, n, &killed, window, renderer);
-			if (killed)
-				ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
+			zm2 = nextMove(zm2, mapa, n, window, renderer);
+			
 		}
 		if (zm3.ziva) {
-			killed = 0;
-			zm3 = nextMove(zm3, mapa, n, &killed, window, renderer);
-			if (killed)
-				ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
+			zm3 = nextMove(zm3, mapa, n, window, renderer);
 		}
 		if (zm4.ziva) {
-			killed = 0;
-			zm4 = nextMove(zm4, mapa, n, &killed, window, renderer);
-			if (killed)
-				ispis(window, renderer, zm1, zm2, zm3, zm4, mapa, n);
+			zm4 = nextMove(zm4, mapa, n, window, renderer);
 		}
 		zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
-		SDL_RenderPresent(renderer);
+		SDL_Delay(100);
+
 	}
+
 	end = clock() - before;
 	zm1 = kill(zm1, mapa);
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
 	zm4 = kill(zm4, mapa);
-	SDL_RenderClear(renderer);
+	return 3;
 }
 
 void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int *n, int *brzina) {
@@ -227,8 +187,9 @@ void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 	int rednibroj = 1;
 	int i, j;
 
-	for (i = 0; i < n; i++)
-		for (j = 0; j < n; j++, mapa[i][j] = 0);
+	for (i = 0; i < 100; i++)
+		for (j = 0; j < 100; j++)
+			mapa[i][j] = 0;
 	
 
 	if (igraca == 2) {
