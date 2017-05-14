@@ -15,7 +15,7 @@ typedef struct ko {
 	int i, j;
 }koord;
 typedef struct zm {
-	koord rep, glava, telo[100];
+	koord rep, glava, telo[1000];
 	int duzina;
 	short smer, ziva, igrac, tezina, redni;
 }zmija;

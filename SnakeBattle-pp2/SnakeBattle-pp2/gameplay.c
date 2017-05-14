@@ -22,7 +22,6 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 	case GORE:
 		if ((z.glava.i == 0) || (mapa[z.glava.i - 1][z.glava.j])) {
 			z = kill(z, mapa);
-			printf("POZVANO\n");
 		}
 		else {
 			mapa[z.glava.i - 1][z.glava.j] = z.redni;
@@ -34,7 +33,6 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 	case DESNO:
 		if ((z.glava.j == n - 1) || (mapa[z.glava.i][z.glava.j + 1])) {
 			z = kill(z, mapa);
-			printf("POZVANO\n");
 
 		}
 		else {
@@ -47,7 +45,6 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 	case DOLE:
 		if ((z.glava.i == n - 1) || (mapa[z.glava.i + 1][z.glava.j])) {
 			z = kill(z, mapa);
-			printf("POZVANO\n");
 
 		}
 		else {
@@ -60,7 +57,6 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 	case LEVO:
 		if ((z.glava.j == 0) || (mapa[z.glava.i][z.glava.j - 1])) {
 			z = kill(z, mapa);
-			printf("POZVANO\n");
 
 		}
 		else {
@@ -132,8 +128,10 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 					break;
 				case SDLK_p:
 					while (1) {
-						SDL_WaitEvent(&l);
-						if (l.type == SDLK_p)break;
+						SDL_WaitEvent(&e);
+						if (e.type == SDL_KEYDOWN)
+							if (e.key.keysym.sym == SDLK_p)
+								break;
 					}
 					break;
 				default:
@@ -145,6 +143,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		if (zm1.ziva) {
 			zm1 = nextMove(zm1, mapa, n, window, renderer);
 		}
+
 		if (zm2.ziva) {
 			zm2 = nextMove(zm2, mapa, n, window, renderer);
 			
@@ -155,8 +154,9 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		if (zm4.ziva) {
 			zm4 = nextMove(zm4, mapa, n, window, renderer);
 		}
+
 		zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
-		SDL_Delay(100);
+		SDL_Delay(brzina);
 
 	}
 
