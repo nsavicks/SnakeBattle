@@ -21,6 +21,7 @@ typedef struct zm zmija;
 int SCREEN_WIDTH, SCREEN_HEIGHT, VEL;
 
 // DEFINICIJA FUNKCIJA //Crazy_snake.c za telo funkcija
+int prikaziMeni(SDL_Window *window, SDL_Renderer *renderer);
 
 void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija z3, zmija z4, int mapa[][100], int n);
 

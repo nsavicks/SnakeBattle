@@ -23,7 +23,45 @@ void izlaz(SDL_Window *window, SDL_Renderer *renderer) {
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	IMG_Quit();
-	exit(1);
+	exit(0);
+}
+
+int prikaziMeni(SDL_Window *window, SDL_Renderer *renderer) {
+	SDL_Texture *image = NULL,*strelica=NULL;
+	SDL_Event e;
+	int i, j,mesto=0;
+	image = loadTexture("img/menipozadina.jpg", renderer);
+	strelica = loadTexture("img/menu/strelica.png", renderer);
+	renderTexture(image, renderer, 0, 0, 600, 600);
+	SDL_RenderPresent(renderer);
+	while (1) {
+
+		SDL_WaitEvent(&e);
+
+		if (e.type == SDL_MOUSEBUTTONDOWN) {
+			i = e.motion.x; j = e.motion.y;
+			if (i >= 200 && i <= 400 && j >= 170 && j <= 220) {
+				return 1;
+			}
+			if (i >= 200 && i <= 400 && j >= 240 && j <= 290) {
+				return 2;
+			}
+			if (i >= 200 && i <= 400 && j >= 310 && j <= 360) {
+				return 3;
+			}
+			if (i >= 200 && i <= 400 && j >= 380 && j <= 430) {
+				return 4;
+			}
+			if (i >= 200 && i <= 400 && j >= 450 && j <= 500) {
+				return 5;
+			}
+			if (i >= 200 && i <= 400 && j >= 520 && j <= 570) {
+				return 6;
+			}
+
+		}
+	}
+	
 }
 
 void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija z3, zmija z4, int mapa[][100], int n) {
@@ -171,100 +209,100 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, zmija z1, zmija z2, zmija
 		
 }
 
-void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
-
-	int chosen = 0;
-	while (!chosen) {
-		int  x, y;
-		int i, j, p;
-		SDL_Event e;
-		SDL_Texture *image;
-
-		image = loadTexture("img/menu/background.jpg", renderer);
-		renderTexture(image, renderer, 0, 0, 600, 600);
-		SDL_DestroyTexture(image);
-
-		image = loadTexture("img/menu/logo.png", renderer);
-		renderTexture(image, renderer, 200, 10, 200, 200);
-		SDL_DestroyTexture(image);
-
-		image = loadTexture("img/menu/novaigra.png", renderer);
-		renderTexture(image, renderer, 200, 200, 200, 50);
-		SDL_DestroyTexture(image);
-
-		image = loadTexture("img/menu/opcije.png", renderer);
-		renderTexture(image, renderer, 200, 260, 200, 50);
-		SDL_DestroyTexture(image);
-
-		image = loadTexture("img/menu/oigri.png", renderer);
-		renderTexture(image, renderer, 200, 320, 200, 50);
-		SDL_DestroyTexture(image);
-
-		image = loadTexture("img/menu/highscore.png", renderer);
-		renderTexture(image, renderer, 200, 380, 200, 50);
-		SDL_DestroyTexture(image);
-
-		image = loadTexture("img/menu/autori.png", renderer);
-		renderTexture(image, renderer, 200, 440, 200, 50);
-		SDL_DestroyTexture(image);
-
-		image = loadTexture("img/menu/izlazak.png", renderer);
-		renderTexture(image, renderer, 200, 500, 200, 50);
-		SDL_DestroyTexture(image);
-
-		
-
-		if (SDL_WaitEvent(&e)!=0){
-			switch (e.type) {
-			case SDL_MOUSEMOTION:
-				i = e.motion.x; j = e.motion.y;
-				if (i >= 200 && i <= 400 && j >= 200 && j <= 250)
-					*menu = 1;
-				else if (i >= 200 && i <= 400 && j >= 260 && j <= 310)
-					*menu = 2;
-				else if (i >= 200 && i <= 400 && j >= 320 && j <= 370)
-					*menu = 3;
-				else if (i >= 200 && i <= 400 && j >= 380 && j <= 430)
-					*menu = 4;
-				else if (i >= 200 && i <= 400 && j >= 440 && j <= 490)
-					*menu = 5;
-				else if (i >= 200 && i <= 400 && j >= 500 && j <= 550)
-					*menu = 6;
-				else
-					*menu = 0;		
-			break;
-			case SDL_MOUSEBUTTONDOWN:
-				i = e.motion.x; j = e.motion.y;
-				if (i >= 200 && i <= 400 && j >= 200 && j <= 250) {
-					chosen = 1;
-					*menu = 1;
-				}
-				else if (i >= 200 && i <= 400 && j >= 260 && j <= 310) {
-					*menu = 2;
-					chosen = 1;
-				}
-				if (i >= 200 && i <= 400 && j >= 500 && j <= 550) {
-					izlaz(window, renderer);
-					chosen = 1;
-				}
-				break;
-			case SDL_QUIT:
-				izlaz(window, renderer);
-			default:	
-				break;
-			}
-		}
-
-		if (*menu > 0) {
-			image = loadTexture("img/menu/strelica.png", renderer);
-			renderTexture(image, renderer, 205, 210 + (*menu - 1) * 60, 30, 30);
-			SDL_DestroyTexture(image);
-		} 
-
-		SDL_RenderPresent(renderer);
-	}
-	SDL_RenderClear(renderer);
-}
+//void drawmenu(SDL_Window *window, SDL_Renderer *renderer, int *menu) {
+//
+//	int chosen = 0;
+//	while (!chosen) {
+//		int  x, y;
+//		int i, j, p;
+//		SDL_Event e;
+//		SDL_Texture *image;
+//
+//		image = loadTexture("img/menu/background.jpg", renderer);
+//		renderTexture(image, renderer, 0, 0, 600, 600);
+//		SDL_DestroyTexture(image);
+//
+//		image = loadTexture("img/menu/logo.png", renderer);
+//		renderTexture(image, renderer, 200, 10, 200, 200);
+//		SDL_DestroyTexture(image);
+//
+//		image = loadTexture("img/menu/novaigra.png", renderer);
+//		renderTexture(image, renderer, 200, 200, 200, 50);
+//		SDL_DestroyTexture(image);
+//
+//		image = loadTexture("img/menu/opcije.png", renderer);
+//		renderTexture(image, renderer, 200, 260, 200, 50);
+//		SDL_DestroyTexture(image);
+//
+//		image = loadTexture("img/menu/oigri.png", renderer);
+//		renderTexture(image, renderer, 200, 320, 200, 50);
+//		SDL_DestroyTexture(image);
+//
+//		image = loadTexture("img/menu/highscore.png", renderer);
+//		renderTexture(image, renderer, 200, 380, 200, 50);
+//		SDL_DestroyTexture(image);
+//
+//		image = loadTexture("img/menu/autori.png", renderer);
+//		renderTexture(image, renderer, 200, 440, 200, 50);
+//		SDL_DestroyTexture(image);
+//
+//		image = loadTexture("img/menu/izlazak.png", renderer);
+//		renderTexture(image, renderer, 200, 500, 200, 50);
+//		SDL_DestroyTexture(image);
+//
+//		
+//
+//		if (SDL_WaitEvent(&e)!=0){
+//			switch (e.type) {
+//			case SDL_MOUSEMOTION:
+//				i = e.motion.x; j = e.motion.y;
+//				if (i >= 200 && i <= 400 && j >= 200 && j <= 250)
+//					*menu = 1;
+//				else if (i >= 200 && i <= 400 && j >= 260 && j <= 310)
+//					*menu = 2;
+//				else if (i >= 200 && i <= 400 && j >= 320 && j <= 370)
+//					*menu = 3;
+//				else if (i >= 200 && i <= 400 && j >= 380 && j <= 430)
+//					*menu = 4;
+//				else if (i >= 200 && i <= 400 && j >= 440 && j <= 490)
+//					*menu = 5;
+//				else if (i >= 200 && i <= 400 && j >= 500 && j <= 550)
+//					*menu = 6;
+//				else
+//					*menu = 0;		
+//			break;
+//			case SDL_MOUSEBUTTONDOWN:
+//				i = e.motion.x; j = e.motion.y;
+//				if (i >= 200 && i <= 400 && j >= 200 && j <= 250) {
+//					chosen = 1;
+//					*menu = 1;
+//				}
+//				else if (i >= 200 && i <= 400 && j >= 260 && j <= 310) {
+//					*menu = 2;
+//					chosen = 1;
+//				}
+//				if (i >= 200 && i <= 400 && j >= 500 && j <= 550) {
+//					izlaz(window, renderer);
+//					chosen = 1;
+//				}
+//				break;
+//			case SDL_QUIT:
+//				izlaz(window, renderer);
+//			default:	
+//				break;
+//			}
+//		}
+//
+//		if (*menu > 0) {
+//			image = loadTexture("img/menu/strelica.png", renderer);
+//			renderTexture(image, renderer, 205, 210 + (*menu - 1) * 60, 30, 30);
+//			SDL_DestroyTexture(image);
+//		} 
+//
+//		SDL_RenderPresent(renderer);
+//	}
+//	SDL_RenderClear(renderer);
+//}
 
 void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n, int *brzina, SDL_Window *window, SDL_Renderer *renderer) {
 	int nazad = 0, i, j, k = 0;
