@@ -21,6 +21,9 @@ int main() {
 
 		switch (opcija) {
 		case 1:
+			SDL_DestroyWindow(window);
+			SDL_DestroyRenderer(rend);
+
 			window = SDL_CreateWindow("SnakeBattle v1.0", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
 			rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -31,14 +34,8 @@ int main() {
 			SDL_DestroyRenderer(rend);
 			break;
 		case 2:
-			window = SDL_CreateWindow("SnakeBattle v1.0", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_SHOWN);
-			rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
 			opcije(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina, window, rend);
 			VEL = 600 / n;
-
-			SDL_DestroyWindow(window);
-			SDL_DestroyRenderer(rend);
 			break;
 		case 3:
 			SDL_RenderClear(rend);
