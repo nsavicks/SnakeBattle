@@ -409,15 +409,15 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
 	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed;
-	float vreme;
+	float vreme,pauzavreme=0;
 	SDL_Event e;
 	SDL_Texture *image;
-	clock_t end, before;
+	clock_t end, before,pauzabegin,pauzaend;
 
 	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
 	SDL_Delay(3000);
 	before = clock();
-	while (zivih >= 1 && p) {
+	while (zivih > 1 && p) {
 		while (SDL_PollEvent(&e)) {
 			switch (e.type) {
 			case SDL_KEYDOWN:
@@ -458,11 +458,17 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 					p = 0;
 					break;
 				case SDLK_p:
+					pauzabegin = clock();
 					while (1) {
 						SDL_WaitEvent(&e);
 						if (e.type == SDL_KEYDOWN)
-							if (e.key.keysym.sym == SDLK_p)
+							if (e.key.keysym.sym == SDLK_p) {
+
+								pauzaend = clock() - pauzabegin;
+								pauzavreme += pauzaend;
+								
 								break;
+							}
 					}
 					break;
 				default:
@@ -507,9 +513,12 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
 		SDL_Delay(brzina);
 	}
-	end = clock() - before;
-	vreme = (float)end / 1000;
-	checkHighscore(vreme);
+
+	vreme = clock() - before;
+	vreme -= pauzavreme;
+	vreme = (float)vreme / 1000;
+	printf("%.2f",vreme);
+	if (p) checkHighscore(vreme);
 	zm1 = kill(zm1, mapa);
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
