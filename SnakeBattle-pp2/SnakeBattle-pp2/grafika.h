@@ -3,6 +3,7 @@
 #define grafika
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <SDL.h>
 #include <SDL_image.h>
 #include "gameplay.h"
@@ -33,4 +34,6 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, int mapa[][100], int n, z
 void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n,int *brzina, SDL_Window *window, SDL_Renderer *renderer);
 
 void update_screen(zmija zm, int mapa[][100], int n, SDL_Window *window, SDL_Renderer *renderer);
+
+void prikaziHighscore(SDL_Window *window, SDL_Renderer *renderer);
 #endif // !grafika/

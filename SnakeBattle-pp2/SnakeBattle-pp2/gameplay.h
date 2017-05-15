@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <SDL_ttf.h>
 #include "grafika.h"
 
@@ -24,7 +25,7 @@ typedef struct zm {
 	short smer, ziva, igrac, tezina, redni;
 }zmija;
 typedef struct StOsoba {
-	char ime[50], prezime[50];
+	char *ime, *prezime;
 	float rezultat;
 }osoba;
 
@@ -40,5 +41,8 @@ void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n);
 
 void checkHighscore(float vreme);
+
+char *crypt(char *str);
+char *decrypt(char *str);
 
 #endif

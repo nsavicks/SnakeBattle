@@ -517,25 +517,66 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 }
 
 
+char *crypt(char *str) {
+	char *resenje = malloc(1000);
+	int i, j,k=0;
+	for (i = 0; i < strlen(str); i++) {
+		for (j = 1; j <= str[i]-'.'; j++) {
+			resenje[k] = ';';
+			k++;
+		}
+		resenje[k++] = ',';
+	}
+	resenje[k++] = '.';
+	resenje[k] = '\0';
+	return resenje;
+}
+
+char *decrypt(char *str) {
+
+	char *resenje = malloc(200);
+	char karakter;
+	int i = 0 , j,k=0;
+	while (str[i] != '.') {
+		j = 0;
+		while (str[i] != ',') { 
+			j++;
+			i++; 
+		}
+		i++;
+		resenje[k++] = j+'.';
+		if (str[i] == '.') break;
+		
+	}
+	resenje[k] = '\0';
+	return resenje;
+}
+
 void checkHighscore(float vreme) {
 
 	FILE *fp;
 	int n, i, p, j;
 	osoba highscore[11], igrac;
-	char ime[50], prezime[50];
+	char ime[50], prezime[50],pom,*pomocni;
 
+	igrac.ime = malloc(50);
+	igrac.prezime = malloc(50);
+	pomocni = malloc(200);
 
-	printf("%f\n", vreme);
 	n = 0;
 	fp = fopen("highscore.txt", "r");
-	while (!feof(fp)) {
+	while (pom=fgetc(fp)!=EOF) {
+		highscore[n].ime = malloc(1000);
+		highscore[n].prezime = malloc(1000);
 		fscanf(fp, "%s", highscore[n].ime);
 		fscanf(fp, "%s", highscore[n].prezime);
-		fscanf(fp, "%f", &highscore[n].rezultat);
+		fscanf(fp, "%s", pomocni);
+		pomocni = decrypt(pomocni);
+		highscore[n].rezultat = atof(pomocni);
 		n++;
 	}
-	n--;
-	printf("%d\n", n);
+
+
 	p = 0;
 	for (i = 0; i < n; i++) {
 		if (highscore[i].rezultat > vreme) {
@@ -547,7 +588,11 @@ void checkHighscore(float vreme) {
 			}
 
 			printf("MOLIMO UNESITE VASE IME I PREZIME:\n");
-			scanf("%s %s", igrac.ime, igrac.prezime);
+			scanf("%s %s", ime, prezime);
+			igrac.ime = ime;
+			igrac.prezime = prezime;
+			igrac.ime = crypt(igrac.ime);
+			igrac.prezime = crypt(igrac.prezime);
 			igrac.rezultat = vreme;
 			highscore[i] = igrac;
 			p = 1;
@@ -556,20 +601,32 @@ void checkHighscore(float vreme) {
 	}
 	if (!p && n < 10) {
 		printf("MOLIMO UNESITE VASE IME I PREZIME:\n");
-		scanf("%s %s", igrac.ime, igrac.prezime);
+		scanf("%s %s", ime, prezime);
+		igrac.ime = ime;
+		igrac.prezime = prezime;
+		igrac.ime = crypt(igrac.ime);
+		igrac.prezime = crypt(igrac.prezime);
 		igrac.rezultat = vreme;
 		highscore[n] = igrac;
 		n++;
 	}
 
-	fclose(fp);
 
-	fp = fopen("highscore.txt", "w");
+
+	fclose(fp);
+	fp=fopen("highscore.txt", "w");
+	
 
 	for (i = 0; i < n; i++) {
-		fprintf(fp, "%s %s %f\n", highscore[i].ime, highscore[i].prezime, highscore[i].rezultat);
+		snprintf(pomocni, 10, "%f", highscore[i].rezultat);
+		pomocni = crypt(pomocni);
+		fprintf(fp, " %s %s %s", highscore[i].ime, highscore[i].prezime, pomocni);
+		free(highscore[i].ime);
+		free(highscore[i].prezime);
+		
 	}
 
+	free(pomocni);
 	fclose(fp);
 }
 

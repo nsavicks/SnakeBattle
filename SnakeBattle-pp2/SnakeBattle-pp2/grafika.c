@@ -661,3 +661,102 @@ void update_screen(zmija zm, int mapa[][100],int n, SDL_Window *window, SDL_Rend
 		SDL_RenderPresent(renderer);
 	}
 }
+
+void prikaziHighscore(SDL_Window *window, SDL_Renderer *renderer) {
+	SDL_Texture *image = loadTexture("img/highscorepozadina.jpg", renderer);
+	int i, n,pomeraj,j;
+	char rez[10],pom,*pomocni;
+	osoba highscore[11];
+	FILE *fp;
+	TTF_Font *Sans;
+	SDL_Color Black = { 0,0,0 };
+	SDL_Surface* surfaceMessage;
+	SDL_Texture* Message;
+	SDL_Rect Message_rect;
+	SDL_Event e;
+
+	renderTexture(image, renderer, 0, 0, 600, 600);
+	SDL_RenderPresent(renderer);
+	pomocni = malloc(200);
+	n = 0;
+	fp = fopen("highscore.txt", "r");
+	while (pom=fgetc(fp)!=EOF) { 
+		highscore[n].ime = malloc(1000);
+		highscore[n].prezime = malloc(1000);
+		fscanf(fp, "%s %s %s", highscore[n].ime,highscore[n].prezime,pomocni);
+		pomocni = decrypt(pomocni);
+		highscore[n].rezultat = atof(pomocni);
+		highscore[n].ime = decrypt(highscore[n].ime);
+		highscore[n].prezime = decrypt(highscore[n].prezime);
+		n++;
+	}
+	
+	pomeraj = 0;
+	for (i = 0; i< n; i++) {
+
+		Sans = TTF_OpenFont("fonts/tajmer.ttf", 12); 
+
+		 
+
+		surfaceMessage = TTF_RenderText_Solid(Sans, highscore[i].ime, Black); 
+
+		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); 
+
+		Message_rect; 
+		Message_rect.x = 120;  
+		Message_rect.y = 160 + pomeraj; 
+		Message_rect.w = 100; 
+		Message_rect.h = 40; 
+
+		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
+		surfaceMessage = TTF_RenderText_Solid(Sans, highscore[i].prezime, Black); 
+
+		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); 
+
+		Message_rect;
+		Message_rect.x = 260;  
+		Message_rect.y = 160 + pomeraj; 
+		Message_rect.w = 100; 
+		Message_rect.h = 40; 
+
+		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
+		snprintf(rez, 10, "%.2f", highscore[i].rezultat);
+
+		surfaceMessage = TTF_RenderText_Solid(Sans, rez, Black); 
+
+		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); 
+
+		Message_rect; 
+		Message_rect.x = 385;  
+		Message_rect.y = 160 + pomeraj; 
+		Message_rect.w = 100; 
+		Message_rect.h = 40; 
+
+
+		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
+
+		SDL_RenderPresent(renderer);
+		pomeraj+=40;
+
+		free(highscore[i].ime);
+		free(highscore[i].prezime);
+
+	}
+
+
+	while (1) {
+		SDL_WaitEvent(&e);
+		if (e.type == SDL_MOUSEBUTTONDOWN) {
+			i = e.button.x; j = e.button.y;
+			if (i >= 0 && i <= 50 && j >= 0 && j <= 50) break;
+		}
+	}
+
+	free(pomocni);
+	SDL_DestroyTexture(image);
+	fclose(fp);
+}
+
