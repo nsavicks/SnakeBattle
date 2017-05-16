@@ -40,9 +40,12 @@ void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 
 void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n);
 
-void checkHighscore(float vreme);
+void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer *renderer);
+
+char *ucitaj(SDL_Window *window, SDL_Renderer *renderer);
 
 char *crypt(char *str);
+
 char *decrypt(char *str);
 
 #endif

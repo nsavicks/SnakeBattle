@@ -408,7 +408,7 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 }
 
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
-	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed;
+	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed, pobednik, pobednik_cpu;
 	float vreme,pauzavreme=0;
 	SDL_Event e;
 	SDL_Texture *image;
@@ -423,35 +423,35 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 			case SDL_KEYDOWN:
 				switch (e.key.keysym.sym) {
 				case SDLK_UP:
-					if (zm1.smer != DOLE)
+					if (zm1.smer != DOLE && zm1.igrac)
 						zm1.smer = GORE;
 					break;
 				case SDLK_DOWN:
-					if (zm1.smer != GORE)
+					if (zm1.smer != GORE && zm1.igrac)
 						zm1.smer = DOLE;
 					break;
 				case SDLK_LEFT:
-					if (zm1.smer != DESNO)
+					if (zm1.smer != DESNO && zm1.igrac)
 						zm1.smer = LEVO;
 					break;
 				case SDLK_RIGHT:
-					if (zm1.smer != LEVO)
+					if (zm1.smer != LEVO && zm1.igrac)
 						zm1.smer = DESNO;
 					break;
 				case SDLK_w:
-					if (zm2.smer != DOLE)
+					if (zm2.smer != DOLE && zm2.igrac)
 						zm2.smer = GORE;
 					break;
 				case SDLK_s:
-					if (zm2.smer != GORE)
+					if (zm2.smer != GORE && zm2.igrac)
 						zm2.smer = DOLE;
 					break;
 				case SDLK_a:
-					if (zm2.smer != DESNO)
+					if (zm2.smer != DESNO && zm2.igrac)
 						zm2.smer = LEVO;
 					break;
 				case SDLK_d:
-					if (zm2.smer != LEVO)
+					if (zm2.smer != LEVO && zm2.igrac)
 						zm2.smer = DESNO;
 					break;
 				case SDLK_BACKSPACE:
@@ -463,19 +463,23 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 						SDL_WaitEvent(&e);
 						if (e.type == SDL_KEYDOWN)
 							if (e.key.keysym.sym == SDLK_p) {
-
 								pauzaend = clock() - pauzabegin;
 								pauzavreme += pauzaend;
-								
 								break;
 							}
+							else if (e.type == SDL_QUIT)
+								izlaz(window, renderer);
 					}
 					break;
 				default:
 					break;
 				}
+				break;
+			case SDL_QUIT:
+				izlaz(window, renderer);
+			default:
+				break;
 			} // END FIRST SWITCH
-
 		}
 		if (zm1.ziva) {
 			killed = 0;
@@ -517,14 +521,30 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	vreme = clock() - before;
 	vreme -= pauzavreme;
 	vreme = (float)vreme / 1000;
-	printf("%.2f",vreme);
-	if (p) checkHighscore(vreme);
+	if (p) {
+		pobednik = zm1.ziva*zm1.redni + zm2.ziva*zm2.redni + zm3.ziva*zm3.redni + zm4.ziva*zm4.redni;
+		switch (pobednik) {
+		case 1:
+			pobednik_cpu = zm1.igrac;
+			break;
+		case 2:
+			pobednik_cpu = zm2.igrac;
+			break;
+		case 3:
+			pobednik_cpu = zm3.igrac;
+			break;
+		case 4:
+			pobednik_cpu = zm4.igrac;
+			break;
+		}
+	}
+	if (p && pobednik_cpu) 
+		checkHighscore(vreme, n, window, renderer);
 	zm1 = kill(zm1, mapa);
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
 	zm4 = kill(zm4, mapa);
 }
-
 
 char *crypt(char *str) {
 	char *resenje = malloc(1000);
@@ -561,19 +581,59 @@ char *decrypt(char *str) {
 	return resenje;
 }
 
-void checkHighscore(float vreme) {
+void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer *renderer) {
 
-	FILE *fp;
-	int n, i, p, j;
+	int n, i, p, j, k;
 	osoba highscore[11], igrac;
-	char ime[50], prezime[50],pom,*pomocni;
+	char ime[50], prezime[50], pom, *pomocni, *nickname;
+	FILE *fp = NULL;
 
 	igrac.ime = malloc(50);
+	if (!igrac.ime) {
+		printf("Neuspesna alokacija memorije.\n");
+		system("pause");
+		exit(5);
+	}
+
 	igrac.prezime = malloc(50);
+	if (!igrac.prezime) {
+		printf("Neuspesna alokacija memorije.\n");
+		system("pause");
+		exit(5);
+	}
+
 	pomocni = malloc(200);
+	if (!pomocni) {
+		printf("Neuspesna alokacija memorije.\n");
+		system("pause");
+		exit(5);
+	}
+
+	nickname = malloc(200);
+	if (!nickname) {
+		printf("Neuspela alokacija memorije\n");
+		system("pause");
+		exit(3);
+	}
 
 	n = 0;
-	fp = fopen("highscore.txt", "r");
+	switch (vel_mape) {
+	case MALA:
+		fp = fopen("malahighscore.txt", "r");
+		break;
+	case SREDNJA:
+		fp = fopen("srednjahighscore.txt", "r");
+		break;
+	case VELIKA:
+		fp = fopen("velikahighscore.txt", "r");
+		break;
+	}
+	if (!fp) {
+		printf("Neuspesno otvaranje datoteke.\n");
+		system("pause");
+		exit(3);
+	}
+
 	while (pom=fgetc(fp)!=EOF) {
 		highscore[n].ime = malloc(1000);
 		highscore[n].prezime = malloc(1000);
@@ -585,20 +645,16 @@ void checkHighscore(float vreme) {
 		n++;
 	}
 
-
 	p = 0;
 	for (i = 0; i < n; i++) {
 		if (highscore[i].rezultat > vreme) {
-
-			if (n < 10) n++;
-
-			for (j = n - 1; j > i; j--) {
+			if (n < 10)
+				n++;
+			for (j = n - 1; j > i; j--)
 				highscore[j] = highscore[j - 1];
-			}
 
-			printf("MOLIMO UNESITE VASE IME I PREZIME:\n");
-			scanf("%s %s", ime, prezime);
-			igrac.ime = ime;
+			nickname = ucitaj(window, renderer);
+			
 			igrac.prezime = prezime;
 			igrac.ime = crypt(igrac.ime);
 			igrac.prezime = crypt(igrac.prezime);
@@ -609,8 +665,9 @@ void checkHighscore(float vreme) {
 		}
 	}
 	if (!p && n < 10) {
-		printf("MOLIMO UNESITE VASE IME I PREZIME:\n");
-		scanf("%s %s", ime, prezime);
+		
+		nickname = ucitaj(window, renderer);
+
 		igrac.ime = ime;
 		igrac.prezime = prezime;
 		igrac.ime = crypt(igrac.ime);
@@ -620,10 +677,24 @@ void checkHighscore(float vreme) {
 		n++;
 	}
 
-
-
 	fclose(fp);
-	fp=fopen("highscore.txt", "w");
+
+	switch (vel_mape) {
+	case MALA:
+		fp = fopen("malahighscore.txt", "r");
+		break;
+	case SREDNJA:
+		fp = fopen("srednjahighscore.txt", "r");
+		break;
+	case VELIKA:
+		fp = fopen("velikahighscore.txt", "r");
+		break;
+	}
+	if (!fp) {
+		printf("Neuspesno otvaranje datoteke.\n");
+		system("pause");
+		exit(3);
+	}
 	
 
 	for (i = 0; i < n; i++) {
@@ -632,10 +703,74 @@ void checkHighscore(float vreme) {
 		fprintf(fp, " %s %s %s", highscore[i].ime, highscore[i].prezime, pomocni);
 		free(highscore[i].ime);
 		free(highscore[i].prezime);
-		
 	}
 
 	free(pomocni);
 	fclose(fp);
 }
 
+char *ucitaj(SDL_Window *window, SDL_Renderer *renderer) {
+	char *resenje, text[36] = "Molimo unesite vase ime i prezime: ", res[200] = "";
+	TTF_Font *Sans;
+	SDL_Color Black = { 0, 0, 0 };
+	SDL_Surface *molimoSurface, *imeSurface;
+	SDL_Texture* molimo, *ime, *white;
+	SDL_Event e;
+	int i = 0, done = 0;
+
+	Sans = TTF_OpenFont("fonts/tajmer.ttf", 12);
+	
+	molimoSurface = TTF_RenderText_Solid(Sans, text, Black);
+	molimo = SDL_CreateTextureFromSurface(renderer, molimoSurface);
+	white = loadTexture("img/highscore/white.png", renderer);
+
+
+	SDL_StartTextInput();
+	while (!done) {
+		SDL_RenderClear(renderer);
+		renderTexture(white, renderer, 0, 0, 600, 600);
+		renderTexture(molimo, renderer, 50, 275, 35 * 5, 50);
+
+		imeSurface = TTF_RenderText_Solid(Sans, res, Black);
+		ime = SDL_CreateTextureFromSurface(renderer, imeSurface);
+		renderTexture(ime, renderer, 50 + 35 * 5 + 5, 275, 5 * strlen(res), 50);
+
+		SDL_RenderPresent(renderer);
+
+		SDL_DestroyTexture(ime); SDL_FreeSurface(imeSurface);
+
+		if (SDL_WaitEvent(&e)) {
+			switch (e.type) {
+			case SDL_TEXTINPUT:
+				strcat(res, e.text.text);
+				i++;
+				break;
+			case SDL_KEYDOWN:
+				switch (e.key.keysym.sym) {
+				case SDLK_KP_ENTER:
+				case SDLK_RETURN:
+					done = 1;
+					continue;
+				case SDLK_BACKSPACE:
+					if (strlen(res) > 0)
+						res[strlen(res) - 1] = '\0';
+					continue;
+				default:
+					break;
+				}
+				break;
+			case SDL_QUIT:
+				izlaz(window, renderer);
+			default:
+				break;
+			}
+		}
+	}
+	SDL_StopTextInput();
+	SDL_DestroyTexture(molimo);
+	SDL_FreeSurface(molimoSurface);
+	SDL_DestroyTexture(white);
+	
+	resenje = res;
+	return resenje;
+}
