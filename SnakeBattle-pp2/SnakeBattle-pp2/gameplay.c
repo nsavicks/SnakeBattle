@@ -521,6 +521,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	vreme = clock() - before;
 	vreme -= pauzavreme;
 	vreme = (float)vreme / 1000;
+	pobednik_cpu = 0;
 	if (p) {
 		pobednik = zm1.ziva*zm1.redni + zm2.ziva*zm2.redni + zm3.ziva*zm3.redni + zm4.ziva*zm4.redni;
 		switch (pobednik) {
@@ -616,7 +617,7 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 		exit(3);
 	}
 
-	n = 0;
+	
 	switch (vel_mape) {
 	case MALA:
 		fp = fopen("malahighscore.txt", "r");
@@ -633,6 +634,8 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 		system("pause");
 		exit(3);
 	}
+
+	n = 0;
 
 	while (pom=fgetc(fp)!=EOF) {
 		highscore[n].ime = malloc(1000);
@@ -653,8 +656,10 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 			for (j = n - 1; j > i; j--)
 				highscore[j] = highscore[j - 1];
 
-			nickname = ucitaj(window, renderer);
-			
+			//nickname = ucitaj(window, renderer);
+
+			scanf("%s %s", ime,prezime);
+			igrac.ime = ime;
 			igrac.prezime = prezime;
 			igrac.ime = crypt(igrac.ime);
 			igrac.prezime = crypt(igrac.prezime);
@@ -666,7 +671,8 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 	}
 	if (!p && n < 10) {
 		
-		nickname = ucitaj(window, renderer);
+		//nickname = ucitaj(window, renderer);
+		scanf("%s %s", ime, prezime);
 
 		igrac.ime = ime;
 		igrac.prezime = prezime;
@@ -681,13 +687,13 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 
 	switch (vel_mape) {
 	case MALA:
-		fp = fopen("malahighscore.txt", "r");
+		fp = fopen("malahighscore.txt", "w");
 		break;
 	case SREDNJA:
-		fp = fopen("srednjahighscore.txt", "r");
+		fp = fopen("srednjahighscore.txt", "w");
 		break;
 	case VELIKA:
-		fp = fopen("velikahighscore.txt", "r");
+		fp = fopen("velikahighscore.txt", "w");
 		break;
 	}
 	if (!fp) {

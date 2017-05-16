@@ -669,39 +669,34 @@ void update_screen(zmija zm, int mapa[][100],int n, SDL_Window *window, SDL_Rend
 }
 
 void prikaziHighscore(SDL_Window *window, SDL_Renderer *renderer) {
-	SDL_Texture *pozadina, *odabir;
-	int i, n, pomeraj, j, chosen = 0;
-	char rez[10],pom,*pomocni;
-	osoba highscore[11];
-	FILE *fp = NULL;
-	TTF_Font *Sans;
-	SDL_Color Black = { 0,0,0 };
-	SDL_Surface* surfaceMessage;
-	SDL_Texture* Message;
-	SDL_Rect Message_rect;
-	SDL_Event e;
 
-	odabir = loadTexture("img/highscore/odabir.png", renderer);
-	renderTexture(odabir, renderer, 100, 100, 600, 600);
+	SDL_Texture *odabir;
+	int chosen = 0,i,j;
+	SDL_Event e;
+	char *datoteka;
+
+	odabir = loadTexture("img/highscore/odabir.jpg", renderer);
+	renderTexture(odabir, renderer, 0, 0, 600, 600);
 	SDL_RenderPresent(renderer);
+	datoteka = malloc(20);
 
 	while (!chosen) {
 		if (SDL_WaitEvent(&e)) {
 			if (e.type == SDL_MOUSEBUTTONDOWN) {
 				i = e.motion.x;
 				j = e.motion.y;
-				if (i > 150 && i < 450 && j > 150 && j < 220)
+				if (i >= 200 && i <= 400 && j >= 300 && j <= 350)
 					chosen = MALA;
-				else if (i > 150 && i < 450 && j > 250 && j < 320)
+				else if (i >= 200 && i <= 400 && j >= 375 && j <= 425)
 					chosen = SREDNJA;
-				else if (i > 150 && i < 450 && j > 350 && j < 420)
+				else if (i >= 200 && i <= 400 && j >= 450 && j <= 500)
 					chosen = VELIKA;
-				else if ((j > 0 && j < 100) || (j > 500 && j < 600) || (i > 0 && i < 100) || (i > 500 && i < 600)) {
+				else if (j >= 0 && j <= 50 && i >= 0 && i <= 50) {
 					SDL_DestroyTexture(odabir);
 					SDL_RenderClear(renderer);
 					return;
 				}
-				break;
+
 			}
 			else if (e.type == SDL_QUIT)
 				izlaz(window, renderer);
@@ -711,21 +706,35 @@ void prikaziHighscore(SDL_Window *window, SDL_Renderer *renderer) {
 
 	switch (chosen) {
 	case MALA:
-		fp = fopen("malahighscore.txt", "r");
+		datoteka="malahighscore.txt";
 		break;
 	case SREDNJA:
-		fp = fopen("srednjahighscore.txt", "r");
+		datoteka = "srednjahighscore.txt";
 		break;
 	case VELIKA:
-		fp = fopen("velikahighscore.txt", "r");
+		datoteka="velikahighscore.txt";
 		break;
 	}
-	if (!fp) {
-		printf("Neuspesno otvaranje datoteke.\n");
-		system("pause");
-		exit(3);
-	}
+	
+	SDL_DestroyTexture(odabir);
+	ispisHighscore(window, renderer, datoteka);
+}
 
+void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer,char *datoteka) {
+	SDL_Texture *pozadina;
+	int i, n, pomeraj, j;
+	char rez[10],pom,*pomocni;
+	osoba highscore[11];
+	TTF_Font *Sans;
+	SDL_Color Black = { 0,0,0 };
+	SDL_Surface* surfaceMessage;
+	SDL_Texture* Message;
+	SDL_Rect Message_rect;
+	SDL_Event e;
+	FILE *fp;
+
+	
+	fp = fopen(datoteka, "r");
 	pozadina = loadTexture("img/highscore/pozadina.jpg", renderer);
 	renderTexture(pozadina, renderer, 0, 0, 600, 600);
 	SDL_RenderPresent(renderer);
@@ -810,15 +819,18 @@ void prikaziHighscore(SDL_Window *window, SDL_Renderer *renderer) {
 		SDL_WaitEvent(&e);
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 			i = e.button.x; j = e.button.y;
-			if ((j > 0 && j < 100) || (j > 500 && j < 600) || (i > 0 && i < 100) || (i > 500 && i < 600))
+			if (j >= 0 && j <= 50 && i >= 0 && i <= 50)
 				break;
+			else if (i >= 420 && i <= 570 && j >= 100 && j <= 140) {
+				fp = fopen(datoteka, "w");
+				break;
+			}
 		}
 		else if (e.type == SDL_QUIT)
 			izlaz(window, renderer);
 	}
 
 	free(pomocni);
-	SDL_DestroyTexture(odabir);
 	SDL_DestroyTexture(pozadina);
 	fclose(fp);
 }
