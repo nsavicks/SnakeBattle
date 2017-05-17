@@ -48,4 +48,6 @@ char *crypt(char *str);
 
 char *decrypt(char *str);
 
+void AiEasy(zmija *z, int mapa[][100], int n);
+
 #endif

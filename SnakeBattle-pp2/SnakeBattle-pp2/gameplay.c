@@ -404,6 +404,7 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 		break;
 	default: break;
 	}
+
 	return z;
 }
 
@@ -480,10 +481,13 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 			default:
 				break;
 			} // END FIRST SWITCH
+		
 		}
 		if (zm1.ziva) {
 			killed = 0;
+			if (!zm1.igrac) AiEasy(&zm1, mapa,n);
 			zm1 = nextMove(zm1, mapa, n, window, renderer, &killed);
+			
 			if (killed) {
 				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
 			}
@@ -492,7 +496,9 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		}
 		if (zm2.ziva) {
 			killed = 0;
-			zm2 = nextMove(zm2, mapa, n, window, renderer, &killed);	
+			if (!zm2.igrac) AiEasy(&zm2, mapa,n);
+			zm2 = nextMove(zm2, mapa, n, window, renderer, &killed);
+			
 			if (killed)
 				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
 			else
@@ -500,7 +506,9 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		}
 		if (zm3.ziva) {
 			killed = 0;
+			if (!zm3.igrac) AiEasy(&zm3, mapa,n);
 			zm3 = nextMove(zm3, mapa, n, window, renderer, &killed);
+			
 			if (killed)
 				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
 			else
@@ -508,7 +516,9 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		}
 		if (zm4.ziva) {
 			killed = 0;
+			if (!zm4.igrac) AiEasy(&zm4, mapa,n);
 			zm4 = nextMove(zm4, mapa, n, window, renderer, &killed);
+			
 			if (killed)
 				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
 			else
@@ -516,14 +526,17 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		}
 		zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
 		SDL_Delay(brzina);
+
+		
 	}
 
+	
 	vreme = clock() - before;
 	vreme -= pauzavreme;
 	vreme = (float)vreme / 1000;
 	pobednik_cpu = 0;
 	if (p) {
-		pobednik = zm1.ziva*zm1.redni + zm2.ziva*zm2.redni + zm3.ziva*zm3.redni + zm4.ziva*zm4.redni;
+		pobednik = zm1.ziva*zm1.redni*zm1.igrac + zm2.ziva*zm2.redni*zm2.igrac;
 		switch (pobednik) {
 		case 1:
 			pobednik_cpu = zm1.igrac;
@@ -531,12 +544,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		case 2:
 			pobednik_cpu = zm2.igrac;
 			break;
-		case 3:
-			pobednik_cpu = zm3.igrac;
-			break;
-		case 4:
-			pobednik_cpu = zm4.igrac;
-			break;
+	
 		}
 	}
 	if (p && pobednik_cpu) 
@@ -545,6 +553,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
 	zm4 = kill(zm4, mapa);
+	
 }
 
 char *crypt(char *str) {
@@ -779,4 +788,63 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer) {
 	
 	resenje = res;
 	return resenje;
+}
+
+void AiEasy(zmija *z,int mapa[][100],int n) {
+	srand(time(NULL));
+	int isprobao[4] = { 0 },novismer,p=1;
+
+	isprobao[abs(z->smer - 2)] = 1;
+
+	while (p) {
+		novismer = rand() % 4;
+		if (!isprobao[novismer]) {
+			switch (novismer) {
+			case GORE:
+				if (!mapa[z->glava.i - 1][z->glava.j] && z->glava.i > 0) {
+					z->smer = GORE;
+					p = 0;
+				}
+				else {
+					isprobao[GORE] = 1;
+				}
+				break;
+			case DOLE:
+				if (!mapa[z->glava.i + 1][z->glava.j] && z->glava.i < n - 1) {
+					z->smer = DOLE;
+					p = 0;
+				}
+				else {
+					isprobao[DOLE] = 1;
+				}
+				break;
+			case LEVO:
+				if (!mapa[z->glava.i][z->glava.j - 1] && z->glava.j > 0) {
+					z->smer = LEVO;
+					p = 0;
+				}
+				else {
+					isprobao[LEVO] = 1;
+				}
+				break;
+			case DESNO:
+				if (!mapa[z->glava.i][z->glava.j + 1] && z->glava.j < n - 1) {
+					z->smer = DESNO;
+					p = 0;
+				}
+				else {
+					isprobao[DESNO] = 1;
+				}
+				break;
+			default:
+				break;
+			} // END SWITCH
+		} // END IF
+
+		if (isprobao[GORE] && isprobao[DOLE] && isprobao[LEVO] && isprobao[DESNO]) p = 0;
+
+		
+	} // END WHILE
+
+	
 }
