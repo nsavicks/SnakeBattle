@@ -31,6 +31,7 @@ int main() {
 			rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 			podesimapu(&zm1, &zm2, &zm3, &zm4, mapa, n);
+			SDL_FlushEvents(SDL_USEREVENT, SDL_LASTEVENT);
 			play(zm1, zm2, zm3, zm4, mapa, n, brzina, window, rend);
 
 			SDL_DestroyWindow(window);

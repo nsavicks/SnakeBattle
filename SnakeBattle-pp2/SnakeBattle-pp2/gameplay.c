@@ -9,7 +9,7 @@ void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 	zm1->ziva = zm2->ziva = 1;
 	zm3->ziva = zm4->ziva = 0;
 	zm1->igrac = 1; zm2->igrac = 0;
-	zm2->tezina = 1;
+	zm2->tezina = 0;
 	*n = MALA;
 	*brzina = SPORO;
 	zm1->redni = 1;
@@ -416,10 +416,12 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	clock_t end, before,pauzabegin,pauzaend;
 
 	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
-	SDL_Delay(3000);
+	SDL_Delay(2000);
+	
 	before = clock();
 	while (zivih > 1 && p) {
-		while (SDL_PollEvent(&e)) {
+	
+		while (SDL_PollEvent(&e)){
 			switch (e.type) {
 			case SDL_KEYDOWN:
 				switch (e.key.keysym.sym) {
