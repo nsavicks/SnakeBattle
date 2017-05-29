@@ -305,10 +305,10 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 		if (zm1->ziva) {
 			if (zm1->igrac == 0) {
 				if (zm1->tezina == 1) {
-					renderTexture(image[16], renderer, 270, 300, 100, 50);
+					renderTexture(image[17], renderer, 270, 300, 100, 50);
 				}
 				else {
-					renderTexture(image[17], renderer, 270, 300, 100, 50);
+					renderTexture(image[16], renderer, 270, 300, 100, 50);
 				}
 			}
 		}
@@ -347,10 +347,10 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 		}
 		if (zm3->ziva) {
 			if (zm3->tezina == 1) {
-				renderTexture(image[16], renderer, 270, 450, 100, 50);
+				renderTexture(image[17], renderer, 270, 450, 100, 50);
 			}
 			else {
-				renderTexture(image[17], renderer, 270, 450, 100, 50);
+				renderTexture(image[16], renderer, 270, 450, 100, 50);
 			}
 		}
 		renderTexture(image[20], renderer, 450, 450, 100, 50);
@@ -364,10 +364,10 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 		}
 		if (zm4->ziva) {
 			if (zm4->tezina == 1) {
-				renderTexture(image[16], renderer, 270, 525, 100, 50);
+				renderTexture(image[17], renderer, 270, 525, 100, 50);
 			}
 			else {
-				renderTexture(image[17], renderer, 270, 525, 100, 50);
+				renderTexture(image[16], renderer, 270, 525, 100, 50);
 			}
 		}
 		renderTexture(image[21], renderer, 450, 525, 100, 50);
@@ -433,7 +433,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 					}
 					else if (zm1->ziva && zm1->igrac) {
 						zm1->igrac = 0;
-						zm1->tezina = 1;
+						zm1->tezina = 0;
 					}
 					else if (zm1->ziva && (zm1->igrac == 0)) {
 						zm1->ziva = 0;
@@ -444,7 +444,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 					//p1
 					if (zm1->ziva && !zm1->igrac) {
 						if (zm1->tezina == 1)
-							zm1->tezina = 2;
+							zm1->tezina = 0;
 						else
 							zm1->tezina = 1;
 					}
@@ -457,7 +457,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 					}
 					else if (zm2->ziva && zm2->igrac) {
 						zm2->igrac = 0;
-						zm2->tezina = 1;
+						zm2->tezina = 0;
 					}
 					else if (zm2->ziva && (zm2->igrac == 0)) {
 						zm2->ziva = 0;
@@ -467,7 +467,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 					//p2
 					if (zm2->ziva && !zm2->igrac) {
 						if (zm2->tezina == 1)
-							zm2->tezina = 2;
+							zm2->tezina = 0;
 						else
 							zm2->tezina = 1;
 					}
@@ -479,7 +479,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 					}
 					else {
 						zm3->ziva = 1;
-						zm3->tezina = 1;
+						zm3->tezina = 0;
 						zm3->igrac = 0;
 					}
 				}
@@ -487,7 +487,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 					//p3
 					if (zm3->ziva) {
 						if (zm3->tezina == 1)
-							zm3->tezina = 2;
+							zm3->tezina = 0;
 						else
 							zm3->tezina = 1;
 					}
@@ -499,7 +499,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 					}
 					else {
 						zm4->ziva = 1;
-						zm4->tezina = 1;
+						zm4->tezina = 0;
 						zm4->igrac = 0;
 					}
 				}
@@ -507,7 +507,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 					//p4
 					if (zm4->ziva) {
 						if (zm4->tezina == 1)
-							zm4->tezina = 2;
+							zm4->tezina = 0;
 						else
 							zm4->tezina = 1;
 					}

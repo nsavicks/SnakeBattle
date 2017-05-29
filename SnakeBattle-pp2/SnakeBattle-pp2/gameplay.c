@@ -5,6 +5,82 @@
 #include <string.h>
 #include <ctype.h>
 
+
+int q_empty(queue q) {
+	if (q.front == q.rear)
+		return 1;
+	else
+		return 0;
+}
+
+void q_insert(queue *q, koord a) {
+	q->x[q->rear++] = a;
+}
+
+koord q_delete(queue *q) {
+	return q->x[q->front++];
+}
+
+queue q_init() {
+	queue q;
+	q.front = q.rear = 0;
+	return q;
+}
+
+int bfs(int si, int sj, int n, int mapa[][100],int granica) {
+	
+	int visited[200][200] = { 0 }, resenje=0,i;
+	queue Q;
+	koord k,trenutni;
+	Q = q_init();
+
+	visited[si][sj] = 1;
+	k.i = si;
+	k.j = sj;
+	q_insert(&Q, k);
+
+	while (!q_empty(Q) && resenje<=granica) {
+		trenutni = q_delete(&Q);
+		
+		
+		
+		if ((trenutni.i + 1 < n) && (!visited[trenutni.i + 1][trenutni.j]) && (!mapa[trenutni.i + 1][trenutni.j])) {
+			k.i = trenutni.i + 1;
+			k.j = trenutni.j; 
+			visited[k.i][k.j] = 1;
+			resenje++;
+			q_insert(&Q, k); 
+		}
+		if ((trenutni.i-1>=0)&&(!visited[trenutni.i - 1][trenutni.j]) && (!mapa[trenutni.i - 1][trenutni.j])) { 
+			k.i = trenutni.i - 1;
+			k.j = trenutni.j; 
+			visited[k.i][k.j] = 1; 
+			resenje++;
+			q_insert(&Q, k); 
+		}
+		if ((trenutni.j + 1<n) && (!visited[trenutni.i][trenutni.j + 1]) && (!mapa[trenutni.i][trenutni.j + 1])) {  
+			k.i = trenutni.i; 
+			k.j = trenutni.j + 1; 
+			visited[k.i][k.j] = 1; 
+			resenje++;
+			q_insert(&Q, k); 
+		}
+		if ((trenutni.j - 1 >= 0) && (!visited[trenutni.i][trenutni.j - 1]) && (!mapa[trenutni.i][trenutni.j - 1])) {  
+			k.i = trenutni.i; 
+			k.j = trenutni.j - 1; 
+			visited[k.i][k.j] = 1;  
+			resenje++;
+			q_insert(&Q, k); 
+		}
+
+
+	
+	}
+	
+
+	return resenje;
+}
+
 void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int *n, int *brzina) {
 	zm1->ziva = zm2->ziva = 1;
 	zm3->ziva = zm4->ziva = 0;
@@ -409,7 +485,7 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 }
 
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
-	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed, pobednik, pobednik_cpu;
+	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed, pobednik, pobednik_cpu,flag;
 	float vreme,pauzavreme=0;
 	SDL_Event e;
 	SDL_Texture *image;
@@ -419,43 +495,54 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	SDL_Delay(2000);
 	
 	before = clock();
+	
 	while (zivih > 1 && p) {
 	
+		flag = 1;
+
 		while (SDL_PollEvent(&e)){
 			switch (e.type) {
 			case SDL_KEYDOWN:
 				switch (e.key.keysym.sym) {
 				case SDLK_UP:
-					if (zm1.smer != DOLE && zm1.igrac)
+					if (zm1.smer != DOLE && zm1.igrac && flag) 
 						zm1.smer = GORE;
+					flag = 0;
 					break;
 				case SDLK_DOWN:
-					if (zm1.smer != GORE && zm1.igrac)
+					if (zm1.smer != GORE && zm1.igrac && flag)
 						zm1.smer = DOLE;
+					flag = 0;
 					break;
 				case SDLK_LEFT:
-					if (zm1.smer != DESNO && zm1.igrac)
+					if (zm1.smer != DESNO && zm1.igrac && flag)
 						zm1.smer = LEVO;
+					flag = 0;
 					break;
 				case SDLK_RIGHT:
-					if (zm1.smer != LEVO && zm1.igrac)
+					if (zm1.smer != LEVO && zm1.igrac && flag)
 						zm1.smer = DESNO;
+					flag = 0;
 					break;
 				case SDLK_w:
-					if (zm2.smer != DOLE && zm2.igrac)
+					if (zm2.smer != DOLE && zm2.igrac && flag)
 						zm2.smer = GORE;
+					flag = 0;
 					break;
 				case SDLK_s:
-					if (zm2.smer != GORE && zm2.igrac)
+					if (zm2.smer != GORE && zm2.igrac && flag)
 						zm2.smer = DOLE;
+					flag = 0;
 					break;
 				case SDLK_a:
-					if (zm2.smer != DESNO && zm2.igrac)
+					if (zm2.smer != DESNO && zm2.igrac && flag)
 						zm2.smer = LEVO;
+					flag = 0;
 					break;
 				case SDLK_d:
-					if (zm2.smer != LEVO && zm2.igrac)
+					if (zm2.smer != LEVO && zm2.igrac && flag)
 						zm2.smer = DESNO;
+					flag = 0;
 					break;
 				case SDLK_BACKSPACE:
 					p = 0;
@@ -485,9 +572,11 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 			} // END FIRST SWITCH
 		
 		}
+		
 		if (zm1.ziva) {
 			killed = 0;
-			if (!zm1.igrac) AiEasy(&zm1, mapa,n);
+			if (!zm1.igrac)
+				if (zm1.tezina == 1) AiHard(&zm1, mapa, n); else AiEasy(&zm1, mapa, n);
 			zm1 = nextMove(zm1, mapa, n, window, renderer, &killed);
 			
 			if (killed) {
@@ -498,7 +587,8 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		}
 		if (zm2.ziva) {
 			killed = 0;
-			if (!zm2.igrac) AiEasy(&zm2, mapa,n);
+			if (!zm2.igrac)
+				if (zm2.tezina == 1) AiHard(&zm2, mapa, n); else AiEasy(&zm2, mapa, n);
 			zm2 = nextMove(zm2, mapa, n, window, renderer, &killed);
 			
 			if (killed)
@@ -508,7 +598,8 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		}
 		if (zm3.ziva) {
 			killed = 0;
-			if (!zm3.igrac) AiEasy(&zm3, mapa,n);
+			if (!zm3.igrac)
+				if (zm3.tezina == 1) AiHard(&zm3, mapa, n); else AiEasy(&zm3, mapa, n);
 			zm3 = nextMove(zm3, mapa, n, window, renderer, &killed);
 			
 			if (killed)
@@ -518,7 +609,8 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 		}
 		if (zm4.ziva) {
 			killed = 0;
-			if (!zm4.igrac) AiEasy(&zm4, mapa,n);
+			if (!zm4.igrac)
+				if (zm4.tezina == 1) AiHard(&zm4, mapa, n); else AiEasy(&zm4, mapa, n);
 			zm4 = nextMove(zm4, mapa, n, window, renderer, &killed);
 			
 			if (killed)
@@ -792,61 +884,57 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer) {
 	return resenje;
 }
 
-void AiEasy(zmija *z,int mapa[][100],int n) {
-	srand(time(NULL));
-	int isprobao[4] = { 0 },novismer,p=1;
+void AiEasy(zmija *z, int mapa[][100], int n) {
+	int mogucnosti[4], max, novismer, i;
+	mogucnosti[0] = mogucnosti[1] = mogucnosti[2] = mogucnosti[3] = -1;
 
-	isprobao[abs(z->smer - 2)] = 1;
+	if ((z->glava.i + 1 < n) && (!mapa[z->glava.i + 1][z->glava.j]) && (z->smer != GORE)) {
+		mogucnosti[DOLE] = bfs(z->glava.i + 1, z->glava.j, n, mapa, 10);
+	}
+	if ((z->glava.i - 1 >= 0) && (!mapa[z->glava.i - 1][z->glava.j]) && (z->smer != DOLE)) {
+		mogucnosti[GORE] = bfs(z->glava.i - 1, z->glava.j, n, mapa, 10);
+	}
+	if ((z->glava.j + 1 < n) && (!mapa[z->glava.i][z->glava.j + 1]) && (z->smer != LEVO)) {
+		mogucnosti[DESNO] = bfs(z->glava.i, z->glava.j + 1, n, mapa, 10);
+	}
+	if ((z->glava.j - 1 >= 0) && (!mapa[z->glava.i][z->glava.j - 1]) && (z->smer != DESNO)) {
+		mogucnosti[LEVO] = bfs(z->glava.i, z->glava.j - 1, n, mapa, 10);
+	}
+	max = -1; novismer = z->smer;
+	for (i = 0; i < 4; i++) {
+		//printf("%d ", mogucnosti[i]);
+		if (mogucnosti[i] > max) { max = mogucnosti[i]; novismer = i; }
+	}
+	//printf("\n");
+	if (mogucnosti[z->smer] != max) {
+		z->smer = novismer;
+	}
+}
 
-	while (p) {
-		novismer = rand() % 4;
-		if (!isprobao[novismer]) {
-			switch (novismer) {
-			case GORE:
-				if (!mapa[z->glava.i - 1][z->glava.j] && z->glava.i > 0) {
-					z->smer = GORE;
-					p = 0;
-				}
-				else {
-					isprobao[GORE] = 1;
-				}
-				break;
-			case DOLE:
-				if (!mapa[z->glava.i + 1][z->glava.j] && z->glava.i < n - 1) {
-					z->smer = DOLE;
-					p = 0;
-				}
-				else {
-					isprobao[DOLE] = 1;
-				}
-				break;
-			case LEVO:
-				if (!mapa[z->glava.i][z->glava.j - 1] && z->glava.j > 0) {
-					z->smer = LEVO;
-					p = 0;
-				}
-				else {
-					isprobao[LEVO] = 1;
-				}
-				break;
-			case DESNO:
-				if (!mapa[z->glava.i][z->glava.j + 1] && z->glava.j < n - 1) {
-					z->smer = DESNO;
-					p = 0;
-				}
-				else {
-					isprobao[DESNO] = 1;
-				}
-				break;
-			default:
-				break;
-			} // END SWITCH
-		} // END IF
+void AiHard(zmija *z, int mapa[][100], int n) {
 
-		if (isprobao[GORE] && isprobao[DOLE] && isprobao[LEVO] && isprobao[DESNO]) p = 0;
+	int mogucnosti[4],max,novismer,i;
+	mogucnosti[0] = mogucnosti[1] = mogucnosti[2] = mogucnosti[3] = -1;
 
-		
-	} // END WHILE
-
-	
+	if ((z->glava.i + 1 < n) && (!mapa[z->glava.i + 1][z->glava.j]) && (z->smer != GORE)) {
+		mogucnosti[DOLE] = bfs(z->glava.i + 1, z->glava.j, n, mapa,500);
+	}
+	if ((z->glava.i - 1 >= 0) && (!mapa[z->glava.i - 1][z->glava.j]) && (z->smer != DOLE)) {
+		mogucnosti[GORE] = bfs(z->glava.i - 1, z->glava.j, n, mapa,500);
+	}
+	if ((z->glava.j + 1 < n) && (!mapa[z->glava.i][z->glava.j + 1]) && (z->smer != LEVO)) {
+		mogucnosti[DESNO] = bfs(z->glava.i, z->glava.j + 1, n, mapa,500);
+	}
+	if ((z->glava.j -1 >=0) && (!mapa[z->glava.i][z->glava.j - 1]) && (z->smer != DESNO)) {
+		mogucnosti[LEVO] = bfs(z->glava.i, z->glava.j - 1, n, mapa,500);
+	}
+	max = -1; novismer = z->smer;
+	for (i = 0; i < 4; i++) {
+		//printf("%d ", mogucnosti[i]);
+		if (mogucnosti[i] > max) { max = mogucnosti[i]; novismer = i; }
+	}
+	//printf("\n");
+	if (mogucnosti[z->smer] != max) { 
+		z->smer = novismer;
+	}
 }

@@ -7,7 +7,7 @@
 #define DOLE 2
 #define LEVO 3
 #define SPORO 100
-#define SREDNJE 50
+#define SREDNJE 75
 #define BRZO 25
 
 #include <stdio.h>
@@ -29,6 +29,20 @@ typedef struct StOsoba {
 	float rezultat;
 }osoba;
 
+typedef struct {
+	koord x[10000];
+	int front, rear;
+} queue;
+
+int q_empty(queue q);
+
+queue q_init();
+
+koord q_delete(queue *q);
+
+void q_insert(queue *q, koord a);
+
+int bfs(int si, int sj, int n, int mapa[][100]);
 
 zmija kill(zmija z, int mapa[][100]);
 
@@ -49,5 +63,7 @@ char *crypt(char *str);
 char *decrypt(char *str);
 
 void AiEasy(zmija *z, int mapa[][100], int n);
+
+void AiHard(zmija *z, int mapa[][100], int n);
 
 #endif
