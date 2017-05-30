@@ -418,6 +418,8 @@ void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 
 zmija kill(zmija z, int mapa[][100]) {
 	int i;
+
+
 	for (i = 0; i < z.duzina; i++) {
 		mapa[z.telo[i].i][z.telo[i].j] = 0;
 	}
@@ -489,8 +491,12 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	float vreme,pauzavreme=0;
 	SDL_Event e;
 	SDL_Texture *image;
+	Mix_Music *pesma = NULL;
 	clock_t end, before,pauzabegin,pauzaend;
 
+	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+	pesma = Mix_LoadMUS("music/play.wav");
+	Mix_PlayMusic(pesma, -1);
 	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
 	SDL_Delay(2000);
 	
@@ -647,6 +653,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
 	zm4 = kill(zm4, mapa);
+	Mix_HaltMusic();
 	
 }
 
