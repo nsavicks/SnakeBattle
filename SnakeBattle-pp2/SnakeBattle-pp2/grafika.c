@@ -816,3 +816,68 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer,char *datoteka) {
 	SDL_DestroyTexture(pozadina);
 	fclose(fp);
 }
+
+void krajIgre(SDL_Window *window, SDL_Renderer *renderer,float vreme, int pobednik) {
+
+	SDL_Texture *slika,*prva,*druga,*treca,*cetvrta;
+	TTF_Font *Sans;
+	SDL_Color Black = { 0,0,0};
+	SDL_Surface* surfaceMessage;
+	SDL_Texture* Message;
+	SDL_Rect Message_rect;
+	SDL_Event e;
+	char rez[10];
+
+	Sans = TTF_OpenFont("fonts/tajmer.ttf", 10);
+
+	slika = loadTexture("img/krajigre.jpg", renderer);
+	prva = loadTexture("img/z1_up.png", renderer);
+	druga = loadTexture("img/z2_up.png", renderer);
+	treca = loadTexture("img/z3_up.png", renderer);
+	cetvrta = loadTexture("img/z4_up.png", renderer);
+	renderTexture(slika, renderer, 100, 200, 400, 200);
+
+	
+
+	snprintf(rez, 10, "%.2f", vreme);
+
+	surfaceMessage = TTF_RenderText_Solid(Sans, rez, Black);
+
+	Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+	Message_rect;
+	Message_rect.x = 410;
+	Message_rect.y = 350;
+	Message_rect.w = 80;
+	Message_rect.h = 40;
+
+	SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
+	
+
+	switch (pobednik) {
+
+	case 1:
+		renderTexture(prva, renderer, 420, 220, 50, 50);
+		break;
+	case 2:
+		renderTexture(druga, renderer, 420, 220, 50, 50);
+		break;
+	case 3:
+		renderTexture(treca, renderer, 420, 220, 50, 50);
+		break;
+	case 4:
+		renderTexture(cetvrta, renderer, 420, 220, 50, 50);
+		break;
+	}
+
+	SDL_RenderPresent(renderer);
+
+	while (SDL_WaitEvent(&e)) {
+		switch (e.type) {
+		case SDL_KEYDOWN: return; break;
+		}
+	}
+	
+
+}

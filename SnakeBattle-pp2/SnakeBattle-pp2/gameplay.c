@@ -496,13 +496,13 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
 	pesma = Mix_LoadMUS("music/play.wav");
-	Mix_PlayMusic(pesma, -1);
+	//Mix_PlayMusic(pesma, -1);
 	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
 	SDL_Delay(2000);
 	
 	before = clock();
 	
-	while (zivih > 1 && p) {
+	while (zivih > 1) {
 	
 		flag = 1;
 
@@ -551,7 +551,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 					flag = 0;
 					break;
 				case SDLK_BACKSPACE:
-					p = 0;
+					return;
 					break;
 				case SDLK_p:
 					pauzabegin = clock();
@@ -647,8 +647,10 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	
 		}
 	}
+	krajIgre(window, renderer,vreme,zm1.ziva*zm1.redni+zm2.ziva*zm2.redni+zm3.ziva*zm3.redni+zm4.ziva*zm4.redni);
+
 	if (p && pobednik_cpu) 
-		checkHighscore(vreme, n, window, renderer);
+		checkHighscore(vreme, n, window, renderer, zm1.ziva*zm1.redni + zm2.ziva*zm2.redni + zm3.ziva*zm3.redni + zm4.ziva*zm4.redni);
 	zm1 = kill(zm1, mapa);
 	zm2 = kill(zm2, mapa);
 	zm3 = kill(zm3, mapa);
@@ -692,7 +694,7 @@ char *decrypt(char *str) {
 	return resenje;
 }
 
-void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer *renderer) {
+void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer *renderer,int pobednik) {
 
 	int n, i, p, j, k;
 	osoba highscore[11], igrac;
@@ -759,10 +761,8 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 			for (j = n - 1; j > i; j--)
 				highscore[j] = highscore[j - 1];
 
-			ime_pom = ucitaj(window, renderer);
-
-			//scanf("%s", ime);
-			igrac.ime = ime_pom;
+			ime_pom = ucitaj(window, renderer,vreme,pobednik);
+			strcpy(igrac.ime, ime_pom);
 			igrac.ime = crypt(igrac.ime);
 			igrac.rezultat = vreme;
 			highscore[i] = igrac;
@@ -772,9 +772,7 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 	}
 	if (!p && n < 10) {
 		
-		ime_pom = ucitaj(window, renderer);
-		//scanf("%s", ime);
-
+		ime_pom = ucitaj(window, renderer,vreme,pobednik);
 		strcpy(igrac.ime, ime_pom);
 		igrac.ime = crypt(igrac.ime);
 		igrac.rezultat = vreme;
@@ -809,35 +807,81 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 		free(highscore[i].ime);
 	}
 
+	
 	free(pomocni);
 	fclose(fp);
 }
 
-char *ucitaj(SDL_Window *window, SDL_Renderer *renderer) {
+char *ucitaj(SDL_Window *window, SDL_Renderer *renderer,float vreme,int pobednik) {
 	char *resenje, text[36] = "Molimo unesite vase ime i prezime: ", res[200] = "";
 	TTF_Font *Sans;
 	SDL_Color Black = { 0, 0, 0 };
 	SDL_Surface *molimoSurface, *imeSurface;
-	SDL_Texture* molimo, *ime, *white;
+	SDL_Surface* surfaceMessage;
+	SDL_Texture* Message;
+	SDL_Rect Message_rect;
+	SDL_Texture* molimo, *ime, *white,*prva,*druga,*treca,*cetvrta;
 	SDL_Event e;
+	char rez[10];
+
+
 	int i = 0, done = 0;
 
 	Sans = TTF_OpenFont("fonts/tajmer.ttf", 12);
 	
 	molimoSurface = TTF_RenderText_Solid(Sans, text, Black);
 	molimo = SDL_CreateTextureFromSurface(renderer, molimoSurface);
-	white = loadTexture("img/highscore/white.png", renderer);
+	white = loadTexture("img/krajigreunos.jpg", renderer);
 
 
 	SDL_StartTextInput();
 	while (!done) {
-		SDL_RenderClear(renderer);
-		renderTexture(white, renderer, 0, 0, 600, 600);
-		renderTexture(molimo, renderer, 50, 275, 35 * 10, 50);
+		renderTexture(white, renderer, 100, 200, 400, 200);
+
+		prva = loadTexture("img/z1_up.png", renderer);
+		druga = loadTexture("img/z2_up.png", renderer);
+		treca = loadTexture("img/z3_up.png", renderer);
+		cetvrta = loadTexture("img/z4_up.png", renderer);
+
+
+
+		snprintf(rez, 10, "%.2f", vreme);
+
+		surfaceMessage = TTF_RenderText_Solid(Sans, rez, Black);
+
+		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+		Message_rect;
+		Message_rect.x = 410;
+		Message_rect.y = 350;
+		Message_rect.w = 80;
+		Message_rect.h = 40;
+
+		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
+
+
+		switch (pobednik) {
+
+		case 1:
+			renderTexture(prva, renderer, 420, 220, 50, 50);
+			break;
+		case 2:
+			renderTexture(druga, renderer, 420, 220, 50, 50);
+			break;
+		case 3:
+			renderTexture(treca, renderer, 420, 220, 50, 50);
+			break;
+		case 4:
+			renderTexture(cetvrta, renderer, 420, 220, 50, 50);
+			break;
+		}
+
+		//renderTexture(molimo, renderer, 50, 275, 35 * 10, 50);
 
 		imeSurface = TTF_RenderText_Solid(Sans, res, Black);
 		ime = SDL_CreateTextureFromSurface(renderer, imeSurface);
-		renderTexture(ime, renderer, 50 + 35 * 10 + 5, 275, 10 * strlen(res), 50);
+		renderTexture(ime, renderer, 130,345, 10 * strlen(res), 50);
 
 		SDL_RenderPresent(renderer);
 

@@ -54,9 +54,9 @@ void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 
 void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n);
 
-void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer *renderer);
+void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer *renderer, int pobednik);
 
-char *ucitaj(SDL_Window *window, SDL_Renderer *renderer);
+char *ucitaj(SDL_Window *window, SDL_Renderer *renderer,float vreme,int pobednik);
 
 char *crypt(char *str);
 

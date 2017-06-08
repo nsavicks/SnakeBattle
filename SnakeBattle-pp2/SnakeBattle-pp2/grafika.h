@@ -40,4 +40,6 @@ void prikaziHighscore(SDL_Window *window, SDL_Renderer *renderer);
 
 void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer, char *datoteka);
 
+void krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobednik);
+
 #endif // !grafika/
