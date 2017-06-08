@@ -755,17 +755,10 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer,char *datoteka) {
 			system("pause");
 			exit(3);
 		}
-		highscore[n].prezime = malloc(1000);
-		if (!highscore[n].prezime) {
-			printf("Neuspela alokacija memorije\n");
-			system("pause");
-			exit(3);
-		}
-		fscanf(fp, "%s %s %s", highscore[n].ime,highscore[n].prezime,pomocni);
+		fscanf(fp, "%s %s", highscore[n].ime,pomocni);
 		pomocni = decrypt(pomocni);
 		highscore[n].rezultat = atof(pomocni);
 		highscore[n].ime = decrypt(highscore[n].ime);
-		highscore[n].prezime = decrypt(highscore[n].prezime);
 		n++;
 	}
 	
@@ -783,17 +776,7 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer,char *datoteka) {
 		Message_rect.h = 40; 
 
 		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-		surfaceMessage = TTF_RenderText_Solid(Sans, highscore[i].prezime, Black); 
-		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); 
-
-		Message_rect;
-		Message_rect.x = 260;  
-		Message_rect.y = 160 + pomeraj; 
-		Message_rect.w = 100; 
-		Message_rect.h = 40; 
-
-		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-
+		
 		snprintf(rez, 10, "%.2f", highscore[i].rezultat);
 
 		surfaceMessage = TTF_RenderText_Solid(Sans, rez, Black); 
@@ -812,7 +795,6 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer,char *datoteka) {
 		pomeraj+=40;
 
 		free(highscore[i].ime);
-		free(highscore[i].prezime);
 	}
 
 	while (1) {

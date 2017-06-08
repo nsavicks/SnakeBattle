@@ -696,7 +696,7 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 
 	int n, i, p, j, k;
 	osoba highscore[11], igrac;
-	char ime[50], prezime[50], pom, *pomocni, *nickname;
+	char ime[50], pom, *pomocni, *nickname;
 	FILE *fp = NULL;
 
 	igrac.ime = malloc(50);
@@ -706,12 +706,7 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 		exit(5);
 	}
 
-	igrac.prezime = malloc(50);
-	if (!igrac.prezime) {
-		printf("Neuspesna alokacija memorije.\n");
-		system("pause");
-		exit(5);
-	}
+
 
 	pomocni = malloc(200);
 	if (!pomocni) {
@@ -749,9 +744,7 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 
 	while (pom=fgetc(fp)!=EOF) {
 		highscore[n].ime = malloc(1000);
-		highscore[n].prezime = malloc(1000);
 		fscanf(fp, "%s", highscore[n].ime);
-		fscanf(fp, "%s", highscore[n].prezime);
 		fscanf(fp, "%s", pomocni);
 		pomocni = decrypt(pomocni);
 		highscore[n].rezultat = atof(pomocni);
@@ -768,11 +761,9 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 
 			//nickname = ucitaj(window, renderer);
 
-			scanf("%s %s", ime,prezime);
+			scanf("%s", ime);
 			igrac.ime = ime;
-			igrac.prezime = prezime;
 			igrac.ime = crypt(igrac.ime);
-			igrac.prezime = crypt(igrac.prezime);
 			igrac.rezultat = vreme;
 			highscore[i] = igrac;
 			p = 1;
@@ -782,12 +773,10 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 	if (!p && n < 10) {
 		
 		//nickname = ucitaj(window, renderer);
-		scanf("%s %s", ime, prezime);
+		scanf("%s", ime);
 
 		igrac.ime = ime;
-		igrac.prezime = prezime;
 		igrac.ime = crypt(igrac.ime);
-		igrac.prezime = crypt(igrac.prezime);
 		igrac.rezultat = vreme;
 		highscore[n] = igrac;
 		n++;
@@ -816,9 +805,8 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 	for (i = 0; i < n; i++) {
 		snprintf(pomocni, 10, "%f", highscore[i].rezultat);
 		pomocni = crypt(pomocni);
-		fprintf(fp, " %s %s %s", highscore[i].ime, highscore[i].prezime, pomocni);
+		fprintf(fp, " %s %s", highscore[i].ime, pomocni);
 		free(highscore[i].ime);
-		free(highscore[i].prezime);
 	}
 
 	free(pomocni);
