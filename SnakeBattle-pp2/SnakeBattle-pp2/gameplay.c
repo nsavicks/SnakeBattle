@@ -496,7 +496,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
 	pesma = Mix_LoadMUS("music/play.wav");
-	//Mix_PlayMusic(pesma, -1);
+	Mix_PlayMusic(pesma, -1);
 	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
 	SDL_Delay(2000);
 	
