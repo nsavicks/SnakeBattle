@@ -6,28 +6,28 @@
 #include <ctype.h>
 
 
-int q_empty(queue q) {
+int q_empty(queue q) {  // Provera da li je red prazan
 	if (q.front == q.rear)
 		return 1;
 	else
 		return 0;
 }
 
-void q_insert(queue *q, koord a) {
+void q_insert(queue *q, koord a) { // Ubacivanje elementa u red
 	q->x[q->rear++] = a;
 }
 
-koord q_delete(queue *q) {
+koord q_delete(queue *q) { // Brisanje elementa iz reda
 	return q->x[q->front++];
 }
 
-queue q_init() {
+queue q_init() { // Inicijalizacija reda
 	queue q;
 	q.front = q.rear = 0;
 	return q;
 }
 
-int bfs(int si, int sj, int n, int mapa[][100],int granica) {
+int bfs(int si, int sj, int n, int mapa[][100],int granica) { // BFS koji vraca broj dostiznih polja od neke date pozicije (si,sj)
 	
 	int visited[200][200] = { 0 }, resenje=0,i;
 	queue Q;
@@ -81,7 +81,7 @@ int bfs(int si, int sj, int n, int mapa[][100],int granica) {
 	return resenje;
 }
 
-void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int *n, int *brzina) {
+void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int *n, int *brzina) { // Pocetna inicijalizacija svih parametara igre
 	zm1->ziva = zm2->ziva = 1;
 	zm3->ziva = zm4->ziva = 0;
 	zm1->igrac = 1; zm2->igrac = 0;
@@ -95,7 +95,7 @@ void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 	VEL = 600 / (*n);
 }
 
-void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n) {
+void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n) { // Vrsi rasporedjivanje pocetnih pozicija zmija na pocetku igre
 	srand(time(NULL));
 	int igraca = zm1->ziva + zm2->ziva + zm3->ziva + zm4->ziva;
 	int rednibroj = 1;
@@ -183,7 +183,7 @@ void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 			mapa[i][j] = zm4->redni;
 			rednibroj++;
 		} // KRAJ ZM4
-	} // KRAJ 2 IGRACA
+	} // KRAJ 2 IGRACA  --- Prvog igraca smesta u gornji levi kvadrant a drugog u donji desni
 	else if (igraca == 3) {
 		if (zm1->ziva) {
 			if (rednibroj == 1) {
@@ -289,7 +289,7 @@ void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 			rednibroj++;
 
 		} // KRAJ ZM4
-	} // KRAJ IGRACA 3
+	} // KRAJ IGRACA 3 -- Prvog igraca smesta gore levo, drugog gore desno, a treceg dole po sredini
 	else if (igraca == 4) {
 		if (zm1->ziva) {
 			if (rednibroj == 1) {
@@ -407,16 +407,12 @@ void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 			mapa[i][j] = zm4->redni;
 			rednibroj++;
 		} // KRAJ ZM4
-	} // KRAJ 4 ZMIJE
-	else {
-
-
-	}
+	} // KRAJ 4 ZMIJE  --- Svaka zmija u po jednom kvadrantu
 
 
 }
 
-zmija kill(zmija z, int mapa[][100]) {
+zmija kill(zmija z, int mapa[][100]) { // Ubija zmiju, resetuje sve njene vrednosti i azurira mapu
 	int i;
 
 
@@ -429,6 +425,8 @@ zmija kill(zmija z, int mapa[][100]) {
 }
 
 zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer *renderer, int *killed) {
+
+	// Proverava sta se desava sa zmijom u sledecem potezu, da li se ubija ili ne
 
 	int komanda = z.smer;
 	switch (komanda) {
@@ -487,6 +485,8 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 }
 
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
+
+	// Glavna funkcija koja pokrece igru
 	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed, pobednik, pobednik_cpu,flag;
 	float vreme,pauzavreme=0;
 	SDL_Event e;
@@ -494,10 +494,12 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	Mix_Music *pesma = NULL;
 	clock_t end, before,pauzabegin,pauzaend;
 
+	if (zivih <= 1) return;
+
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
 	pesma = Mix_LoadMUS("music/play.wav");
 	Mix_PlayMusic(pesma, -1);
-	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4); // iscrtava mapu
 	SDL_Delay(2000);
 	
 	before = clock();
@@ -551,6 +553,13 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 					flag = 0;
 					break;
 				case SDLK_BACKSPACE:
+
+					zm1 = kill(zm1, mapa);
+					zm2 = kill(zm2, mapa);
+					zm3 = kill(zm3, mapa);
+					zm4 = kill(zm4, mapa);
+					Mix_HaltMusic();
+
 					return;
 					break;
 				case SDLK_p:
