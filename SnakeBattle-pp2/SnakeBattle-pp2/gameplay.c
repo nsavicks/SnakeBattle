@@ -696,7 +696,7 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 
 	int n, i, p, j, k;
 	osoba highscore[11], igrac;
-	char ime[50], pom, *pomocni, *nickname;
+	char ime[50], pom, *pomocni, *ime_pom;
 	FILE *fp = NULL;
 
 	igrac.ime = malloc(50);
@@ -715,8 +715,8 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 		exit(5);
 	}
 
-	nickname = malloc(200);
-	if (!nickname) {
+	ime_pom = malloc(200);
+	if (!ime_pom) {
 		printf("Neuspela alokacija memorije\n");
 		system("pause");
 		exit(3);
@@ -759,10 +759,10 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 			for (j = n - 1; j > i; j--)
 				highscore[j] = highscore[j - 1];
 
-			//nickname = ucitaj(window, renderer);
+			ime_pom = ucitaj(window, renderer);
 
-			scanf("%s", ime);
-			igrac.ime = ime;
+			//scanf("%s", ime);
+			igrac.ime = ime_pom;
 			igrac.ime = crypt(igrac.ime);
 			igrac.rezultat = vreme;
 			highscore[i] = igrac;
@@ -772,10 +772,10 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 	}
 	if (!p && n < 10) {
 		
-		//nickname = ucitaj(window, renderer);
-		scanf("%s", ime);
+		ime_pom = ucitaj(window, renderer);
+		//scanf("%s", ime);
 
-		igrac.ime = ime;
+		strcpy(igrac.ime, ime_pom);
 		igrac.ime = crypt(igrac.ime);
 		igrac.rezultat = vreme;
 		highscore[n] = igrac;
@@ -833,11 +833,11 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer) {
 	while (!done) {
 		SDL_RenderClear(renderer);
 		renderTexture(white, renderer, 0, 0, 600, 600);
-		renderTexture(molimo, renderer, 50, 275, 35 * 5, 50);
+		renderTexture(molimo, renderer, 50, 275, 35 * 10, 50);
 
 		imeSurface = TTF_RenderText_Solid(Sans, res, Black);
 		ime = SDL_CreateTextureFromSurface(renderer, imeSurface);
-		renderTexture(ime, renderer, 50 + 35 * 5 + 5, 275, 5 * strlen(res), 50);
+		renderTexture(ime, renderer, 50 + 35 * 10 + 5, 275, 10 * strlen(res), 50);
 
 		SDL_RenderPresent(renderer);
 
