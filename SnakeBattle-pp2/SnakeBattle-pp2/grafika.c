@@ -238,9 +238,9 @@ void ispis(SDL_Window *window, SDL_Renderer *renderer, int mapa[][100], int n, z
 		SDL_DestroyTexture(image[i]);
 }
 
-void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n, int *brzina, SDL_Window *window, SDL_Renderer *renderer) {
+void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n, int *brzina, SDL_Window *window, SDL_Renderer *renderer, int *muzika) {
 	int nazad = 0, i, j, k = 0;
-	SDL_Texture *image[24];
+	SDL_Texture *image[26];
 	image[0] = loadTexture("img/menu/background.jpg", renderer);
 	image[1] = loadTexture("img/opcije/nazad.jpg", renderer);
 	image[2] = loadTexture("img/opcije/velicinamala.png", renderer);
@@ -265,11 +265,18 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 	image[21] = loadTexture("img/z4_body.png", renderer);
 	image[22] = loadTexture("img/opcije/strelicaL.png", renderer);
 	image[23] = loadTexture("img/opcije/strelicaD.png", renderer);
+	image[24] = loadTexture("img/opcije/muzikaOn.png", renderer);
+	image[25] = loadTexture("img/opcije/muzikaOff.png", renderer);
 	SDL_Event e;
 	while (!nazad) {
 		renderTexture(image[0], renderer, 0, 0, 600, 600);
 
 		renderTexture(image[1], renderer, 0, 0, 50, 50);
+
+		if (*muzika)
+			renderTexture(image[24], renderer, 550, 0, 50, 50);
+		else
+			renderTexture(image[25], renderer, 550, 0, 50, 50);
 
 		if (*n == MALA) {
 			renderTexture(image[2], renderer, 150, 50, 300, 80);
@@ -390,8 +397,13 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 			case SDL_MOUSEBUTTONDOWN:
 				if (i > 0 && i < 50 && j > 0 && j < 50) {
 					nazad = 1;
-					
 					continue;
+				}
+				if (i > 550 && i < 600 && j > 0 && j < 50) {
+					if (*muzika)
+						*muzika = 0;
+					else
+						*muzika = 1;
 				}
 				if (i > 150 && i < 200 && j > 50 && j < 130) {
 					if (*n == MALA)
@@ -537,7 +549,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 		SDL_RenderPresent(renderer);
 		SDL_RenderClear(renderer);
 	}
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < 26; i++)
 		SDL_DestroyTexture(image[i]);
 	VEL = 600 / (*n);
 }

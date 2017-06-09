@@ -6,7 +6,7 @@ int main() {
 	SDL_Window *window = NULL;
 	SDL_Renderer *rend = NULL;
 	SDL_Texture *image = NULL;
-	int opcija, n, brzina, i, j, mapa[100][100] = { 0 };
+	int opcija, n, brzina, i, j, mapa[100][100] = { 0 }, muzika;
 	zmija zm1, zm2, zm3, zm4;
 	TTF_Init();
  
@@ -16,7 +16,7 @@ int main() {
 
 
 
-	setdefault(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina);
+	setdefault(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina, &muzika);
 
 	while (1) {
 
@@ -31,7 +31,7 @@ int main() {
 			rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 			podesimapu(&zm1, &zm2, &zm3, &zm4, mapa, n);
-			play(zm1, zm2, zm3, zm4, mapa, n, brzina, window, rend);
+			play(zm1, zm2, zm3, zm4, mapa, n, brzina, window, rend, muzika);
 
 			SDL_DestroyWindow(window);
 			SDL_DestroyRenderer(rend);
@@ -40,7 +40,7 @@ int main() {
 			rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 			break;
 		case 2:
-			opcije(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina, window, rend);
+			opcije(&zm1, &zm2, &zm3, &zm4, mapa, &n, &brzina, window, rend, &muzika);
 			break;
 		case 3:
 			prikaziHighscore(window, rend);

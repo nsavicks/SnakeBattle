@@ -32,7 +32,7 @@ void izlaz(SDL_Window *window, SDL_Renderer *renderer);
 
 void ispis(SDL_Window *window, SDL_Renderer *renderer, int mapa[][100], int n, zmija zm1, zmija zm2, zmija zm3, zmija zm4);
 
-void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n,int *brzina, SDL_Window *window, SDL_Renderer *renderer);
+void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], int *n,int *brzina, SDL_Window *window, SDL_Renderer *renderer, int *muzika);
 
 void update_screen(zmija zm, int mapa[][100], int n, SDL_Window *window, SDL_Renderer *renderer);
 

@@ -81,13 +81,14 @@ int bfs(int si, int sj, int n, int mapa[][100],int granica) { // BFS koji vraca 
 	return resenje;
 }
 
-void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int *n, int *brzina) { // Pocetna inicijalizacija svih parametara igre
+void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int *n, int *brzina, int *muzika) { // Pocetna inicijalizacija svih parametara igre
 	zm1->ziva = zm2->ziva = 1;
 	zm3->ziva = zm4->ziva = 0;
 	zm1->igrac = 1; zm2->igrac = 0;
 	zm2->tezina = 0;
 	*n = MALA;
 	*brzina = SPORO;
+	*muzika = 1;
 	zm1->redni = 1;
 	zm2->redni = 2;
 	zm3->redni = 3;
@@ -484,7 +485,7 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 	return z;
 }
 
-void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer) {
+void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer, int muzika) {
 
 	// Glavna funkcija koja pokrece igru
 	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed, pobednik, pobednik_cpu,flag;
@@ -503,7 +504,8 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 
 	pregame(window, renderer);
 
-	Mix_PlayMusic(pesma, -1);
+	if (muzika)
+		Mix_PlayMusic(pesma, -1);
 
 	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
 
