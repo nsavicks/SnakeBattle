@@ -749,16 +749,16 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer,char *datoteka) {
 	n = 0;
 
 	while (pom=fgetc(fp)!=EOF) { 
-		highscore[n].ime = malloc(1000);
-		if (!highscore[n].ime) {
+		highscore[n].username = malloc(1000);
+		if (!highscore[n].username) {
 			printf("Neuspela alokacija memorije\n");
 			system("pause");
 			exit(3);
 		}
-		fscanf(fp, "%s %s", highscore[n].ime,pomocni);
+		fscanf(fp, "%s %s", highscore[n].username,pomocni);
 		pomocni = decrypt(pomocni);
 		highscore[n].rezultat = atof(pomocni);
-		highscore[n].ime = decrypt(highscore[n].ime);
+		highscore[n].username = decrypt(highscore[n].username);
 		n++;
 	}
 	
@@ -766,13 +766,13 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer,char *datoteka) {
 	for (i = 0; i< n; i++) {
 
 		Sans = TTF_OpenFont("fonts/tajmer.ttf", 12); 
-		surfaceMessage = TTF_RenderText_Solid(Sans, highscore[i].ime, Black); 
+		surfaceMessage = TTF_RenderText_Solid(Sans, highscore[i].username, Black); 
 		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); 
 
 		Message_rect; 
 		Message_rect.x = 120;  
 		Message_rect.y = 160 + pomeraj; 
-		Message_rect.w = 100; 
+		Message_rect.w = 150; 
 		Message_rect.h = 40; 
 
 		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
@@ -794,7 +794,7 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer,char *datoteka) {
 		SDL_RenderPresent(renderer);
 		pomeraj+=40;
 
-		free(highscore[i].ime);
+		free(highscore[i].username);
 	}
 
 	while (1) {
@@ -879,5 +879,33 @@ void krajIgre(SDL_Window *window, SDL_Renderer *renderer,float vreme, int pobedn
 		}
 	}
 	
+	SDL_DestroyTexture(slika);
+	SDL_DestroyTexture(prva);
+	SDL_DestroyTexture(druga);
+	SDL_DestroyTexture(treca);
+	SDL_DestroyTexture(cetvrta);
+	SDL_DestroyTexture(Message);
+
+}
+
+void pregame(SDL_Window *window, SDL_Renderer *renderer) {
+
+	SDL_Texture *slika;
+	SDL_Event e;
+
+	slika = loadTexture("img/pregame.jpg", renderer);
+	renderTexture(slika, renderer, 100, 200, 400, 200);
+
+	SDL_RenderPresent(renderer);
+
+	while (SDL_WaitEvent(&e)) {
+		switch (e.type) {
+		case SDL_KEYDOWN:
+			if (e.key.keysym.sym == SDLK_SPACE) return;
+			break;
+		}
+	}
+
+	SDL_DestroyTexture(slika);
 
 }

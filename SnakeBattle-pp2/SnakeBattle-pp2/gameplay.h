@@ -25,7 +25,7 @@ typedef struct zm {
 	short smer, ziva, igrac, tezina, redni;
 }zmija;
 typedef struct StOsoba {
-	char *ime, *prezime;
+	char *username;
 	float rezultat;
 }osoba;
 

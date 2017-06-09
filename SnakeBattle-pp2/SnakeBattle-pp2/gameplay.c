@@ -498,8 +498,15 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
 	pesma = Mix_LoadMUS("music/play.wav");
-	Mix_PlayMusic(pesma, -1);
+	
 	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4); // iscrtava mapu
+
+	pregame(window, renderer);
+
+	Mix_PlayMusic(pesma, -1);
+
+	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+
 	SDL_Delay(2000);
 	
 	before = clock();
@@ -710,8 +717,8 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 	char ime[50], pom, *pomocni, *ime_pom;
 	FILE *fp = NULL;
 
-	igrac.ime = malloc(50);
-	if (!igrac.ime) {
+	igrac.username = malloc(50);
+	if (!igrac.username) {
 		printf("Neuspesna alokacija memorije.\n");
 		system("pause");
 		exit(5);
@@ -754,8 +761,8 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 	n = 0;
 
 	while (pom=fgetc(fp)!=EOF) {
-		highscore[n].ime = malloc(1000);
-		fscanf(fp, "%s", highscore[n].ime);
+		highscore[n].username = malloc(1000);
+		fscanf(fp, "%s", highscore[n].username);
 		fscanf(fp, "%s", pomocni);
 		pomocni = decrypt(pomocni);
 		highscore[n].rezultat = atof(pomocni);
@@ -771,8 +778,8 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 				highscore[j] = highscore[j - 1];
 
 			ime_pom = ucitaj(window, renderer,vreme,pobednik);
-			strcpy(igrac.ime, ime_pom);
-			igrac.ime = crypt(igrac.ime);
+			strcpy(igrac.username, ime_pom);
+			igrac.username = crypt(igrac.username);
 			igrac.rezultat = vreme;
 			highscore[i] = igrac;
 			p = 1;
@@ -782,8 +789,8 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 	if (!p && n < 10) {
 		
 		ime_pom = ucitaj(window, renderer,vreme,pobednik);
-		strcpy(igrac.ime, ime_pom);
-		igrac.ime = crypt(igrac.ime);
+		strcpy(igrac.username, ime_pom);
+		igrac.username = crypt(igrac.username);
 		igrac.rezultat = vreme;
 		highscore[n] = igrac;
 		n++;
@@ -812,8 +819,8 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 	for (i = 0; i < n; i++) {
 		snprintf(pomocni, 10, "%f", highscore[i].rezultat);
 		pomocni = crypt(pomocni);
-		fprintf(fp, " %s %s", highscore[i].ime, pomocni);
-		free(highscore[i].ime);
+		fprintf(fp, " %s %s", highscore[i].username, pomocni);
+		free(highscore[i].username);
 	}
 
 	
