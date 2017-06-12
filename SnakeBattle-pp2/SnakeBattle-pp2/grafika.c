@@ -320,7 +320,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 			}
 		}
 		renderTexture(image[18], renderer, 450, 300, 100, 50);
-		
+
 		renderTexture(image[9], renderer, 10, 375, 50, 50);
 		if (zm2->ziva == 1) {
 			if (zm2->igrac == 0) {
@@ -344,10 +344,10 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 			}
 		}
 		renderTexture(image[19], renderer, 450, 375, 100, 50);
-		
+
 		renderTexture(image[10], renderer, 10, 450, 50, 50);
 		if (zm3->ziva == 1) {
-			renderTexture(image[13], renderer, 110 , 450, 100, 50);
+			renderTexture(image[13], renderer, 110, 450, 100, 50);
 		}
 		else {
 			renderTexture(image[12], renderer, 110, 450, 100, 50);
@@ -361,7 +361,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 			}
 		}
 		renderTexture(image[20], renderer, 450, 450, 100, 50);
-		
+
 		renderTexture(image[11], renderer, 10, 525, 50, 50);
 		if (zm4->ziva == 1) {
 			renderTexture(image[13], renderer, 110, 525, 100, 50);
@@ -378,16 +378,16 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 			}
 		}
 		renderTexture(image[21], renderer, 450, 525, 100, 50);
-		
-		if (SDL_WaitEvent(&e)!=0) {
+
+		if (SDL_WaitEvent(&e) != 0) {
 			i = e.motion.x; j = e.motion.y;
 			switch (e.type) {
 			case SDL_MOUSEMOTION:
-				if (i > 150 && i < 200 && j > 50 && j < 130) 
+				if (i > 150 && i < 200 && j > 50 && j < 130)
 					k = 1;
-				else if (i > 400 && i < 450 && j > 50 && j < 130) 
+				else if (i > 400 && i < 450 && j > 50 && j < 130)
 					k = 2;
-				else if (i > 150 && i < 200 && j > 150 && j < 230) 
+				else if (i > 150 && i < 200 && j > 150 && j < 230)
 					k = 3;
 				else if (i > 400 && i < 450 && j > 150 && j < 230)
 					k = 4;
@@ -450,7 +450,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 					else if (zm1->ziva && (zm1->igrac == 0)) {
 						zm1->ziva = 0;
 					}
-						
+
 				}
 				else if (i > 270 && i < 370 && j > 300 && j < 350) {
 					//p1
@@ -554,7 +554,7 @@ void opcije(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[100][100], 
 	VEL = 600 / (*n);
 }
 
-void update_screen(zmija zm, int mapa[][100],int n, SDL_Window *window, SDL_Renderer *renderer) {
+void update_screen(zmija zm, int mapa[][100], int n, SDL_Window *window, SDL_Renderer *renderer) {
 	int i, j, i2, j2;
 	SDL_Texture *image;
 	if (zm.ziva) {
@@ -683,7 +683,7 @@ void update_screen(zmija zm, int mapa[][100],int n, SDL_Window *window, SDL_Rend
 void prikaziHighscore(SDL_Window *window, SDL_Renderer *renderer) {
 
 	SDL_Texture *odabir;
-	int chosen = 0,i,j;
+	int chosen = 0, i, j;
 	SDL_Event e;
 	char *datoteka;
 
@@ -718,34 +718,34 @@ void prikaziHighscore(SDL_Window *window, SDL_Renderer *renderer) {
 
 	switch (chosen) {
 	case MALA:
-		datoteka="malahighscore.txt";
+		datoteka = "malahighscore.txt";
 		break;
 	case SREDNJA:
 		datoteka = "srednjahighscore.txt";
 		break;
 	case VELIKA:
-		datoteka="velikahighscore.txt";
+		datoteka = "velikahighscore.txt";
 		break;
 	}
-	
+
 	SDL_DestroyTexture(odabir);
 	ispisHighscore(window, renderer, datoteka);
 }
 
-void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer,char *datoteka) {
+void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer, char *datoteka) {
 	SDL_Texture *pozadina;
 	int i, n, pomeraj, j;
-	char rez[10],pom,*pomocni;
+	char rez[10], pom, *pomocni;
 	osoba highscore[11];
 	TTF_Font *Sans;
-	SDL_Color Black = { 0,0,0 };
+	SDL_Color Black = { 0, 0, 0 };
 	SDL_Surface* surfaceMessage;
 	SDL_Texture* Message;
 	SDL_Rect Message_rect;
 	SDL_Event e;
 	FILE *fp;
 
-	
+
 	fp = fopen(datoteka, "r");
 	pozadina = loadTexture("img/highscore/pozadina.jpg", renderer);
 	renderTexture(pozadina, renderer, 0, 0, 600, 600);
@@ -760,51 +760,51 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer,char *datoteka) {
 
 	n = 0;
 
-	while (pom=fgetc(fp)!=EOF) { 
+	while (pom = fgetc(fp) != EOF) {
 		highscore[n].username = malloc(1000);
 		if (!highscore[n].username) {
 			printf("Neuspela alokacija memorije\n");
 			system("pause");
 			exit(3);
 		}
-		fscanf(fp, "%s %s", highscore[n].username,pomocni);
+		fscanf(fp, "%s %s", highscore[n].username, pomocni);
 		pomocni = decrypt(pomocni);
 		highscore[n].rezultat = atof(pomocni);
 		highscore[n].username = decrypt(highscore[n].username);
 		n++;
 	}
-	
+
 	pomeraj = 0;
-	for (i = 0; i< n; i++) {
+	for (i = 0; i < n; i++) {
 
-		Sans = TTF_OpenFont("fonts/tajmer.ttf", 12); 
-		surfaceMessage = TTF_RenderText_Solid(Sans, highscore[i].username, Black); 
-		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); 
+		Sans = TTF_OpenFont("fonts/tajmer.ttf", 12);
+		surfaceMessage = TTF_RenderText_Solid(Sans, highscore[i].username, Black);
+		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 
-		Message_rect; 
-		Message_rect.x = 120;  
-		Message_rect.y = 160 + pomeraj; 
-		Message_rect.w = 150; 
-		Message_rect.h = 40; 
+		Message_rect;
+		Message_rect.x = 120;
+		Message_rect.y = 160 + pomeraj;
+		Message_rect.w = 150;
+		Message_rect.h = 40;
 
 		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-		
+
 		snprintf(rez, 10, "%.2f", highscore[i].rezultat);
 
-		surfaceMessage = TTF_RenderText_Solid(Sans, rez, Black); 
+		surfaceMessage = TTF_RenderText_Solid(Sans, rez, Black);
 
-		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); 
+		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 
-		Message_rect; 
-		Message_rect.x = 385;  
-		Message_rect.y = 160 + pomeraj; 
-		Message_rect.w = 100; 
-		Message_rect.h = 40; 
+		Message_rect;
+		Message_rect.x = 385;
+		Message_rect.y = 160 + pomeraj;
+		Message_rect.w = 100;
+		Message_rect.h = 40;
 
 		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
 
 		SDL_RenderPresent(renderer);
-		pomeraj+=40;
+		pomeraj += 40;
 
 		free(highscore[i].username);
 	}
@@ -829,11 +829,11 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer,char *datoteka) {
 	fclose(fp);
 }
 
-void krajIgre(SDL_Window *window, SDL_Renderer *renderer,float vreme, int pobednik) {
+void krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobednik) {
 
-	SDL_Texture *slika,*prva,*druga,*treca,*cetvrta;
+	SDL_Texture *slika, *prva, *druga, *treca, *cetvrta;
 	TTF_Font *Sans;
-	SDL_Color Black = { 0,0,0};
+	SDL_Color Black = { 0, 0, 0 };
 	SDL_Surface* surfaceMessage;
 	SDL_Texture* Message;
 	SDL_Rect Message_rect;
@@ -849,7 +849,7 @@ void krajIgre(SDL_Window *window, SDL_Renderer *renderer,float vreme, int pobedn
 	cetvrta = loadTexture("img/z4_up.png", renderer);
 	renderTexture(slika, renderer, 100, 200, 400, 200);
 
-	
+
 
 	snprintf(rez, 10, "%.2f", vreme);
 
@@ -865,7 +865,7 @@ void krajIgre(SDL_Window *window, SDL_Renderer *renderer,float vreme, int pobedn
 
 	SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
 
-	
+
 
 	switch (pobednik) {
 
@@ -887,16 +887,17 @@ void krajIgre(SDL_Window *window, SDL_Renderer *renderer,float vreme, int pobedn
 
 	while (SDL_WaitEvent(&e)) {
 		switch (e.type) {
-		case SDL_KEYDOWN: return; break;
+		case SDL_KEYDOWN: return;
 		}
 	}
-	
+
 	SDL_DestroyTexture(slika);
 	SDL_DestroyTexture(prva);
 	SDL_DestroyTexture(druga);
 	SDL_DestroyTexture(treca);
 	SDL_DestroyTexture(cetvrta);
 	SDL_DestroyTexture(Message);
+	SDL_FreeSurface(surfaceMessage);
 
 }
 

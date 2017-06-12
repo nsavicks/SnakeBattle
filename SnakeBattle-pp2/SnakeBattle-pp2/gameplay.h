@@ -42,7 +42,7 @@ koord q_delete(queue *q);
 
 void q_insert(queue *q, koord a);
 
-int bfs(int si, int sj, int n, int mapa[][100]);
+int bfs(int si, int sj, int n, int mapa[][100], int granica);
 
 zmija kill(zmija z, int mapa[][100]);
 

@@ -97,7 +97,7 @@ void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 }
 
 void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n) { // Vrsi rasporedjivanje pocetnih pozicija zmija na pocetku igre
-	srand(time(NULL));
+
 	int igraca = zm1->ziva + zm2->ziva + zm3->ziva + zm4->ziva;
 	int rednibroj = 1;
 	int i, j;
@@ -970,28 +970,62 @@ void AiEasy(zmija *z, int mapa[][100], int n) {
 
 void AiHard(zmija *z, int mapa[][100], int n) {
 
-	int mogucnosti[4],max,novismer,i;
+	int mogucnosti[4], max, novismer, i, zid[4] = { 1, 1, 1, 1 }, x, y;
 	mogucnosti[0] = mogucnosti[1] = mogucnosti[2] = mogucnosti[3] = -1;
 
 	if ((z->glava.i + 1 < n) && (!mapa[z->glava.i + 1][z->glava.j]) && (z->smer != GORE)) {
-		mogucnosti[DOLE] = bfs(z->glava.i + 1, z->glava.j, n, mapa,500);
+		mogucnosti[DOLE] = bfs(z->glava.i + 1, z->glava.j, n, mapa, 500);
+		x = z->glava.i + 2;
+		y = z->glava.j;
+		if (x != n && mapa[x][y] == 0)
+			zid[DOLE] = 0;
 	}
 	if ((z->glava.i - 1 >= 0) && (!mapa[z->glava.i - 1][z->glava.j]) && (z->smer != DOLE)) {
-		mogucnosti[GORE] = bfs(z->glava.i - 1, z->glava.j, n, mapa,500);
+		mogucnosti[GORE] = bfs(z->glava.i - 1, z->glava.j, n, mapa, 500);
+		x = z->glava.i - 2;
+		y = z->glava.j;
+		if (x != -1 && mapa[x][y] == 0)
+			zid[GORE] = 0;
 	}
 	if ((z->glava.j + 1 < n) && (!mapa[z->glava.i][z->glava.j + 1]) && (z->smer != LEVO)) {
-		mogucnosti[DESNO] = bfs(z->glava.i, z->glava.j + 1, n, mapa,500);
+		mogucnosti[DESNO] = bfs(z->glava.i, z->glava.j + 1, n, mapa, 500);
+		x = z->glava.i;
+		y = z->glava.j + 2;
+		if (y != n && mapa[x][y] == 0)
+			zid[DESNO] = 0;
 	}
-	if ((z->glava.j -1 >=0) && (!mapa[z->glava.i][z->glava.j - 1]) && (z->smer != DESNO)) {
-		mogucnosti[LEVO] = bfs(z->glava.i, z->glava.j - 1, n, mapa,500);
+	if ((z->glava.j - 1 >= 0) && (!mapa[z->glava.i][z->glava.j - 1]) && (z->smer != DESNO)) {
+		mogucnosti[LEVO] = bfs(z->glava.i, z->glava.j - 1, n, mapa, 500);
+		x = z->glava.i;
+		y = z->glava.j - 2;
+		if (y != -1 && mapa[x][y] == 0)
+			zid[LEVO] = 0;
 	}
 	max = -1; novismer = z->smer;
 	for (i = 0; i < 4; i++) {
-		//printf("%d ", mogucnosti[i]);
-		if (mogucnosti[i] > max) { max = mogucnosti[i]; novismer = i; }
+		if (mogucnosti[i] > max) {
+			max = mogucnosti[i];
+			novismer = i;
+		}
+		else if (mogucnosti[i] == max) {
+			if (zid[i] == 0) {
+				if (zid[novismer] != 0) {
+					max = mogucnosti[i];
+					novismer = i;
+				}
+				else if (rand() % 3 == 0) {
+					max = mogucnosti[i];
+					novismer = i;
+				}
+			}
+		}
 	}
-	//printf("\n");
-	if (mogucnosti[z->smer] != max) { 
+	if (mogucnosti[z->smer] != max)
 		z->smer = novismer;
+	else {
+		if (zid[z->smer])
+			z->smer = novismer;
+		else if (rand() % 2)
+			z->smer = novismer;
 	}
 }

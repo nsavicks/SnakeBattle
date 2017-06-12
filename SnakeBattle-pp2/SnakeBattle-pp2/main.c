@@ -3,6 +3,7 @@
 #include "gameplay.h"
 
 int main() {
+	srand(time(NULL));
 	SDL_Window *window = NULL;
 	SDL_Renderer *rend = NULL;
 	SDL_Texture *image = NULL;
