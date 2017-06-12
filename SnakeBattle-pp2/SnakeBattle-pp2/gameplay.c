@@ -850,7 +850,7 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer,float vreme,int pobednik
 	molimoSurface = TTF_RenderText_Solid(Sans, text, Black);
 	molimo = SDL_CreateTextureFromSurface(renderer, molimoSurface);
 	white = loadTexture("img/krajigreunos.jpg", renderer);
-
+	getchar();
 
 	SDL_StartTextInput();
 	while (!done) {
