@@ -38,7 +38,7 @@ void update_screen(zmija zm, int mapa[][100], int n, SDL_Window *window, SDL_Ren
 
 void prikaziHighscore(SDL_Window *window, SDL_Renderer *renderer);
 
-void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer, char *datoteka);
+void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer, char *datoteka, int vel_mape);
 
 void krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobednik);
 

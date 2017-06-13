@@ -729,10 +729,10 @@ void prikaziHighscore(SDL_Window *window, SDL_Renderer *renderer) {
 	}
 
 	SDL_DestroyTexture(odabir);
-	ispisHighscore(window, renderer, datoteka);
+	ispisHighscore(window, renderer, datoteka,chosen);
 }
 
-void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer, char *datoteka) {
+void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer, char *datoteka,int vel_mape) {
 	SDL_Texture *pozadina;
 	int i, n, pomeraj, j;
 	char rez[10], pom, *pomocni;
@@ -743,8 +743,25 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer, char *datoteka) 
 	SDL_Texture* Message;
 	SDL_Rect Message_rect;
 	SDL_Event e;
-	FILE *fp;
+	FILE *fp=NULL;
 
+
+	if (!validateHighscore(vel_mape)) {
+
+		switch (vel_mape) {
+		case MALA:
+			fp = fopen("malahighscore.txt", "w");
+			break;
+		case SREDNJA:
+			fp = fopen("srednjahighscore.txt", "w");
+			break;
+		case VELIKA:
+			fp = fopen("velikahighscore.txt", "w");
+			break;
+		}
+		fclose(fp);
+
+	}
 
 	fp = fopen(datoteka, "r");
 	pozadina = loadTexture("img/highscore/pozadina.jpg", renderer);
@@ -838,7 +855,7 @@ void krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobed
 	SDL_Texture* Message;
 	SDL_Rect Message_rect;
 	SDL_Event e;
-	char rez[10];
+	char rez[10],nebitan;
 
 	Sans = TTF_OpenFont("fonts/tajmer.ttf", 10);
 
@@ -885,10 +902,11 @@ void krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobed
 
 	SDL_RenderPresent(renderer);
 
+	
+
 	while (SDL_WaitEvent(&e)) {
 		switch (e.type) {
 		case SDL_KEYDOWN: 
-			SDL_FlushEvent(SDL_KEYDOWN); 
 			return;
 
 			break;

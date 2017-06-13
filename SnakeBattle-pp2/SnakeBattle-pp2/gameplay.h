@@ -66,4 +66,6 @@ void AiEasy(zmija *z, int mapa[][100], int n);
 
 void AiHard(zmija *z, int mapa[][100], int n);
 
+int validateHighscore(int vel_mape);
+
 #endif

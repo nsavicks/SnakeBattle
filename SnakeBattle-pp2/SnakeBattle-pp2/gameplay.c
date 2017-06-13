@@ -712,6 +712,68 @@ char *decrypt(char *str) {
 	return resenje;
 }
 
+int validateHighscore(int vel_mape) {
+
+	char *s;
+	FILE *fp=NULL;
+	int i;
+
+	if ((s = malloc(10000)) == NULL) { exit(0); }
+
+	switch (vel_mape) {
+	case MALA:
+		fp = fopen("malahighscore.txt", "r");
+		break;
+	case SREDNJA:
+		fp = fopen("srednjahighscore.txt", "r");
+		break;
+	case VELIKA:
+		fp = fopen("velikahighscore.txt", "r");
+		break;
+	}
+
+	if (!fp) exit(0);
+
+	fgets(s, 10000, fp);
+	if (s[0] == EOF) {
+		free(s);
+		fclose(fp);
+		return 1;
+	}
+	if (s[0] != ' ' || s[strlen(s)-1]!='.') {
+		free(s);
+		fclose(fp);
+		return 0;
+	}
+
+	for (i = 0; i < strlen(s); i++) {
+		if (s[i] != '.' && s[i] != ';' && s[i] != ',' && s[i] != ' ') {
+			free(s);
+			fclose(fp);
+			return 0;
+		}
+		else {
+			if (s[i] == '.') {
+				if (s[i - 1] != ',') {
+					free(s);
+					fclose(fp);
+					return 0;
+				}
+				if (s[i + 1] != ' ' && (i != strlen(s) - 1)) { 
+					free(s);
+					fclose(fp);
+					return 0;
+				}
+			}
+		}
+	}
+
+	free(s);
+	fclose(fp);
+	return 1;
+
+}
+
 void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer *renderer,int pobednik) {
 
 	int n, i, p, j, k;
@@ -742,6 +804,23 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 		exit(3);
 	}
 
+	
+	if (!validateHighscore(vel_mape)) {
+
+		switch (vel_mape) {
+		case MALA:
+			fp = fopen("malahighscore.txt", "w");
+			break;
+		case SREDNJA:
+			fp = fopen("srednjahighscore.txt", "w");
+			break;
+		case VELIKA:
+			fp = fopen("velikahighscore.txt", "w");
+			break;
+		}
+		fclose(fp);
+
+	}
 	
 	switch (vel_mape) {
 	case MALA:
@@ -788,6 +867,8 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 			break;
 		}
 	}
+
+	
 	if (!p && n < 10) {
 		
 		ime_pom = ucitaj(window, renderer,vreme,pobednik);
@@ -797,6 +878,7 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 		highscore[n] = igrac;
 		n++;
 	}
+
 
 	fclose(fp);
 
@@ -817,7 +899,6 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 		exit(3);
 	}
 	
-
 	for (i = 0; i < n; i++) {
 		snprintf(pomocni, 10, "%f", highscore[i].rezultat);
 		pomocni = crypt(pomocni);
@@ -850,8 +931,9 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer,float vreme,int pobednik
 	molimoSurface = TTF_RenderText_Solid(Sans, text, Black);
 	molimo = SDL_CreateTextureFromSurface(renderer, molimoSurface);
 	white = loadTexture("img/krajigreunos.jpg", renderer);
-	getchar();
 
+	SDL_WaitEvent(&e);
+	
 	SDL_StartTextInput();
 	while (!done) {
 		renderTexture(white, renderer, 100, 200, 400, 200);
