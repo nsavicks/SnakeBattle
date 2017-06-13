@@ -857,7 +857,7 @@ void krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobed
 	SDL_Event e;
 	char rez[10],nebitan;
 
-	Sans = TTF_OpenFont("fonts/tajmer.ttf", 10);
+	Sans = TTF_OpenFont("fonts/tajmer.ttf", 12);
 
 	slika = loadTexture("img/krajigre.jpg", renderer);
 	prva = loadTexture("img/z1_up.png", renderer);
