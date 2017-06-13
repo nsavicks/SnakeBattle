@@ -778,7 +778,7 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer, char *datoteka,i
 	n = 0;
 
 	while (pom = fgetc(fp) != EOF) {
-		highscore[n].username = malloc(1000);
+		highscore[n].username = malloc(2000);
 		if (!highscore[n].username) {
 			printf("Neuspela alokacija memorije\n");
 			system("pause");

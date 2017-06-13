@@ -678,7 +678,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 }
 
 char *crypt(char *str) {
-	char *resenje = malloc(1000);
+	char *resenje = malloc(2000);
 	int i, j,k=0;
 	for (i = 0; i < strlen(str); i++) {
 		for (j = 1; j <= str[i]-'.'; j++) {
@@ -718,7 +718,7 @@ int validateHighscore(int vel_mape) {
 	FILE *fp=NULL;
 	int i;
 
-	if ((s = malloc(10000)) == NULL) { exit(0); }
+	if ((s = malloc(20000)) == NULL) { exit(0); }
 
 	switch (vel_mape) {
 	case MALA:
@@ -734,7 +734,8 @@ int validateHighscore(int vel_mape) {
 
 	if (!fp) exit(0);
 
-	fgets(s, 10000, fp);
+	fgets(s, 20000, fp);
+
 	if (s[0] == EOF) {
 		free(s);
 		fclose(fp);
@@ -842,7 +843,7 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 	n = 0;
 
 	while (pom=fgetc(fp)!=EOF) {
-		highscore[n].username = malloc(1000);
+		highscore[n].username = malloc(2000);
 		fscanf(fp, "%s", highscore[n].username);
 		fscanf(fp, "%s", pomocni);
 		pomocni = decrypt(pomocni);
@@ -912,14 +913,14 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 }
 
 char *ucitaj(SDL_Window *window, SDL_Renderer *renderer,float vreme,int pobednik) {
-	char *resenje, text[36] = "Molimo unesite vase ime i prezime: ", res[200] = "";
+	char *resenje, res[200] = "";
 	TTF_Font *Sans;
 	SDL_Color Black = { 0, 0, 0 };
-	SDL_Surface *molimoSurface, *imeSurface;
+	SDL_Surface *imeSurface;
 	SDL_Surface* surfaceMessage;
 	SDL_Texture* Message;
 	SDL_Rect Message_rect;
-	SDL_Texture* molimo, *ime, *white,*prva,*druga,*treca,*cetvrta;
+	SDL_Texture *ime, *white,*prva,*druga,*treca,*cetvrta;
 	SDL_Event e;
 	char rez[10];
 
@@ -928,8 +929,6 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer,float vreme,int pobednik
 
 	Sans = TTF_OpenFont("fonts/tajmer.ttf", 12);
 	
-	molimoSurface = TTF_RenderText_Solid(Sans, text, Black);
-	molimo = SDL_CreateTextureFromSurface(renderer, molimoSurface);
 	white = loadTexture("img/krajigreunos.jpg", renderer);
 
 	SDL_WaitEvent(&e);
@@ -977,7 +976,6 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer,float vreme,int pobednik
 			break;
 		}
 
-		//renderTexture(molimo, renderer, 50, 275, 35 * 10, 50);
 
 		imeSurface = TTF_RenderText_Solid(Sans, res, Black);
 		ime = SDL_CreateTextureFromSurface(renderer, imeSurface);
@@ -990,7 +988,7 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer,float vreme,int pobednik
 		if (SDL_WaitEvent(&e)) {
 			switch (e.type) {
 			case SDL_TEXTINPUT:
-				strcat(res, e.text.text);
+				if (strlen(res) < 15) strcat(res, e.text.text);
 				i++;
 				break;
 			case SDL_KEYDOWN:
@@ -1015,10 +1013,13 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer,float vreme,int pobednik
 		}
 	}
 	SDL_StopTextInput();
-	SDL_DestroyTexture(molimo);
-	SDL_FreeSurface(molimoSurface);
 	SDL_DestroyTexture(white);
-	
+	SDL_DestroyTexture(Message);
+	SDL_DestroyTexture(prva);
+	SDL_DestroyTexture(druga);
+	SDL_DestroyTexture(treca);
+	SDL_DestroyTexture(cetvrta);
+
 	resenje = res;
 	return resenje;
 }
@@ -1042,12 +1043,18 @@ void AiEasy(zmija *z, int mapa[][100], int n) {
 	max = -1; novismer = z->smer;
 	for (i = 0; i < 4; i++) {
 		//printf("%d ", mogucnosti[i]);
-		if (mogucnosti[i] > max) { max = mogucnosti[i]; novismer = i; }
+		if (mogucnosti[i] > max) { 
+			max = mogucnosti[i]; 
+			novismer = i; 
+		}
+		else if (mogucnosti[i] == max && (rand() % 3)) {
+			max = mogucnosti[i];
+			novismer = i;
+		}
 	}
 	//printf("\n");
-	if (mogucnosti[z->smer] != max) {
 		z->smer = novismer;
-	}
+	
 }
 
 void AiHard(zmija *z, int mapa[][100], int n) {
