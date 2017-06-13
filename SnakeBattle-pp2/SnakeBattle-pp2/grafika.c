@@ -926,3 +926,53 @@ void pregame(SDL_Window *window, SDL_Renderer *renderer) {
 	SDL_DestroyTexture(slika);
 
 }
+
+void oIgri(SDL_Window *window, SDL_Renderer *renderer) {
+
+	int i, j;
+	SDL_Event e;
+	SDL_Texture *pozadina = loadTexture("img/oIgri.png", renderer);
+	renderTexture(pozadina, renderer, 0, 0, 600, 600);
+	
+	SDL_RenderPresent(renderer);
+
+	while (SDL_WaitEvent(&e)) {
+		switch (e.type) {
+		case SDL_MOUSEBUTTONDOWN:
+			i = e.motion.x;
+			j = e.motion.y;
+			if (i >= 0 && i <= 50 && j >= 0 && j <= 50) { 
+				SDL_DestroyTexture(pozadina);
+				return; 
+			}
+			break;
+		}
+
+	}
+
+}
+
+void Autori(SDL_Window *window, SDL_Renderer *renderer) {
+
+	int i, j;
+	SDL_Event e;
+	SDL_Texture *pozadina = loadTexture("img/Autori.png", renderer);
+	renderTexture(pozadina, renderer, 0, 0, 600, 600);
+
+	SDL_RenderPresent(renderer);
+
+	while (SDL_WaitEvent(&e)) {
+		switch (e.type) {
+		case SDL_MOUSEBUTTONDOWN:
+			i = e.motion.x;
+			j = e.motion.y;
+			if (i >= 0 && i <= 50 && j >= 0 && j <= 50) {
+				SDL_DestroyTexture(pozadina);
+				return;
+			}
+			break;
+		}
+
+	}
+
+}

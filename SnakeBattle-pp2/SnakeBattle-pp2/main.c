@@ -47,8 +47,12 @@ int main() {
 			prikaziHighscore(window, rend);
 			break;
 		case 4:
+
+			oIgri(window, rend);
 			break;
 		case 5:
+
+			Autori(window, rend);
 			break;
 		case 6:
 			izlaz(window, rend);

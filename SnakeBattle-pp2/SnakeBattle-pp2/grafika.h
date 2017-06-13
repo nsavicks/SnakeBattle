@@ -44,4 +44,8 @@ void krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobed
 
 void pregame(SDL_Window *window, SDL_Renderer *renderer);
 
+void oIgri(SDL_Window *window, SDL_Renderer *renderer);
+
+void Autori(SDL_Window *window, SDL_Renderer *renderer);
+
 #endif // !grafika/
