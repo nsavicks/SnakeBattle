@@ -1,9 +1,6 @@
 #include "gameplay.h"
 #include "grafika.h"
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <ctype.h>
+
 
 
 int q_empty(queue q) {  // Provera da li je red prazan
@@ -416,7 +413,6 @@ void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 zmija kill(zmija z, int mapa[][100]) { // Ubija zmiju, resetuje sve njene vrednosti i azurira mapu
 	int i;
 
-
 	for (i = 0; i < z.duzina; i++) {
 		mapa[z.telo[i].i][z.telo[i].j] = 0;
 	}
@@ -493,7 +489,7 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	SDL_Event e;
 	SDL_Texture *image;
 	Mix_Music *pesma = NULL;
-	clock_t end, before,pauzabegin,pauzaend;
+	clock_t end, before,pauzabegin,pauzaend,pocetakIgre;
 
 	if (zivih <= 1) return;
 
@@ -516,6 +512,8 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	while (zivih > 1) {
 	
 		flag = 1;
+
+		pocetakIgre = clock();
 
 		while (SDL_PollEvent(&e)){
 			switch (e.type) {
@@ -643,9 +641,10 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 				update_screen(zm4, mapa, n, window, renderer);
 		}
 		zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
-		SDL_Delay(brzina);
+		if ((brzina - (clock() - pocetakIgre)) > 0) {
 
-		
+			SDL_Delay(brzina - (clock() - pocetakIgre));
+		}
 	}
 
 	
@@ -681,7 +680,7 @@ char *crypt(char *str) {
 	char *resenje = malloc(2000);
 	int i, j,k=0;
 	for (i = 0; i < strlen(str); i++) {
-		for (j = 1; j <= str[i]-'.'; j++) {
+		for (j = 1; j <= str[i]-' '; j++) {
 			resenje[k] = ';';
 			k++;
 		}
@@ -704,7 +703,7 @@ char *decrypt(char *str) {
 			i++; 
 		}
 		i++;
-		resenje[k++] = j+'.';
+		resenje[k++] = j+' ';
 		if (str[i] == '.') break;
 		
 	}
@@ -910,118 +909,6 @@ void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer 
 	
 	free(pomocni);
 	fclose(fp);
-}
-
-char *ucitaj(SDL_Window *window, SDL_Renderer *renderer,float vreme,int pobednik) {
-	char *resenje, res[200] = "";
-	TTF_Font *Sans;
-	SDL_Color Black = { 0, 0, 0 };
-	SDL_Surface *imeSurface;
-	SDL_Surface* surfaceMessage;
-	SDL_Texture* Message;
-	SDL_Rect Message_rect;
-	SDL_Texture *ime, *white,*prva,*druga,*treca,*cetvrta;
-	SDL_Event e;
-	char rez[10];
-
-
-	int i = 0, done = 0;
-
-	Sans = TTF_OpenFont("fonts/tajmer.ttf", 12);
-	
-	white = loadTexture("img/krajigreunos.jpg", renderer);
-
-	SDL_WaitEvent(&e);
-	
-	SDL_StartTextInput();
-	while (!done) {
-		renderTexture(white, renderer, 100, 200, 400, 200);
-
-		prva = loadTexture("img/z1_up.png", renderer);
-		druga = loadTexture("img/z2_up.png", renderer);
-		treca = loadTexture("img/z3_up.png", renderer);
-		cetvrta = loadTexture("img/z4_up.png", renderer);
-
-
-
-		snprintf(rez, 10, "%.2f", vreme);
-
-		surfaceMessage = TTF_RenderText_Solid(Sans, rez, Black);
-
-		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-
-		Message_rect;
-		Message_rect.x = 410;
-		Message_rect.y = 350;
-		Message_rect.w = 80;
-		Message_rect.h = 40;
-
-		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-
-
-
-		switch (pobednik) {
-
-		case 1:
-			renderTexture(prva, renderer, 420, 220, 50, 50);
-			break;
-		case 2:
-			renderTexture(druga, renderer, 420, 220, 50, 50);
-			break;
-		case 3:
-			renderTexture(treca, renderer, 420, 220, 50, 50);
-			break;
-		case 4:
-			renderTexture(cetvrta, renderer, 420, 220, 50, 50);
-			break;
-		}
-
-
-		imeSurface = TTF_RenderText_Solid(Sans, res, Black);
-		ime = SDL_CreateTextureFromSurface(renderer, imeSurface);
-		renderTexture(ime, renderer, 130,345, 10 * strlen(res), 50);
-
-		SDL_RenderPresent(renderer);
-
-		SDL_DestroyTexture(ime); SDL_FreeSurface(imeSurface);
-
-		if (SDL_WaitEvent(&e)) {
-			switch (e.type) {
-			case SDL_TEXTINPUT:
-				if (strlen(res) < 15) strcat(res, e.text.text);
-				i++;
-				break;
-			case SDL_KEYDOWN:
-				switch (e.key.keysym.sym) {
-				case SDLK_KP_ENTER:
-				case SDLK_RETURN:
-					done = 1;
-					continue;
-				case SDLK_BACKSPACE:
-					if (strlen(res) > 0)
-						res[strlen(res) - 1] = '\0';
-					continue;
-				default:
-					break;
-				}
-				break;
-			case SDL_QUIT:
-				izlaz(window, renderer);
-			default:
-				break;
-			}
-		}
-	}
-	SDL_StopTextInput();
-	SDL_DestroyTexture(white);
-	SDL_DestroyTexture(Message);
-	SDL_DestroyTexture(prva);
-	SDL_DestroyTexture(druga);
-	SDL_DestroyTexture(treca);
-	SDL_DestroyTexture(cetvrta);
-
-	resenje = res;
-	return resenje;
 }
 
 void AiEasy(zmija *z, int mapa[][100], int n) {

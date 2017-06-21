@@ -6,13 +6,14 @@
 #define DESNO 1
 #define DOLE 2
 #define LEVO 3
-#define SPORO 100
-#define SREDNJE 75
-#define BRZO 25
+#define SPORO 150
+#define SREDNJE 100
+#define BRZO 60
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <time.h>
 #include <SDL_ttf.h>
 #include "grafika.h"
 
@@ -29,7 +30,7 @@ typedef struct StOsoba {
 	float rezultat;
 }osoba;
 
-typedef struct {
+typedef struct Squeue {
 	koord x[10000];
 	int front, rear;
 } queue;
@@ -55,8 +56,6 @@ void setdefault(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100],
 void podesimapu(zmija *zm1, zmija *zm2, zmija *zm3, zmija *zm4, int mapa[][100], int n);
 
 void checkHighscore(float vreme, int vel_mape, SDL_Window *window, SDL_Renderer *renderer, int pobednik);
-
-char *ucitaj(SDL_Window *window, SDL_Renderer *renderer,float vreme,int pobednik);
 
 char *crypt(char *str);
 

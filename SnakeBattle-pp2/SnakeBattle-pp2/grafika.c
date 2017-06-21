@@ -680,6 +680,118 @@ void update_screen(zmija zm, int mapa[][100], int n, SDL_Window *window, SDL_Ren
 	}
 }
 
+char *ucitaj(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobednik) {
+	char *resenje, res[200] = "";
+	TTF_Font *Sans;
+	SDL_Color Black = { 0, 0, 0 };
+	SDL_Surface *imeSurface;
+	SDL_Surface* surfaceMessage;
+	SDL_Texture* Message;
+	SDL_Rect Message_rect;
+	SDL_Texture *ime, *white, *prva, *druga, *treca, *cetvrta;
+	SDL_Event e;
+	char rez[10];
+
+
+	int i = 0, done = 0;
+
+	Sans = TTF_OpenFont("fonts/tajmer.ttf", 12);
+
+	white = loadTexture("img/krajigreunos.jpg", renderer);
+
+	SDL_WaitEvent(&e);
+
+	SDL_StartTextInput();
+	while (!done) {
+		renderTexture(white, renderer, 100, 200, 400, 200);
+
+		prva = loadTexture("img/z1_up.png", renderer);
+		druga = loadTexture("img/z2_up.png", renderer);
+		treca = loadTexture("img/z3_up.png", renderer);
+		cetvrta = loadTexture("img/z4_up.png", renderer);
+
+
+
+		snprintf(rez, 10, "%.2f", vreme);
+
+		surfaceMessage = TTF_RenderText_Solid(Sans, rez, Black);
+
+		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+		Message_rect;
+		Message_rect.x = 410;
+		Message_rect.y = 350;
+		Message_rect.w = 80;
+		Message_rect.h = 40;
+
+		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
+
+
+		switch (pobednik) {
+
+		case 1:
+			renderTexture(prva, renderer, 420, 220, 50, 50);
+			break;
+		case 2:
+			renderTexture(druga, renderer, 420, 220, 50, 50);
+			break;
+		case 3:
+			renderTexture(treca, renderer, 420, 220, 50, 50);
+			break;
+		case 4:
+			renderTexture(cetvrta, renderer, 420, 220, 50, 50);
+			break;
+		}
+
+
+		imeSurface = TTF_RenderText_Solid(Sans, res, Black);
+		ime = SDL_CreateTextureFromSurface(renderer, imeSurface);
+		renderTexture(ime, renderer, 130, 345, 10 * strlen(res), 50);
+
+		SDL_RenderPresent(renderer);
+
+		SDL_DestroyTexture(ime); SDL_FreeSurface(imeSurface);
+
+		if (SDL_WaitEvent(&e)) {
+			switch (e.type) {
+			case SDL_TEXTINPUT:
+				if (strlen(res) < 15) strcat(res, e.text.text);
+				i++;
+				break;
+			case SDL_KEYDOWN:
+				switch (e.key.keysym.sym) {
+				case SDLK_KP_ENTER:
+				case SDLK_RETURN:
+					done = 1;
+					continue;
+				case SDLK_BACKSPACE:
+					if (strlen(res) > 0)
+						res[strlen(res) - 1] = '\0';
+					continue;
+				default:
+					break;
+				}
+				break;
+			case SDL_QUIT:
+				izlaz(window, renderer);
+			default:
+				break;
+			}
+		}
+	}
+	SDL_StopTextInput();
+	SDL_DestroyTexture(white);
+	SDL_DestroyTexture(Message);
+	SDL_DestroyTexture(prva);
+	SDL_DestroyTexture(druga);
+	SDL_DestroyTexture(treca);
+	SDL_DestroyTexture(cetvrta);
+
+	resenje = res;
+	return resenje;
+}
+
 void prikaziHighscore(SDL_Window *window, SDL_Renderer *renderer) {
 
 	SDL_Texture *odabir;
@@ -907,8 +1019,9 @@ void krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobed
 	while (SDL_WaitEvent(&e)) {
 		switch (e.type) {
 		case SDL_KEYDOWN: 
+			
 			return;
-
+			
 			break;
 		}
 	}
