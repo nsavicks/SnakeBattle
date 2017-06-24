@@ -498,7 +498,13 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	
 	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4); // iscrtava mapu
 
-	pregame(window, renderer);
+	if (pregame(window, renderer)) {
+		zm1 = kill(zm1, mapa);
+		zm2 = kill(zm2, mapa);
+		zm3 = kill(zm3, mapa);
+		zm4 = kill(zm4, mapa);
+		return;
+	}
 
 	if (muzika)
 		Mix_PlayMusic(pesma, -1);

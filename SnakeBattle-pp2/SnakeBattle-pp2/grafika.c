@@ -1036,7 +1036,7 @@ void krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobed
 
 }
 
-void pregame(SDL_Window *window, SDL_Renderer *renderer) {
+int pregame(SDL_Window *window, SDL_Renderer *renderer) {
 
 	SDL_Texture *slika;
 	SDL_Event e;
@@ -1049,7 +1049,8 @@ void pregame(SDL_Window *window, SDL_Renderer *renderer) {
 	while (SDL_WaitEvent(&e)) {
 		switch (e.type) {
 		case SDL_KEYDOWN:
-			if (e.key.keysym.sym == SDLK_SPACE) { SDL_FlushEvent(SDL_KEYDOWN); return; }
+			if (e.key.keysym.sym == SDLK_SPACE) { SDL_FlushEvent(SDL_KEYDOWN); return 0; }
+			if (e.key.keysym.sym == SDLK_BACKSPACE) return 1;
 			break;
 		}
 	}
