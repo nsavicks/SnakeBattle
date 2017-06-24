@@ -484,7 +484,7 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer, int muzika) {
 
 	// Glavna funkcija koja pokrece igru
-	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed, pobednik, pobednik_cpu,flag;
+	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed, pobednik, pobednik_cpu,flag1,flag2;
 	float vreme,pauzavreme=0;
 	SDL_Event e;
 	SDL_Texture *image;
@@ -511,7 +511,8 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 	
 	while (zivih > 1) {
 	
-		flag = 1;
+		flag1 = 1;
+		flag2 = 1;
 
 		pocetakIgre = clock();
 
@@ -520,44 +521,44 @@ void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, in
 			case SDL_KEYDOWN:
 				switch (e.key.keysym.sym) {
 				case SDLK_UP:
-					if (zm1.smer != DOLE && zm1.igrac && flag) 
+					if (zm1.smer != DOLE && zm1.igrac && flag1) 
 						zm1.smer = GORE;
-					flag = 0;
+					flag1 = 0;
 					break;
 				case SDLK_DOWN:
-					if (zm1.smer != GORE && zm1.igrac && flag)
+					if (zm1.smer != GORE && zm1.igrac && flag1)
 						zm1.smer = DOLE;
-					flag = 0;
+					flag1 = 0;
 					break;
 				case SDLK_LEFT:
-					if (zm1.smer != DESNO && zm1.igrac && flag)
+					if (zm1.smer != DESNO && zm1.igrac && flag1)
 						zm1.smer = LEVO;
-					flag = 0;
+					flag1 = 0;
 					break;
 				case SDLK_RIGHT:
-					if (zm1.smer != LEVO && zm1.igrac && flag)
+					if (zm1.smer != LEVO && zm1.igrac && flag1)
 						zm1.smer = DESNO;
-					flag = 0;
+					flag1 = 0;
 					break;
 				case SDLK_w:
-					if (zm2.smer != DOLE && zm2.igrac && flag)
+					if (zm2.smer != DOLE && zm2.igrac && flag2)
 						zm2.smer = GORE;
-					flag = 0;
+					flag2 = 0;
 					break;
 				case SDLK_s:
-					if (zm2.smer != GORE && zm2.igrac && flag)
+					if (zm2.smer != GORE && zm2.igrac && flag2)
 						zm2.smer = DOLE;
-					flag = 0;
+					flag2 = 0;
 					break;
 				case SDLK_a:
-					if (zm2.smer != DESNO && zm2.igrac && flag)
+					if (zm2.smer != DESNO && zm2.igrac && flag2)
 						zm2.smer = LEVO;
-					flag = 0;
+					flag2 = 0;
 					break;
 				case SDLK_d:
-					if (zm2.smer != LEVO && zm2.igrac && flag)
+					if (zm2.smer != LEVO && zm2.igrac && flag2)
 						zm2.smer = DESNO;
-					flag = 0;
+					flag2 = 0;
 					break;
 				case SDLK_BACKSPACE:
 
