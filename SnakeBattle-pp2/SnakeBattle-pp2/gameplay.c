@@ -481,206 +481,214 @@ zmija nextMove(zmija z, int mapa[][100], int n, SDL_Window *window, SDL_Renderer
 	return z;
 }
 
-void play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer, int muzika) {
+int play(zmija zm1, zmija zm2, zmija zm3, zmija zm4, int mapa[][100], int n, int brzina, SDL_Window *window, SDL_Renderer *renderer, int muzika) {
 
 	// Glavna funkcija koja pokrece igru
-	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed, pobednik, pobednik_cpu,flag1,flag2;
-	float vreme,pauzavreme=0;
+	int zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva, i, j, p = 1, killed, pobednik, pobednik_cpu, flag1, flag2, kraj;
+	float vreme, pauzavreme = 0;
 	SDL_Event e;
 	SDL_Texture *image;
 	Mix_Music *pesma = NULL;
-	clock_t end, before,pauzabegin,pauzaend,pocetakIgre;
+	clock_t end, before, pauzabegin, pauzaend, pocetakIgre;
 
-	if (zivih <= 1) return;
+	if (zivih <= 1) return 1;
 
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
 	pesma = Mix_LoadMUS("music/play.wav");
-	
-	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4); // iscrtava mapu
 
-	if (pregame(window, renderer)) {
+	
+
+		ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4); // iscrtava mapu
+
+		if (pregame(window, renderer)) {
+			zm1 = kill(zm1, mapa);
+			zm2 = kill(zm2, mapa);
+			zm3 = kill(zm3, mapa);
+			zm4 = kill(zm4, mapa);
+			return 1;
+		}
+
+		if (muzika)
+			Mix_PlayMusic(pesma, -1);
+
+		ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+
+		SDL_Delay(2000);
+
+		before = clock();
+
+		while (zivih > 1) {
+
+			flag1 = 1;
+			flag2 = 1;
+
+			pocetakIgre = clock();
+
+			while (SDL_PollEvent(&e)) {
+				switch (e.type) {
+				case SDL_KEYDOWN:
+					switch (e.key.keysym.sym) {
+					case SDLK_UP:
+						if (zm1.smer != DOLE && zm1.igrac && flag1)
+							zm1.smer = GORE;
+						flag1 = 0;
+						break;
+					case SDLK_DOWN:
+						if (zm1.smer != GORE && zm1.igrac && flag1)
+							zm1.smer = DOLE;
+						flag1 = 0;
+						break;
+					case SDLK_LEFT:
+						if (zm1.smer != DESNO && zm1.igrac && flag1)
+							zm1.smer = LEVO;
+						flag1 = 0;
+						break;
+					case SDLK_RIGHT:
+						if (zm1.smer != LEVO && zm1.igrac && flag1)
+							zm1.smer = DESNO;
+						flag1 = 0;
+						break;
+					case SDLK_w:
+						if (zm2.smer != DOLE && zm2.igrac && flag2)
+							zm2.smer = GORE;
+						flag2 = 0;
+						break;
+					case SDLK_s:
+						if (zm2.smer != GORE && zm2.igrac && flag2)
+							zm2.smer = DOLE;
+						flag2 = 0;
+						break;
+					case SDLK_a:
+						if (zm2.smer != DESNO && zm2.igrac && flag2)
+							zm2.smer = LEVO;
+						flag2 = 0;
+						break;
+					case SDLK_d:
+						if (zm2.smer != LEVO && zm2.igrac && flag2)
+							zm2.smer = DESNO;
+						flag2 = 0;
+						break;
+					case SDLK_BACKSPACE:
+
+						zm1 = kill(zm1, mapa);
+						zm2 = kill(zm2, mapa);
+						zm3 = kill(zm3, mapa);
+						zm4 = kill(zm4, mapa);
+						Mix_HaltMusic();
+
+						return 1;
+						break;
+					case SDLK_p:
+						pauzabegin = clock();
+						while (1) {
+							SDL_WaitEvent(&e);
+							if (e.type == SDL_KEYDOWN)
+								if (e.key.keysym.sym == SDLK_p) {
+									pauzaend = clock() - pauzabegin;
+									pauzavreme += pauzaend;
+									break;
+								}
+								else if (e.type == SDL_QUIT)
+									izlaz(window, renderer);
+						}
+						break;
+					default:
+						break;
+					}
+					break;
+				case SDL_QUIT:
+					izlaz(window, renderer);
+				default:
+					break;
+				} // END FIRST SWITCH
+
+			}
+
+			if (zm1.ziva) {
+				killed = 0;
+				if (!zm1.igrac)
+					if (zm1.tezina == 1) AiHard(&zm1, mapa, n); else AiEasy(&zm1, mapa, n);
+				zm1 = nextMove(zm1, mapa, n, window, renderer, &killed);
+
+				if (killed) {
+					ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+				}
+				else
+					update_screen(zm1, mapa, n, window, renderer);
+			}
+			if (zm2.ziva) {
+				killed = 0;
+				if (!zm2.igrac)
+					if (zm2.tezina == 1) AiHard(&zm2, mapa, n); else AiEasy(&zm2, mapa, n);
+				zm2 = nextMove(zm2, mapa, n, window, renderer, &killed);
+
+				if (killed)
+					ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+				else
+					update_screen(zm2, mapa, n, window, renderer);
+			}
+			if (zm3.ziva) {
+				killed = 0;
+				if (!zm3.igrac)
+					if (zm3.tezina == 1) AiHard(&zm3, mapa, n); else AiEasy(&zm3, mapa, n);
+				zm3 = nextMove(zm3, mapa, n, window, renderer, &killed);
+
+				if (killed)
+					ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+				else
+					update_screen(zm3, mapa, n, window, renderer);
+			}
+			if (zm4.ziva) {
+				killed = 0;
+				if (!zm4.igrac)
+					if (zm4.tezina == 1) AiHard(&zm4, mapa, n); else AiEasy(&zm4, mapa, n);
+				zm4 = nextMove(zm4, mapa, n, window, renderer, &killed);
+
+				if (killed)
+					ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+				else
+					update_screen(zm4, mapa, n, window, renderer);
+			}
+			zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
+			if ((brzina - (clock() - pocetakIgre)) > 0) {
+
+				SDL_Delay(brzina - (clock() - pocetakIgre));
+			}
+		}
+
+
+		vreme = clock() - before;
+		vreme -= pauzavreme;
+		vreme = (float)vreme / 1000;
+		pobednik_cpu = 0;
+		if (p) {
+			pobednik = zm1.ziva*zm1.redni*zm1.igrac + zm2.ziva*zm2.redni*zm2.igrac;
+			switch (pobednik) {
+			case 1:
+				pobednik_cpu = zm1.igrac;
+				break;
+			case 2:
+				pobednik_cpu = zm2.igrac;
+				break;
+
+			}
+		}
+
+
+		if (p && pobednik_cpu)
+			checkHighscore(vreme, n, window, renderer, zm1.ziva*zm1.redni + zm2.ziva*zm2.redni + zm3.ziva*zm3.redni + zm4.ziva*zm4.redni);
+
+		kraj = krajIgre(window, renderer, vreme, zm1.ziva*zm1.redni + zm2.ziva*zm2.redni + zm3.ziva*zm3.redni + zm4.ziva*zm4.redni);
+
 		zm1 = kill(zm1, mapa);
 		zm2 = kill(zm2, mapa);
 		zm3 = kill(zm3, mapa);
 		zm4 = kill(zm4, mapa);
-		return;
-	}
 
-	if (muzika)
-		Mix_PlayMusic(pesma, -1);
+		Mix_HaltMusic();
 
-	ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
+		return kraj;
 
-	SDL_Delay(2000);
-	
-	before = clock();
-	
-	while (zivih > 1) {
-	
-		flag1 = 1;
-		flag2 = 1;
-
-		pocetakIgre = clock();
-
-		while (SDL_PollEvent(&e)){
-			switch (e.type) {
-			case SDL_KEYDOWN:
-				switch (e.key.keysym.sym) {
-				case SDLK_UP:
-					if (zm1.smer != DOLE && zm1.igrac && flag1) 
-						zm1.smer = GORE;
-					flag1 = 0;
-					break;
-				case SDLK_DOWN:
-					if (zm1.smer != GORE && zm1.igrac && flag1)
-						zm1.smer = DOLE;
-					flag1 = 0;
-					break;
-				case SDLK_LEFT:
-					if (zm1.smer != DESNO && zm1.igrac && flag1)
-						zm1.smer = LEVO;
-					flag1 = 0;
-					break;
-				case SDLK_RIGHT:
-					if (zm1.smer != LEVO && zm1.igrac && flag1)
-						zm1.smer = DESNO;
-					flag1 = 0;
-					break;
-				case SDLK_w:
-					if (zm2.smer != DOLE && zm2.igrac && flag2)
-						zm2.smer = GORE;
-					flag2 = 0;
-					break;
-				case SDLK_s:
-					if (zm2.smer != GORE && zm2.igrac && flag2)
-						zm2.smer = DOLE;
-					flag2 = 0;
-					break;
-				case SDLK_a:
-					if (zm2.smer != DESNO && zm2.igrac && flag2)
-						zm2.smer = LEVO;
-					flag2 = 0;
-					break;
-				case SDLK_d:
-					if (zm2.smer != LEVO && zm2.igrac && flag2)
-						zm2.smer = DESNO;
-					flag2 = 0;
-					break;
-				case SDLK_BACKSPACE:
-
-					zm1 = kill(zm1, mapa);
-					zm2 = kill(zm2, mapa);
-					zm3 = kill(zm3, mapa);
-					zm4 = kill(zm4, mapa);
-					Mix_HaltMusic();
-
-					return;
-					break;
-				case SDLK_p:
-					pauzabegin = clock();
-					while (1) {
-						SDL_WaitEvent(&e);
-						if (e.type == SDL_KEYDOWN)
-							if (e.key.keysym.sym == SDLK_p) {
-								pauzaend = clock() - pauzabegin;
-								pauzavreme += pauzaend;
-								break;
-							}
-							else if (e.type == SDL_QUIT)
-								izlaz(window, renderer);
-					}
-					break;
-				default:
-					break;
-				}
-				break;
-			case SDL_QUIT:
-				izlaz(window, renderer);
-			default:
-				break;
-			} // END FIRST SWITCH
-		
-		}
-		
-		if (zm1.ziva) {
-			killed = 0;
-			if (!zm1.igrac)
-				if (zm1.tezina == 1) AiHard(&zm1, mapa, n); else AiEasy(&zm1, mapa, n);
-			zm1 = nextMove(zm1, mapa, n, window, renderer, &killed);
-			
-			if (killed) {
-				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
-			}
-			else
-				update_screen(zm1, mapa, n, window, renderer);
-		}
-		if (zm2.ziva) {
-			killed = 0;
-			if (!zm2.igrac)
-				if (zm2.tezina == 1) AiHard(&zm2, mapa, n); else AiEasy(&zm2, mapa, n);
-			zm2 = nextMove(zm2, mapa, n, window, renderer, &killed);
-			
-			if (killed)
-				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
-			else
-				update_screen(zm2, mapa, n, window, renderer);
-		}
-		if (zm3.ziva) {
-			killed = 0;
-			if (!zm3.igrac)
-				if (zm3.tezina == 1) AiHard(&zm3, mapa, n); else AiEasy(&zm3, mapa, n);
-			zm3 = nextMove(zm3, mapa, n, window, renderer, &killed);
-			
-			if (killed)
-				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
-			else
-				update_screen(zm3, mapa, n, window, renderer);
-		}
-		if (zm4.ziva) {
-			killed = 0;
-			if (!zm4.igrac)
-				if (zm4.tezina == 1) AiHard(&zm4, mapa, n); else AiEasy(&zm4, mapa, n);
-			zm4 = nextMove(zm4, mapa, n, window, renderer, &killed);
-			
-			if (killed)
-				ispis(window, renderer, mapa, n, zm1, zm2, zm3, zm4);
-			else
-				update_screen(zm4, mapa, n, window, renderer);
-		}
-		zivih = zm1.ziva + zm2.ziva + zm3.ziva + zm4.ziva;
-		if ((brzina - (clock() - pocetakIgre)) > 0) {
-
-			SDL_Delay(brzina - (clock() - pocetakIgre));
-		}
-	}
-
-	
-	vreme = clock() - before;
-	vreme -= pauzavreme;
-	vreme = (float)vreme / 1000;
-	pobednik_cpu = 0;
-	if (p) {
-		pobednik = zm1.ziva*zm1.redni*zm1.igrac + zm2.ziva*zm2.redni*zm2.igrac;
-		switch (pobednik) {
-		case 1:
-			pobednik_cpu = zm1.igrac;
-			break;
-		case 2:
-			pobednik_cpu = zm2.igrac;
-			break;
-	
-		}
-	}
-	krajIgre(window, renderer,vreme,zm1.ziva*zm1.redni+zm2.ziva*zm2.redni+zm3.ziva*zm3.redni+zm4.ziva*zm4.redni);
-
-	if (p && pobednik_cpu) 
-		checkHighscore(vreme, n, window, renderer, zm1.ziva*zm1.redni + zm2.ziva*zm2.redni + zm3.ziva*zm3.redni + zm4.ziva*zm4.redni);
-	zm1 = kill(zm1, mapa);
-	zm2 = kill(zm2, mapa);
-	zm3 = kill(zm3, mapa);
-	zm4 = kill(zm4, mapa);
-	Mix_HaltMusic();
-	
 }
 
 char *crypt(char *str) {

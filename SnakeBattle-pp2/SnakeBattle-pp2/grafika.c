@@ -699,7 +699,6 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobedn
 
 	white = loadTexture("img/krajigreunos.jpg", renderer);
 
-	SDL_WaitEvent(&e);
 
 	SDL_StartTextInput();
 	while (!done) {
@@ -958,7 +957,7 @@ void ispisHighscore(SDL_Window *window, SDL_Renderer *renderer, char *datoteka,i
 	fclose(fp);
 }
 
-void krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobednik) {
+int krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobednik) {
 
 	SDL_Texture *slika, *prva, *druga, *treca, *cetvrta;
 	TTF_Font *Sans;
@@ -1020,19 +1019,34 @@ void krajIgre(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobed
 		switch (e.type) {
 		case SDL_KEYDOWN: 
 			
-			return;
+			if (e.key.keysym.sym == SDLK_BACKSPACE) {
+				
+				SDL_DestroyTexture(slika);
+				SDL_DestroyTexture(prva);
+				SDL_DestroyTexture(druga);
+				SDL_DestroyTexture(treca);
+				SDL_DestroyTexture(cetvrta);
+				SDL_DestroyTexture(Message);
+				SDL_FreeSurface(surfaceMessage);
+				return 1;
+
+			}
+			if (e.key.keysym.sym == SDLK_SPACE) {
+
+				SDL_DestroyTexture(slika);
+				SDL_DestroyTexture(prva);
+				SDL_DestroyTexture(druga);
+				SDL_DestroyTexture(treca);
+				SDL_DestroyTexture(cetvrta);
+				SDL_DestroyTexture(Message);
+				SDL_FreeSurface(surfaceMessage);
+				return 0;
+			}
 			
 			break;
 		}
 	}
 
-	SDL_DestroyTexture(slika);
-	SDL_DestroyTexture(prva);
-	SDL_DestroyTexture(druga);
-	SDL_DestroyTexture(treca);
-	SDL_DestroyTexture(cetvrta);
-	SDL_DestroyTexture(Message);
-	SDL_FreeSurface(surfaceMessage);
 
 }
 
@@ -1049,13 +1063,19 @@ int pregame(SDL_Window *window, SDL_Renderer *renderer) {
 	while (SDL_WaitEvent(&e)) {
 		switch (e.type) {
 		case SDL_KEYDOWN:
-			if (e.key.keysym.sym == SDLK_SPACE) { SDL_FlushEvent(SDL_KEYDOWN); return 0; }
-			if (e.key.keysym.sym == SDLK_BACKSPACE) return 1;
+			if (e.key.keysym.sym == SDLK_SPACE) {
+				SDL_DestroyTexture(slika);
+				return 0;
+			}
+			if (e.key.keysym.sym == SDLK_BACKSPACE) {
+				SDL_DestroyTexture(slika);
+				return 1;
+			}
 			break;
 		}
 	}
 
-	SDL_DestroyTexture(slika);
+
 
 }
 
