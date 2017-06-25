@@ -681,7 +681,7 @@ void update_screen(zmija zm, int mapa[][100], int n, SDL_Window *window, SDL_Ren
 }
 
 char *ucitaj(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobednik) {
-	char *resenje, res[200] = "";
+	char *resenje, res[17] = "";
 	TTF_Font *Sans;
 	SDL_Color Black = { 0, 0, 0 };
 	SDL_Surface *imeSurface;
@@ -699,33 +699,31 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobedn
 
 	white = loadTexture("img/krajigreunos.jpg", renderer);
 
+	prva = loadTexture("img/z1_up.png", renderer);
+	druga = loadTexture("img/z2_up.png", renderer);
+	treca = loadTexture("img/z3_up.png", renderer);
+	cetvrta = loadTexture("img/z4_up.png", renderer);
+
+	snprintf(rez, 10, "%.2f", vreme);
+
+	surfaceMessage = TTF_RenderText_Solid(Sans, rez, Black);
+
+	Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+	Message_rect;
+	Message_rect.x = 410;
+	Message_rect.y = 350;
+	Message_rect.w = 80;
+	Message_rect.h = 40;
+
+	SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
 
 	SDL_StartTextInput();
 	while (!done) {
+
 		renderTexture(white, renderer, 100, 200, 400, 200);
-
-		prva = loadTexture("img/z1_up.png", renderer);
-		druga = loadTexture("img/z2_up.png", renderer);
-		treca = loadTexture("img/z3_up.png", renderer);
-		cetvrta = loadTexture("img/z4_up.png", renderer);
-
-
-
-		snprintf(rez, 10, "%.2f", vreme);
-
-		surfaceMessage = TTF_RenderText_Solid(Sans, rez, Black);
-
-		Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-
-		Message_rect;
-		Message_rect.x = 410;
-		Message_rect.y = 350;
-		Message_rect.w = 80;
-		Message_rect.h = 40;
-
 		SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-
-
 
 		switch (pobednik) {
 
