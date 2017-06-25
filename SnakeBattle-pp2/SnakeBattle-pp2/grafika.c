@@ -762,7 +762,7 @@ char *ucitaj(SDL_Window *window, SDL_Renderer *renderer, float vreme, int pobedn
 				switch (e.key.keysym.sym) {
 				case SDLK_KP_ENTER:
 				case SDLK_RETURN:
-					done = 1;
+					if (strlen(res)>0) done = 1;
 					continue;
 				case SDLK_BACKSPACE:
 					if (strlen(res) > 0)
